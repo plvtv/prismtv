@@ -1,0 +1,48 @@
+# Publishes PrismTV as a public website on GitHub Pages, and refreshes it every day.
+#
+# The public site has no serve.py, so this workflow fetches the lists a browser cannot load by
+# itself (free streaming TV playlists, LG Channels, Learn English's YouTube feeds) into
+# data/mirror/, and writes data/site.json so the app knows it is running publicly.
+name: Publish website
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '30 21 * * *'        # daily, 03:00 India time
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Mirror the lists browsers cannot fetch directly
+        run: python3 tools/build-mirror.py
+
+      - name: Assemble the site
+        run: |
+          mkdir -p _site
+          cp -r index.html css js data _site/
+          echo '{"public": true}' > _site/data/site.json
+          touch _site/.nojekyll
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4

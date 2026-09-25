@@ -1,0 +1,9 @@
+# local-only files: never published
+_backup*/
+_relaytest.tgz
+__pycache__/
+.stream-health.json*
+.DS_Store
+data/mirror/
+data/site.json
+_site/

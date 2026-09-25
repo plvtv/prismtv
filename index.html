@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07070b">
+<title>PrismTV</title>
+<meta name="description" content="Browse and watch free-to-air channels from the iptv-org and Free-TV public indexes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://iptv-org.github.io">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<!-- Inter for Latin; Noto for Indian scripts. Google serves these split by character range,
+     so a script's font is only downloaded once that script actually appears on screen. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..800&family=Noto+Sans+Devanagari:wght@400..700&family=Noto+Sans+Telugu:wght@400..700&family=Noto+Sans+Tamil:wght@400..700&family=Noto+Sans+Kannada:wght@400..700&family=Noto+Sans+Malayalam:wght@400..700&family=Noto+Sans+Bengali:wght@400..700&family=Noto+Sans+Gujarati:wght@400..700&family=Noto+Sans+Gurmukhi:wght@400..700&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23c4b5fd'/%3E%3Cstop offset='1' stop-color='%237c6cf0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%2307070b'/%3E%3Cpath d='M16 6 26 24H6z' fill='url(%23g)'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============ reusable icons ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="prism-g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d8ccff"/><stop offset=".55" stop-color="#9d8cff"/><stop offset="1" stop-color="#6a5ae0"/>
+    </linearGradient>
+  </defs>
+  <symbol id="i-prism" viewBox="0 0 24 24"><path d="M12 3.2 21 19.4H3z" fill="url(#prism-g)"/><path d="M12 3.2 15.2 19.4H3z" fill="#fff" opacity=".22"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.6 2.4 3.9 5.2 3.9 8.5s-1.3 6.1-3.9 8.5c-2.6-2.4-3.9-5.2-3.9-8.5s1.3-6.1 3.9-8.5z"/></g></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.5 4.5v4h-4"/></g></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.6v12.8a.8.8 0 0 0 1.2.7l10.3-6.4a.8.8 0 0 0 0-1.4L9.2 4.9A.8.8 0 0 0 8 5.6z" fill="currentColor"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></g></symbol>
+  <symbol id="i-pulse" viewBox="0 0 24 24"><path d="M3 12h4l2.5-6 5 12 2.5-6h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-screen" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="12.5" rx="2.2"/><path d="M9 21h6M12 17v4"/></g><path d="M10.4 8.2v5.1l4.2-2.55z" fill="currentColor"/></symbol>
+  <symbol id="i-rail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4.5" width="18" height="15" rx="2.2"/><path d="M14.5 4.5v15"/></g></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="m6.5 6.5 11 11m0-11-11 11" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.6"/></g></symbol>
+  <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M6.5 4.5h11v15.5L12 16.2 6.5 20z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5.5" y="10.5" width="13" height="9.5" rx="2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></g></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 5h5v5"/><path d="M19 5 11 13"/><path d="M17.5 14v4a1.5 1.5 0 0 1-1.5 1.5H6A1.5 1.5 0 0 1 4.5 18V8A1.5 1.5 0 0 1 6 6.5h4"/></g></symbol>
+  <symbol id="i-cc" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10.6 10.3a2.2 2.2 0 1 0 0 3.4M16.9 10.3a2.2 2.2 0 1 0 0 3.4"/></g></symbol>
+  <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4.5 9V4.5H9M15 4.5h4.5V9M19.5 15v4.5H15M9 19.5H4.5V15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-collapse" viewBox="0 0 24 24"><path d="M9 4.5V9H4.5M19.5 9H15V4.5M15 19.5V15h4.5M4.5 15H9v4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-film" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><path d="M7.5 4.5v15M16.5 4.5v15M3.5 9h4M3.5 15h4M16.5 9h4M16.5 15h4"/></g></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 6.5c-1.8-1.3-4.3-2-7.5-2v13c3.2 0 5.7.7 7.5 2 1.8-1.3 4.3-2 7.5-2v-13c-3.2 0-5.7.7-7.5 2z"/><path d="M12 6.5v13"/></g></symbol>
+  <symbol id="i-dice" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3.5" fill="none" stroke="currentColor" stroke-width="1.7"/><g fill="currentColor"><circle cx="8.6" cy="8.6" r="1.35"/><circle cx="15.4" cy="8.6" r="1.35"/><circle cx="12" cy="12" r="1.35"/><circle cx="8.6" cy="15.4" r="1.35"/><circle cx="15.4" cy="15.4" r="1.35"/></g></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="m9.5 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<!-- ============ boot ============ -->
+<div id="boot" class="boot" role="status" aria-live="polite">
+  <div class="boot-mark">
+    <svg class="boot-glyph"><use href="#i-prism"/></svg>
+    <span>Prism<b>TV</b></span>
+  </div>
+  <div class="boot-bar"><i id="boot-fill"></i></div>
+  <div class="boot-note" id="boot-note">Contacting channel index&hellip;</div>
+</div>
+
+<!-- ============ top bar ============ -->
+<header class="topbar" id="topbar">
+  <a class="brand" href="#home" aria-label="PrismTV home">
+    <svg class="brand-glyph"><use href="#i-prism"/></svg>
+    <span>Prism<b>TV</b></span>
+  </a>
+
+  <nav class="nav" aria-label="Primary">
+    <button class="nav-link is-active" data-view="home">Home</button>
+    <button class="nav-link" data-view="browse">Browse</button>
+    <button class="nav-link" data-view="movies">Movies</button>
+    <button class="nav-link" data-view="learn">Learn English</button>
+    <button class="nav-link" data-view="mylist">My List</button>
+  </nav>
+
+  <div class="topbar-right">
+    <button class="random-btn" id="random-btn" type="button" data-tip="Random · R" aria-label="Play something random">
+      <svg class="i"><use href="#i-dice"/></svg><span>Random</span>
+    </button>
+    <label class="search-box">
+      <svg class="i"><use href="#i-search"/></svg>
+      <span class="sr-only">Search</span>
+      <input id="search-input" type="search" placeholder="Search channels" autocomplete="off" spellcheck="false">
+      <kbd class="search-kbd">/</kbd>
+    </label>
+
+    <div class="prefs" id="prefs">
+      <button class="prefs-btn" id="prefs-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="prefs-panel">
+        <svg class="i"><use href="#i-globe"/></svg>
+        <span class="prefs-label" id="prefs-label">Preferences</span>
+        <svg class="i chev"><use href="#i-chevron"/></svg>
+      </button>
+      <div class="prefs-panel" id="prefs-panel" hidden>
+        <label class="field">
+          <span class="field-label">Channel index</span>
+          <span class="select">
+            <select id="source-select">
+              <option value="both">All indexes</option>
+              <option value="iptv-org">iptv-org</option>
+              <option value="freetv">Free-TV</option>
+              <option value="shovo">Shovo extras</option>
+              <option value="lg">LG Channels</option>
+              <option value="fast">Free streaming TV</option>
+            </select>
+          </span>
+        </label>
+        <label class="field">
+          <span class="field-label">Home region</span>
+          <span class="select"><select id="region-select"></select></span>
+        </label>
+        <div class="health-box">
+          <label class="switch switch-sm"><input type="checkbox" id="hide-dead"><i></i><span>Hide channels that aren&rsquo;t working</span></label>
+          <p class="prefs-note" id="health-note">Checks every stream from this computer, in the background.</p>
+          <button class="text-btn" id="health-scan" type="button">
+            <svg class="i"><use href="#i-refresh"/></svg> Re-check all channels
+          </button>
+        </div>
+        <div class="share-box" id="share-box">
+          <button class="text-btn" id="share-btn" type="button" aria-expanded="false" aria-controls="share-panel">
+            <svg class="i"><use href="#i-screen"/></svg> Watch on another device
+          </button>
+          <div class="share-panel" id="share-panel" hidden></div>
+        </div>
+        <p class="prefs-note">Region decides which country gets top billing. It can&rsquo;t change where your connection appears to come from.</p>
+        <button class="text-btn" id="refresh-btn" type="button">
+          <svg class="i"><use href="#i-refresh"/></svg> Refresh channel index
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ main ============ -->
+<main id="main" hidden>
+  <section class="hero" id="hero" aria-label="Featured channel"></section>
+  <div class="rows" id="rows"></div>
+
+  <section class="browse" id="browse" hidden>
+    <header class="browse-head">
+      <div class="browse-title-row">
+        <h1 id="browse-title">Browse</h1>
+        <p class="browse-count" id="browse-count"></p>
+      </div>
+      <div class="filters">
+        <label class="field"><span class="sr-only">Category</span><span class="select"><select id="f-category"></select></span></label>
+        <label class="field"><span class="sr-only">Country</span><span class="select"><select id="f-country"></select></span></label>
+        <label class="field"><span class="sr-only">Language</span><span class="select"><select id="f-language"></select></span></label>
+        <label class="switch"><input type="checkbox" id="f-logo" checked><i></i><span>With artwork</span></label>
+        <button class="text-btn" id="f-reset" type="button">Reset</button>
+      </div>
+    </header>
+    <div class="grid" id="browse-grid"></div>
+    <button class="more-btn" id="browse-more" type="button" hidden>Show more</button>
+  </section>
+
+  <section class="movies" id="movies" hidden>
+    <header class="movies-head">
+      <div>
+        <h1>Movies</h1>
+        <p class="movies-lede">Free films from the <a href="https://archive.org/details/feature_films" target="_blank" rel="noreferrer">Internet Archive</a>, Wikimedia Commons and the Library of Congress, plus official free channels on YouTube. On demand, and your place is remembered.</p>
+      </div>
+      <div class="movies-tools">
+        <button class="chip chip-add" id="movies-browse-btn" type="button"><svg class="i"><use href="#i-grid"/></svg> Browse all</button>
+        <label class="search-box movies-search">
+          <svg class="i"><use href="#i-search"/></svg>
+          <span class="sr-only">Search films</span>
+          <input id="movies-search" type="search" placeholder="Search films, cartoons, TV" autocomplete="off" spellcheck="false">
+        </label>
+      </div>
+    </header>
+    <div id="movies-rows"></div>
+    <div class="movies-results" id="movies-results" hidden>
+      <div class="filters mfilters">
+        <button class="text-btn" id="mb-back" type="button"><svg class="i back"><use href="#i-arrow"/></svg> Movies home</button>
+        <label class="field"><span class="sr-only">Genre</span><span class="select"><select id="mb-genre"></select></span></label>
+        <label class="field"><span class="sr-only">Decade</span><span class="select"><select id="mb-decade"></select></span></label>
+        <label class="field"><span class="sr-only">Sort</span><span class="select"><select id="mb-sort"></select></span></label>
+      </div>
+      <p class="browse-count" id="movies-count"></p>
+      <div class="mgrid" id="movies-grid"></div>
+      <button class="more-btn" id="movies-more" type="button" hidden>Show more</button>
+    </div>
+  </section>
+
+  <section class="movies learn" id="learn" hidden>
+    <header class="movies-head">
+      <div>
+        <h1>Learn English</h1>
+        <p class="movies-lede">Free lessons from BBC Learning English, VOA Learning English and other teaching channels, with English subtitles on. The live-TV rows turn on captions automatically, so you can read along.</p>
+      </div>
+      <div class="learn-tools">
+        <div class="chips" id="learn-levels" role="group" aria-label="Your level"></div>
+        <button class="chip chip-add" id="learn-add-btn" type="button" aria-expanded="false" aria-controls="learn-add">
+          <svg class="i"><use href="#i-plus"/></svg> Add your own
+        </button>
+      </div>
+    </header>
+    <div class="learn-add" id="learn-add" hidden>
+      <form id="learn-add-form" class="learn-add-form" autocomplete="off">
+        <label class="field grow">
+          <span class="field-label">Link</span>
+          <input id="learn-add-url" class="text-input" type="url" required placeholder="YouTube channel, playlist or video, an .m3u8 stream, or an .m3u playlist">
+        </label>
+        <label class="field">
+          <span class="field-label">Name (optional)</span>
+          <input id="learn-add-name" class="text-input" type="text" placeholder="e.g. My grammar course">
+        </label>
+        <button class="btn btn-play btn-sm" id="learn-add-submit" type="submit">Add</button>
+      </form>
+      <p class="mine-msg" id="learn-add-msg" aria-live="polite"></p>
+      <p class="prefs-note" id="learn-add-empty">Nothing added yet. Examples: <code>youtube.com/@bbclearningenglish</code>, a link to any YouTube playlist, or a live stream ending in <code>.m3u8</code>.</p>
+      <ul class="mine-list" id="learn-add-list"></ul>
+    </div>
+    <div id="learn-rows"></div>
+  </section>
+
+  <footer class="foot">
+    <p>Channel data from the <a href="https://github.com/iptv-org/iptv" target="_blank" rel="noreferrer">iptv-org</a> and <a href="https://github.com/Free-TV/IPTV" target="_blank" rel="noreferrer">Free-TV</a> public indexes, plus extras from <a href="https://github.com/shovo127/IPTV-By-Shovo" target="_blank" rel="noreferrer">IPTV-By-Shovo</a> and LG Channels; films from the Internet Archive. Your list and history stay in this browser.</p>
+    <p class="foot-dim">Streams are third-party public links; availability, geo-restrictions and rights rest with whoever publishes them.</p>
+  </footer>
+</main>
+
+<!-- ============ mobile tab bar ============ -->
+<nav class="tabbar" aria-label="Sections">
+  <button class="nav-link is-active" data-view="home"><svg class="i"><use href="#i-home"/></svg><span>Home</span></button>
+  <button class="nav-link" data-view="browse"><svg class="i"><use href="#i-grid"/></svg><span>Browse</span></button>
+  <button class="nav-link" data-view="movies"><svg class="i"><use href="#i-film"/></svg><span>Movies</span></button>
+  <button class="nav-link" data-view="learn"><svg class="i"><use href="#i-book"/></svg><span>Learn</span></button>
+  <button class="nav-link" data-view="mylist"><svg class="i"><use href="#i-bookmark"/></svg><span>My List</span></button>
+</nav>
+
+<!-- ============ player ============ -->
+<div class="player" id="player" hidden>
+  <div class="player-inner" id="player-inner" role="dialog" aria-modal="true" aria-labelledby="player-name">
+    <div class="player-main">
+      <div class="player-stage" id="player-stage">
+        <div class="stage-art" aria-hidden="true"><img id="stage-art" alt=""></div>
+        <video id="video" playsinline controlslist="nofullscreen"></video>
+        <div class="autocc" id="autocc" aria-live="off" hidden>
+          <div class="autocc-rail"><div class="autocc-panel" title="Drag to move · double-click to reset"><div class="autocc-lines"></div></div></div>
+        </div>
+        <div class="player-overlay" id="player-overlay">
+          <div class="msg">
+            <div class="spinner" aria-hidden="true"></div>
+            <div class="msg-body" id="player-status">Connecting&hellip;</div>
+          </div>
+        </div>
+      </div>
+      <div class="player-bar">
+        <div class="player-title">
+          <span class="player-logo"><img id="player-logo" alt=""></span>
+          <div class="player-text">
+            <strong id="player-name"></strong>
+            <span id="player-sub"></span>
+          </div>
+        </div>
+        <div class="player-actions">
+          <label class="source-pick"><span class="sr-only">Source</span><span class="select select-sm"><select id="player-source"></select></span></label>
+          <div class="cc-wrap">
+            <button class="icon-btn cc" id="player-cc" type="button" data-tip="No captions detected" aria-label="Captions" aria-pressed="false" aria-haspopup="menu" aria-expanded="false" disabled>
+              <svg class="i"><use href="#i-cc"/></svg>
+            </button>
+            <div class="cc-menu" id="cc-menu" role="menu" aria-label="Captions" hidden></div>
+          </div>
+          <button class="icon-btn js-random" id="player-random" type="button" data-tip="Random &middot; R" aria-label="Play something random"><svg class="i"><use href="#i-dice"/></svg></button>
+          <button class="icon-btn" id="player-fav" type="button" data-tip="Add to My List" aria-label="Add to My List" aria-pressed="false">
+            <svg class="i off"><use href="#i-plus"/></svg><svg class="i on"><use href="#i-check"/></svg>
+          </button>
+          <button class="icon-btn" id="player-mpv" type="button" data-tip="Play in mpv" aria-label="Play in mpv" hidden>
+            <svg class="i"><use href="#i-screen"/></svg>
+          </button>
+          <button class="icon-btn" id="player-copy" type="button" data-tip="Copy stream link" aria-label="Copy stream link">
+            <svg class="i off"><use href="#i-link"/></svg><svg class="i on"><use href="#i-check"/></svg>
+          </button>
+          <button class="icon-btn" id="player-check" type="button" data-tip="Test every source" aria-label="Test every source">
+            <svg class="i"><use href="#i-pulse"/></svg>
+          </button>
+          <button class="icon-btn" id="player-fs" type="button" data-tip="Full screen · F" aria-label="Full screen">
+            <svg class="i off"><use href="#i-expand"/></svg><svg class="i on"><use href="#i-collapse"/></svg>
+          </button>
+          <span class="sep" aria-hidden="true"></span>
+          <button class="icon-btn side-toggle" id="player-side-toggle" type="button" data-tip="Up next" aria-label="Toggle Up next">
+            <svg class="i"><use href="#i-rail"/></svg>
+          </button>
+          <button class="icon-btn" id="player-close" type="button" data-tip="Close &middot; Esc" aria-label="Close player">
+            <svg class="i"><use href="#i-close"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <aside class="player-side" id="player-side" aria-label="Up next">
+      <div class="side-inner">
+        <div class="side-head">
+          <h3>Up next</h3>
+          <label class="switch switch-sm"><input type="checkbox" id="side-autoplay"><i></i><span>Autoplay</span></label>
+        </div>
+        <div class="side-list" id="side-list"></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- ============ movie player ============ -->
+<div class="mplayer" id="mplayer" hidden>
+  <div class="mplayer-inner" role="dialog" aria-modal="true" aria-labelledby="mplayer-title">
+    <div class="mplayer-stage">
+      <video id="mvideo" controls playsinline preload="metadata"></video>
+      <div class="mplayer-status" id="mplayer-status" hidden></div>
+    </div>
+    <aside class="mplayer-info">
+      <div class="mplayer-top">
+        <span class="mplayer-kicker"><svg class="i"><use href="#i-film"/></svg> Internet Archive</span>
+        <span class="mplayer-actions"><button class="icon-btn js-random" type="button" data-tip="Random &middot; R" aria-label="Play something random"><svg class="i"><use href="#i-dice"/></svg></button>
+        <button class="icon-btn" id="mplayer-close" type="button" data-tip="Close &middot; Esc" aria-label="Close player">
+          <svg class="i"><use href="#i-close"/></svg>
+        </button></span>
+      </div>
+      <h2 id="mplayer-title"></h2>
+      <p class="mplayer-sub" id="mplayer-sub"></p>
+      <span class="select select-sm"><select id="mplayer-parts" aria-label="Part" hidden></select></span>
+      <p class="mplayer-desc" id="mplayer-desc"></p>
+      <a class="text-btn" id="mplayer-link" target="_blank" rel="noreferrer"><svg class="i"><use href="#i-external"/></svg> <span id="mplayer-link-label">Open on archive.org</span></a>
+    </aside>
+  </div>
+</div>
+
+<!-- ============ lesson player (YouTube embed) ============ -->
+<div class="mplayer" id="lplayer" hidden>
+  <div class="mplayer-inner" role="dialog" aria-modal="true" aria-labelledby="lplayer-title">
+    <div class="mplayer-stage">
+      <iframe id="lframe" class="lframe" title="Lesson video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+    <aside class="mplayer-info">
+      <div class="mplayer-top">
+        <span class="mplayer-kicker" id="lplayer-kicker"><svg class="i"><use href="#i-book"/></svg> <span>Learn English</span></span>
+        <span class="mplayer-actions"><button class="icon-btn js-random" type="button" data-tip="Random &middot; R" aria-label="Play something random"><svg class="i"><use href="#i-dice"/></svg></button>
+        <button class="icon-btn" id="lplayer-close" type="button" data-tip="Close &middot; Esc" aria-label="Close player">
+          <svg class="i"><use href="#i-close"/></svg>
+        </button></span>
+      </div>
+      <h2 id="lplayer-title"></h2>
+      <p class="mplayer-sub" id="lplayer-sub"></p>
+      <ul class="tips" id="lplayer-tips">
+        <li><b>Subtitles</b> are on. Turn them off with the <b>CC</b> button to test your listening.</li>
+        <li><b>Too fast?</b> Use &#9881; &rarr; <b>Playback speed</b> &rarr; 0.75.</li>
+        <li><b>Replay a sentence:</b> press <b>J</b> to go back 10 seconds, or <b>&larr;</b> for 5.</li>
+        <li><b>Shadowing:</b> pause after a line and say it out loud, copying the rhythm.</li>
+        <li>Courses play in order. The playlist button at the top right of the video lists every lesson.</li>
+      </ul>
+      <a class="text-btn" id="lplayer-link" target="_blank" rel="noreferrer"><svg class="i"><use href="#i-external"/></svg> Open on YouTube</a>
+    </aside>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js"></script>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
