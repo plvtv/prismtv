@@ -1,5 +1,6 @@
 import { API_BASE, CACHE_TTL_MS, CACHE_KEY, HIDE_NSFW, HIDE_CLOSED, COUNTRY_ALIASES } from './config.js';
 import { fetchFreeTV, fetchShovo, fetchLG, fetchFast } from './sources.js';
+import { isPaidChannel } from './paid.js';
 
 const OFFICIAL_LIVE = [
   { id: 'extras:nasa-tv-public', name: 'NASA TV Public', country: 'US', categories: ['science', 'education'],
@@ -150,6 +151,15 @@ export async function buildDataset(onProgress = () => {}) {
   }
   list.sort((a, b) => a.name.localeCompare(b.name));
 
+  // Public website (data/site.json is written only by the GitHub Pages workflow): leave out
+  // pay-TV channels, whose free streams are almost never authorised. See js/paid.js.
+  const site = await fetch('data/site.json').then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
+  if (site.public) {
+    const before = list.length;
+    for (let i = list.length - 1; i >= 0; i--) if (isPaidChannel(list[i])) list.splice(i, 1);
+    console.info('Public site: ' + (before - list.length) + ' pay-TV channels left out');
+  }
+
   // The second index is a bonus, never a blocker: if it fails, carry on without it.
   onProgress(0.95, 'Loading the Free-TV list');
   let freetv = [];
@@ -169,7 +179,6 @@ export async function buildDataset(onProgress = () => {}) {
     for (const c of list) for (const s of c.streams) knownUrls.add(s.url);
     // The public website (data/site.json, written by the GitHub Pages workflow) leaves Shovo out:
     // many of its extra streams are unofficial restreams of pay channels.
-    const site = await fetch('data/site.json').then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
     if (site.public) throw new Error('skipped on the public website');
     const result = await fetchShovo({ knownUrls, knownIds: new Set(byId.keys()), categories: categoryById });
     for (const [id, extra] of result.extraStreams) byId.get(id).streams.push(...extra);

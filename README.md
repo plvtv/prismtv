@@ -254,6 +254,10 @@ On the public site:
   streams, the working-channel check, mpv, and resolving YouTube links in "Add your own".
 - **Left out on purpose:** the Shovo list, because many of its extra streams are unofficial
   restreams of pay channels.
+- **Pay-TV channels left out:** about 290 subscription channels in the iptv-org index (Sony, Star,
+  Zee, Colors, Sun, Asianet, HBO, Disney, Nickelodeon, ESPN, Sky Sports, beIN...), matched by
+  `js/paid.js`. Free versions on official free services (Pluto TV, Samsung TV Plus...) and free
+  news channels stay. Your home version keeps everything.
 - Visitors' browsers fetch every stream directly; nothing passes through your Mac, and the site
   works while your Mac is off. Files in `.gitignore` (backups, health results) are never published.
 
