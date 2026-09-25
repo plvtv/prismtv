@@ -12,6 +12,7 @@ Endpoints, all bound to localhost only:
   GET /api/play?url=&title=  -> launch mpv on that URL
   GET /api/stop           -> stop players this server started
   GET /api/hls?url=       -> relay an HLS playlist or segment for the browser
+  GET /api/ytlive?channel=UC... -> the video id of that YouTube channel's current live stream
                              (&raw=1 returns a playlist untouched, for channel lists)
   POST /api/scan          -> body {"urls": [...], "force": bool}: check streams in the background
   GET /api/scan           -> progress, plus {"results": {url: status}} with ?results=1
@@ -188,6 +189,31 @@ def run_scan(urls):
         with SCAN['lock']:
             SCAN['running'] = False
             SCAN['finished'] = int(time.time())
+
+
+YT_LIVE_CACHE = {}          # channel id -> (video id or None, time)
+YT_LIVE_TTL = 600
+
+
+def youtube_live_video(channel):
+    """The current live video of a YouTube channel, read from its /live page (cached 10 minutes).
+    YouTube's own 'embed the channel's live stream' shortcut often says 'unavailable', while
+    embedding the live video itself works."""
+    hit = YT_LIVE_CACHE.get(channel)
+    if hit and time.time() - hit[1] < YT_LIVE_TTL:
+        return hit[0]
+    video = None
+    try:
+        req = urllib.request.Request('https://www.youtube.com/channel/%s/live' % channel,
+                                     headers={'User-Agent': RELAY_UA, 'Accept-Language': 'en'})
+        html = urllib.request.urlopen(req, timeout=15).read().decode('utf-8', 'replace')
+        m = re.search(r'<link rel="canonical" href="https://www\.youtube\.com/watch\?v=([\w-]{11})"', html)
+        if m and re.search(r'"isLive(?:Content)?":true', html):
+            video = m.group(1)
+    except Exception:
+        pass
+    YT_LIVE_CACHE[channel] = (video, time.time())
+    return video
 
 
 def host_allowed(host):
@@ -399,6 +425,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return self.api_health()
         if parsed.path == '/api/info':
             return self.api_info()
+        if parsed.path == '/api/ytlive':
+            channel = (parse_qs(parsed.query).get('channel') or [''])[0]
+            if not re.fullmatch(r'UC[\w-]{22}', channel):
+                return self.send_json(400, {'error': 'Expected a YouTube channel id.'})
+            return self.send_json(200, {'channel': channel, 'video': youtube_live_video(channel)})
         if parsed.path in ('/api/play', '/api/stop') and not self.from_this_mac():
             return self.send_json(403, {'error': 'mpv can only be started from the Mac running PrismTV.'})
         if parsed.path == '/api/play':

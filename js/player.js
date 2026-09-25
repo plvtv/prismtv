@@ -226,28 +226,50 @@ async function embedUrl(stream) {
   const yt = 'autoplay=1&playsinline=1&rel=0&modestbranding=1';
   if (stream.kind === 'twitch') {
     const m = /twitch\.tv\/(?:videos\/)?([\w]+)/i.exec(u);
-    return m ? 'https://player.twitch.tv/?channel=' + m[1] + '&parent=' + location.hostname + '&autoplay=true' : null;
+    return m ? { src: 'https://player.twitch.tv/?channel=' + m[1] + '&parent=' + location.hostname + '&autoplay=true', watch: u } : null;
   }
   let m = /[?&]v=([\w-]{11})|youtu\.be\/([\w-]{11})|\/(?:live|embed|shorts)\/([\w-]{11})(?:[/?#]|$)/.exec(u);
-  if (m) return 'https://www.youtube.com/embed/' + (m[1] || m[2] || m[3]) + '?' + yt;
+  if (m) {
+    const v = m[1] || m[2] || m[3];
+    return { src: 'https://www.youtube.com/embed/' + v + '?' + yt, watch: 'https://www.youtube.com/watch?v=' + v };
+  }
+  const map = await youtubeLiveMap();
+  const channels = map.c || map;           // older files were a flat link -> channel map
   m = /\/channel\/(UC[\w-]{22})/.exec(u);
-  const id = (m && m[1]) || (await youtubeLiveMap())[u];
-  return id ? 'https://www.youtube.com/embed/live_stream?channel=' + id + '&' + yt : null;
+  const id = (m && m[1]) || channels[u];
+  if (!id) return null;
+  // The channel's current live video: fresh from serve.py at home, else from the daily build.
+  let video = null;
+  try {
+    const res = await fetch('/api/ytlive?channel=' + id, { cache: 'no-store' });
+    if (res.ok) video = (await res.json()).video;
+  } catch { /* public website: no serve.py */ }
+  video = video || (map.v || {})[id];
+  if (video) return { src: 'https://www.youtube.com/embed/' + video + '?' + yt, watch: 'https://www.youtube.com/watch?v=' + video };
+  // Last resort: YouTube's "this channel's live stream" shortcut (sometimes says unavailable).
+  return { src: 'https://www.youtube.com/embed/live_stream?channel=' + id + '&' + yt, watch: u };
 }
 async function playEmbed(stream) {
   const site = stream.kind === 'youtube' ? 'YouTube' : 'Twitch';
   showStatus('Opening the ' + site + ' player\u2026', true);
-  const url = await embedUrl(stream);
+  const embed = await embedUrl(stream);
   if (!current || current.streams[sourceIndex] !== stream) return;       // viewer moved on
-  if (!url) { showExternal(stream); return; }
+  if (!embed) { showExternal(stream); return; }
   const frame = document.createElement('iframe');
   frame.className = 'stage-frame';
   frame.title = current.name;
   frame.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
   frame.allowFullscreen = true;
   frame.referrerPolicy = 'strict-origin-when-cross-origin';
-  frame.src = url;
-  el.stage.append(frame);
+  frame.src = embed.src;
+  // Escape hatch when the channel refuses to play outside YouTube.
+  const out = document.createElement('a');
+  out.className = 'stage-frame stage-out';
+  out.href = embed.watch;
+  out.target = '_blank';
+  out.rel = 'noreferrer';
+  out.innerHTML = icon('external') + 'Watch on ' + site;
+  el.stage.append(frame, out);
   el.stage.classList.add('is-playing', 'is-embed');
   clearTimers();
   hideStatus();

@@ -27,6 +27,10 @@ gh auth setup-git >/dev/null 2>&1 || true
 OWNER="$(gh api user --jq .login)"
 ID="$(gh api user --jq .id)"
 
+# 2b. Refresh YouTube live video IDs from this connection (YouTube shows GitHub's servers less)
+echo "Refreshing YouTube live channels..."
+python3 tools/build-youtube-live.py || echo "(could not refresh YouTube live channels; using the previous list)"
+
 # 3. Local git repository
 if [ ! -d .git ]; then
   git init -q -b main

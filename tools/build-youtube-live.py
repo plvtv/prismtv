@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
-Builds data/youtube-live.json: for every YouTube link in the channel lists (iptv-org and
-Free-TV), the channel ID that YouTube's embedded player needs to show that channel's live
-stream inside PrismTV (https://www.youtube.com/embed/live_stream?channel=UC...).
+Builds data/youtube-live.json for every YouTube link in the channel lists (iptv-org, Free-TV):
+  c: link -> channel ID      v: channel ID -> its current live video ID (when readable)
+The player embeds the live video (https://www.youtube.com/embed/<video>); at home serve.py's
+/api/ytlive gives a fresher id, and the channel-live shortcut is the last resort.
 
 Most lists give links like youtube.com/@name/live or /c/name/live, which a browser cannot
 turn into a channel ID by itself (youtube.com sends no CORS header). Run daily by the
@@ -56,15 +57,40 @@ def resolve(url):
     return url, (m.group(1) if m else None)
 
 
+def live_video(channel):
+    """The channel's current live video id, from its /live page (None when not live or unreadable).
+    YouTube's 'embed this channel's live stream' shortcut often shows 'unavailable'; embedding the
+    live video itself works. Some servers (data centres) get a reduced page without the id."""
+    try:
+        html = get('https://www.youtube.com/channel/%s/live' % channel)
+    except Exception:
+        return channel, None
+    m = re.search(r'<link rel="canonical" href="https://www\.youtube\.com/watch\?v=([\w-]{11})"', html)
+    return channel, (m.group(1) if m and re.search(r'"isLive(?:Content)?":true', html) else None)
+
+
 def main():
     urls = links()
     with ThreadPoolExecutor(12) as pool:
         pairs = list(pool.map(resolve, urls))
-    out = {u: cid for u, cid in pairs if cid}
+        channels = {u: cid for u, cid in pairs if cid}
+        live = {c: v for c, v in pool.map(live_video, sorted(set(channels.values()))) if v}
     path = os.path.join(ROOT, 'data', 'youtube-live.json')
+    # Servers that YouTube serves a reduced page (some data centres) find almost no live videos.
+    # Then keep the previous list, e.g. the one refreshed from home by publish-to-github.command.
+    try:
+        previous = json.load(open(path))
+    except Exception:
+        previous = {}
+    old_live = previous.get('v', {}) if isinstance(previous, dict) else {}
+    if len(live) < max(5, len(old_live) // 3):
+        print('Only %d live videos found (previous file had %d); keeping the previous ones.' % (len(live), len(old_live)), file=sys.stderr)
+        live = {**old_live, **live}
+    out = {'at': int(__import__('time').time()), 'c': channels, 'v': live}
     with open(path, 'w') as fh:
         json.dump(out, fh, separators=(',', ':'), sort_keys=True)
-    print('%d YouTube links, %d channel IDs resolved -> %s' % (len(urls), len(out), os.path.normpath(path)), file=sys.stderr)
+    print('%d YouTube links, %d channel IDs, %d live video IDs -> %s'
+          % (len(urls), len(channels), len(live), os.path.normpath(path)), file=sys.stderr)
 
 
 if __name__ == '__main__':
