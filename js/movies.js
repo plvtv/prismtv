@@ -8,6 +8,8 @@
  * Only items that have an MP4 derivative are searched for, so nearly every card plays.
  * Watch progress is kept in this browser for "Continue watching".
  */
+import { overlayOpened, overlayClosed, renameOverlay, enableSwipeFullscreen } from './mobile.js';
+
 const API = 'https://archive.org';
 const PLAYABLE = '(format:"h.264" OR format:"MPEG4" OR format:"512Kb MPEG4")';
 // Recent films in these collections are almost always someone's unlicensed upload, not public domain.
@@ -621,6 +623,7 @@ function openExternal(item) {
   closeMovie(false);
   current = { id: item.id, title: item.title, year: item.year, files: [{ url: item.src }], part: 0, ext: item };
   el.root.hidden = false;
+  overlayOpened('mplayer', () => closeMovie(true, true));
   document.body.classList.add('player-open');
   el.title.textContent = item.title;
   el.sub.textContent = item.sub || '';
@@ -646,6 +649,8 @@ function openExternal(item) {
 export async function openMovie(id) {
   if (id.startsWith('yt:')) {
     const d = byId.get(id) || {};
+    // Hand the film player's Back-button entry over to the YouTube player instead of stacking another.
+    if (current) { closeMovie(false, true); renameOverlay('mplayer', 'lplayer'); }
     if (openYouTube) openYouTube({ list: 'UU' + id.slice(5), title: d.title || 'YouTube channel', channel: d.channelNote || 'Official YouTube channel', thumb: null });
     return;
   }
@@ -655,6 +660,7 @@ export async function openMovie(id) {
   closeMovie(false);
   current = { id, title: doc.title || id, year: first(doc.year) || null, files: [], part: 0 };
   el.root.hidden = false;
+  overlayOpened('mplayer', () => closeMovie(true, true));
   document.body.classList.add('player-open');
   el.title.textContent = current.title;
   el.sub.textContent = [first(doc.year), first(doc.creator)].filter(Boolean).join(' · ');
@@ -700,8 +706,9 @@ export async function openMovie(id) {
   loadPart(saved ? Math.min(saved.part || 0, current.files.length - 1) : 0, saved ? saved.t : 0);
 }
 
-export function closeMovie(refocus = true) {
+export function closeMovie(refocus = true, fromHistory = false) {
   if (!current) return;
+  if (refocus && !fromHistory) overlayClosed('mplayer');
   saveProgress();
   el.video.pause();
   el.video.removeAttribute('src');
@@ -772,6 +779,7 @@ export function initMovies() {
   el.browseBtn.addEventListener('click', () => openBrowse('all'));
 
   el.close.addEventListener('click', () => closeMovie());
+  enableSwipeFullscreen(el.video.parentElement, el.video.parentElement, () => el.video);
   el.root.addEventListener('mousedown', (e) => { if (e.target === el.root) closeMovie(); });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && current && !document.fullscreenElement) closeMovie();

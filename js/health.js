@@ -32,13 +32,30 @@ function absorb(data) {
   if (data.results) results = new Map(Object.entries(data.results));
 }
 
+// data/health.json codes (tools/build-health.py). On the public website there is no relay,
+// so a stream whose server blocks browsers ('n') cannot play there and counts as not working.
+const STATIC_CODES = { o: 'ok', n: 'blocked', f: 'forbidden', d: 'dead' };
+
 export async function loadHealth() {
-  try { absorb(await getScan(true)); } catch { state = { ...state, available: false }; }
+  try {
+    absorb(await getScan(true));
+    return state;
+  } catch { /* no serve.py: try the website's daily check */ }
+  try {
+    const res = await fetch('data/health.json', { cache: 'no-cache' });
+    if (!res.ok) throw new Error('no health.json');
+    const data = await res.json();
+    results = new Map(Object.entries(data.s || {}).map(([url, code]) => [url, STATIC_CODES[code] || 'dead']));
+    state = { available: true, static: true, running: false, total: results.size, done: results.size, finished: data.at || 0 };
+  } catch {
+    state = { ...state, available: false, static: false };
+  }
   return state;
 }
 
 /** Starts a background check of `urls` (stale or unchecked ones only, unless force). */
 export async function startScan(urls, { force = false } = {}) {
+  if (state.static) return state;          // the website's check is rebuilt daily by GitHub, not here
   const res = await fetch('/api/scan', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

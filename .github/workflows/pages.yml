@@ -33,6 +33,13 @@ jobs:
       - name: Mirror the lists browsers cannot fetch directly
         run: python3 tools/build-mirror.py
 
+      - name: Resolve YouTube live channels for the embedded player
+        run: python3 tools/build-youtube-live.py
+
+      - name: Check every stream (for "Hide channels that aren't working")
+        timeout-minutes: 25
+        run: python3 tools/build-health.py || echo "health check failed; the site works without it"
+
       - name: Assemble the site
         run: |
           mkdir -p _site

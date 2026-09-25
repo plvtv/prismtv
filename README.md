@@ -261,6 +261,20 @@ On the public site:
 - Visitors' browsers fetch every stream directly; nothing passes through your Mac, and the site
   works while your Mac is off. Files in `.gitignore` (backups, health results) are never published.
 
+## Phones, YouTube channels and broken-channel hiding
+
+- **Back button / back swipe** closes whichever player is open instead of leaving PrismTV
+  (each player adds a browser-history entry; `js/mobile.js`).
+- **Swipe up** on the video for full screen (landscape where the phone allows it), **swipe down**
+  to leave it. Works in the live-TV and film players; YouTube's own player has its full-screen button.
+- **YouTube and Twitch channels play inside PrismTV** in their official embedded players.
+  Links like `youtube.com/@name/live` are mapped to channel IDs in `data/youtube-live.json`
+  (`tools/build-youtube-live.py`, refreshed daily by the website build).
+- **"Hide channels that aren't working" is on by default.** At home it uses serve.py's check. On the
+  public website it uses `data/health.json`, built daily by `tools/build-health.py` on GitHub's
+  servers; there, streams whose servers block browsers also count as not working, because the
+  website has no relay. Checks run from the USA, so a few region-locked results can differ.
+
 ## Where the data comes from
 
 Fetched at runtime from `https://iptv-org.github.io/api/`:

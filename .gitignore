@@ -7,3 +7,4 @@ __pycache__/
 data/mirror/
 data/site.json
 _site/
+data/health.json

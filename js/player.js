@@ -2,6 +2,7 @@ import { STREAM_TIMEOUT_MS, MAX_AUTO_ATTEMPTS } from './config.js';
 import { myList, watchHistory } from './store.js';
 import { createSideItem, createSideGroup, toast, icon, hashHue } from './ui.js';
 import { bridge, probeBridge, playInMpv, relayUrl } from './bridge.js';
+import { overlayOpened, overlayClosed, enableSwipeFullscreen, enterFullscreen, exitFullscreen } from './mobile.js';
 import {
   createAutoCaptions, isSupported as autoSupported, translationSupported,
   LANGUAGES, languageName, baseLanguage, guessLanguage
@@ -205,8 +206,51 @@ function teardown() {
   el.video.removeAttribute('src');
   el.video.load();
   el.video.controls = false;
-  el.stage.classList.remove('is-playing');
+  el.stage.querySelectorAll('.stage-frame').forEach((f) => f.remove());
+  el.stage.classList.remove('is-playing', 'is-embed');
   resetCaptions();
+}
+
+/* ---------------- YouTube / Twitch channels, played inside the page ----------------
+ * Their official embedded players accept a video id, a channel's live stream (by channel id)
+ * or a Twitch channel name. Links like youtube.com/@name/live carry no id, so
+ * data/youtube-live.json (tools/build-youtube-live.py) maps them to one.
+ */
+let ytLiveMap = null;
+function youtubeLiveMap() {
+  if (!ytLiveMap) ytLiveMap = fetch('data/youtube-live.json').then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
+  return ytLiveMap;
+}
+async function embedUrl(stream) {
+  const u = stream.url;
+  const yt = 'autoplay=1&playsinline=1&rel=0&modestbranding=1';
+  if (stream.kind === 'twitch') {
+    const m = /twitch\.tv\/(?:videos\/)?([\w]+)/i.exec(u);
+    return m ? 'https://player.twitch.tv/?channel=' + m[1] + '&parent=' + location.hostname + '&autoplay=true' : null;
+  }
+  let m = /[?&]v=([\w-]{11})|youtu\.be\/([\w-]{11})|\/(?:live|embed|shorts)\/([\w-]{11})(?:[/?#]|$)/.exec(u);
+  if (m) return 'https://www.youtube.com/embed/' + (m[1] || m[2] || m[3]) + '?' + yt;
+  m = /\/channel\/(UC[\w-]{22})/.exec(u);
+  const id = (m && m[1]) || (await youtubeLiveMap())[u];
+  return id ? 'https://www.youtube.com/embed/live_stream?channel=' + id + '&' + yt : null;
+}
+async function playEmbed(stream) {
+  const site = stream.kind === 'youtube' ? 'YouTube' : 'Twitch';
+  showStatus('Opening the ' + site + ' player\u2026', true);
+  const url = await embedUrl(stream);
+  if (!current || current.streams[sourceIndex] !== stream) return;       // viewer moved on
+  if (!url) { showExternal(stream); return; }
+  const frame = document.createElement('iframe');
+  frame.className = 'stage-frame';
+  frame.title = current.name;
+  frame.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+  frame.allowFullscreen = true;
+  frame.referrerPolicy = 'strict-origin-when-cross-origin';
+  frame.src = url;
+  el.stage.append(frame);
+  el.stage.classList.add('is-playing', 'is-embed');
+  clearTimers();
+  hideStatus();
 }
 
 function showStatus(html, loading = false) {
@@ -696,7 +740,7 @@ function closeCaptionMenu() {
 function attach() {
   const stream = current.streams[sourceIndex];
   teardown();
-  if (stream.kind && stream.kind !== 'hls') { showExternal(stream); return; }
+  if (stream.kind && stream.kind !== 'hls') { playEmbed(stream); return; }
 
   freshVideo();
   const video = el.video;
@@ -878,6 +922,7 @@ export function openPlayer(channel, meta = {}) {
   clearTimeout(closeTimer);
   el.root.classList.remove('closing');
   el.root.hidden = false;
+  overlayOpened('player', () => closePlayer({ fromHistory: true }));
   document.body.style.overflow = 'hidden';
   document.body.classList.add('player-open');
   el.stage.style.setProperty('--h', String(hashHue(channel.id)));
@@ -903,12 +948,8 @@ export function openPlayer(channel, meta = {}) {
  * messages and backdrop, which a fullscreened <video> would leave behind.
  */
 function toggleFullscreen() {
-  if (document.fullscreenElement) { document.exitFullscreen().catch(() => {}); return; }
-  if (el.stage.requestFullscreen) {
-    el.stage.requestFullscreen().catch(() => el.video.requestFullscreen?.());
-  } else if (el.video.webkitEnterFullscreen) {
-    el.video.webkitEnterFullscreen();      // iPhone: only the video can go fullscreen
-  }
+  if (document.fullscreenElement || document.webkitFullscreenElement) { exitFullscreen(); return; }
+  enterFullscreen(el.stage, el.video);      // iPhone: falls back to the video's own full screen
 }
 
 function syncFullscreen() {
@@ -921,8 +962,9 @@ function syncFullscreen() {
 }
 
 let closeTimer = null;
-export function closePlayer() {
+export function closePlayer({ fromHistory = false } = {}) {
   if (el.root.hidden || el.root.classList.contains('closing')) return;
+  if (!fromHistory) overlayClosed('player');   // drop the history entry the player added
   if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
   teardown();
   current = null;
@@ -961,7 +1003,8 @@ export function initPlayer({ onFavourite, getRelated } = {}) {
     el.mpv.hidden = !state.available || state.remote;
     el.mpv.dataset.tip = state.mpv ? 'Play in mpv' : 'mpv not installed';
   });
-  el.close.addEventListener('click', closePlayer);
+  el.close.addEventListener('click', () => closePlayer());
+  enableSwipeFullscreen(el.stage, el.stage, () => el.video);
   el.root.addEventListener('mousedown', (e) => { if (e.target === el.root) closePlayer(); });
   el.source.addEventListener('change', () => selectSource(Number(el.source.value)));
   el.fav.addEventListener('click', () => {

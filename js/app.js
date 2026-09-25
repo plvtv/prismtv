@@ -71,7 +71,8 @@ function activeChannels() {
 /* ---------------- hide channels that are not working ---------------- */
 const HIDE_KEY = 'prismtv.hideDead';
 function hideDeadPref() {
-  try { return localStorage.getItem(HIDE_KEY) === '1'; } catch { return false; }
+  // On by default: only an explicit "off" shows broken channels.
+  try { return localStorage.getItem(HIDE_KEY) !== '0'; } catch { return true; }
 }
 let hiddenCount = 0;
 
@@ -90,9 +91,13 @@ function ago(sec) {
 function renderHealthNote() {
   const h = health();
   dom.healthScan.disabled = !h.available || h.running;
+  dom.healthScan.hidden = Boolean(h.static);       // the website's check is rebuilt daily by GitHub
   dom.hideDead.disabled = !h.available;
   if (!h.available) {
-    dom.healthNote.textContent = 'Only available when PrismTV runs from serve.sh on your own computer.';
+    dom.healthNote.textContent = 'Not available here yet (the website checks its streams once a day).';
+  } else if (h.static) {
+    dom.healthNote.textContent = 'Streams are checked daily' + (h.finished ? ', last ' + ago(h.finished) : '') +
+      (hideDeadPref() ? ' \u00b7 ' + hiddenCount.toLocaleString() + ' channels hidden' : '') + '.';
   } else if (h.running) {
     const pct = h.total ? Math.round((h.done / h.total) * 100) : 0;
     dom.healthNote.textContent = 'Checking streams\u2026 ' + h.done.toLocaleString() + ' of ' +
@@ -142,7 +147,7 @@ async function scanAll({ force = false } = {}) {
 
 dom.hideDead.addEventListener('change', () => {
   try { localStorage.setItem(HIDE_KEY, dom.hideDead.checked ? '1' : '0'); } catch { /* ignore */ }
-  if (dom.hideDead.checked && !health().running) scanAll();   // checks only unchecked or stale streams
+  if (dom.hideDead.checked && !health().running && !health().static) scanAll();   // checks only unchecked or stale streams
   refreshView();
   if (!dom.hideDead.checked) toast('Showing every channel again.');
 });
@@ -196,7 +201,7 @@ async function boot({ force = false } = {}) {
     const { dataset: data, fromCache } = await loadDataset({ force, onProgress: setProgress });
     dataset = data;
     await loadHealth();
-    dom.hideDead.checked = hideDeadPref() && health().available;
+    dom.hideDead.checked = hideDeadPref() && health().available;   // on by default
     rebuildIndex();
     setProgress(1, 'Ready');
     buildFilters();
@@ -207,7 +212,7 @@ async function boot({ force = false } = {}) {
     updatePrefsLabel();
     renderHealthNote();
     // Keep verdicts fresh: a running scan is picked up, stale entries are rechecked quietly.
-    if (health().available && (health().running || dom.hideDead.checked)) scanAll();
+    if (health().available && !health().static && (health().running || dom.hideDead.checked)) scanAll();
     dom.main.hidden = false;
     dom.boot.classList.add('out');
     setTimeout(() => { dom.boot.hidden = true; }, 600);

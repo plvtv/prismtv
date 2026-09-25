@@ -10,6 +10,7 @@
  * index) and open in the normal player with auto-captions on.
  */
 import { fetchText, fetchCustomPlaylist, mirrorName } from './sources.js';
+import { overlayOpened, overlayClosed } from './mobile.js';
 
 const LEVEL_KEY = 'prismtv.learnLevel';
 const MINE_KEY = 'prismtv.learnMine';
@@ -490,12 +491,14 @@ export function openYouTube(item, { learning = false } = {}) {
   el.link.href = item.list ? 'https://www.youtube.com/playlist?list=' + item.list
     : 'https://www.youtube.com/watch?v=' + item.video;
   el.root.hidden = false;
+  overlayOpened('lplayer', () => closeLesson(true));
   document.body.classList.add('player-open');
   el.close.focus();
 }
 
-function closeLesson() {
+function closeLesson(fromHistory = false) {
   if (!current) return;
+  if (!fromHistory) overlayClosed('lplayer');
   current = null;
   el.frame.src = 'about:blank';
   el.root.hidden = true;
@@ -540,7 +543,7 @@ export function initLearn({ getPractice, channelRow } = {}) {
     if (!c) return;
     try { openLearnLesson(JSON.parse(c.dataset.learn)); } catch { /* malformed card */ }
   });
-  el.close.addEventListener('click', closeLesson);
+  el.close.addEventListener('click', () => closeLesson());
   el.root.addEventListener('mousedown', (e) => { if (e.target === el.root) closeLesson(); });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && current && !document.fullscreenElement) closeLesson();
