@@ -1,3 +1,5 @@
+import { bindCast } from './cast.js';
+import { contentType } from './cast-api.js';
 /**
  * Movies from the Internet Archive (archive.org).
  *
@@ -9,6 +11,7 @@
  * Watch progress is kept in this browser for "Continue watching".
  */
 import { overlayOpened, overlayClosed, renameOverlay, enableSwipeFullscreen } from './mobile.js';
+import { scrollBehavior, loadRowWithRetry } from './ui.js';
 
 const API = 'https://archive.org';
 const PLAYABLE = '(format:"h.264" OR format:"MPEG4" OR format:"512Kb MPEG4")';
@@ -111,7 +114,7 @@ async function loadJson(path) {
 }
 
 async function youtubeChannels() {
-  if (!ytData) ytData = loadJson('data/youtube-free.json');
+  if (!ytData) ytData = loadJson('data/youtube-free.json').catch((err) => { ytData = null; throw err; });
   return ytData;
 }
 function ytDoc(c) {
@@ -138,7 +141,7 @@ function daySeed(list, salt) {
 }
 
 async function commonsFilms(genre) {
-  if (!commonsData) commonsData = loadJson('data/commons-films.json');
+  if (!commonsData) commonsData = loadJson('data/commons-films.json').catch((err) => { commonsData = null; throw err; });
   const all = await commonsData;
   let list;
   if (genre === 'recent') list = all.filter((f) => f.y >= 1990).sort((a, b) => b.y - a.y);
@@ -363,7 +366,7 @@ function row(title, docs, onMore = null) {
     btn.setAttribute('aria-label', side === 'left' ? 'Scroll left' : 'Scroll right');
     btn.innerHTML = '<span><svg class="i"><use href="#i-arrow"/></svg></span>';
     const dir = side === 'left' ? -1 : 1;
-    btn.addEventListener('click', () => scroll.scrollBy({ left: dir * Math.max(scroll.clientWidth * 0.86, 240), behavior: 'smooth' }));
+    btn.addEventListener('click', () => scroll.scrollBy({ left: dir * Math.max(scroll.clientWidth * 0.86, 240), behavior: scrollBehavior() }));
     return btn;
   };
   const left = arrow('left');
@@ -426,14 +429,10 @@ const SPECS = PAGE_ROWS.map(rowSpec);
 const SPEC_BY_KEY = Object.fromEntries(SPECS.map((x) => [x.key, x]));
 
 function loadRow(spec, holder) {
-  spec.first()
-    .then((docs) => {
-      if (!docs.length) { holder.remove(); return; }
-      holder.replaceWith(row(spec.title, unique(docs), spec.more));
-    })
-    .catch(() => {
-      holder.querySelector('.row-scroll').innerHTML = '<p class="mrow-err">Could not load this row right now.</p>';
-    });
+  loadRowWithRetry(holder, spec.title, async () => {
+    const docs = await spec.first();
+    return docs.length ? row(spec.title, unique(docs), spec.more) : null;
+  });
 }
 
 async function renderRows() {
@@ -759,6 +758,14 @@ export function initMovies() {
     close: document.getElementById('mplayer-close')
   });
 
+  bindCast({ root: el.root, button: document.getElementById('mplayer-cast'), getVideo: () => el.video,
+    getMedia: () => {
+      const file = current?.files[current.part];
+      if (!file) return null;
+      const url = file.url || fileUrl(current.id, file.name);
+      return { kind: /\.m3u8(?:[?#]|$)/i.test(url) ? 'hls' : 'file', url, title: current.title, live: false, contentType: contentType(url) };
+    }
+  });
   document.addEventListener('click', (e) => {
     const c = e.target.closest('.mcard[data-movie]');
     if (c) openMovie(c.dataset.movie);

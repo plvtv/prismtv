@@ -7,11 +7,14 @@
  * Swipe: on the video, swipe up for full screen (turning to landscape where the phone
  * allows it) and swipe down to leave full screen, like the YouTube app.
  */
+import { focusDialog } from './dialog.js';
+
 const stack = [];          // open overlays, newest last: { name, close }
 let skipPop = 0;           // history.back() calls we made ourselves
 
 /** Call when an overlay opens. Re-opening one that is already open does not add another entry. */
 export function overlayOpened(name, close) {
+  focusDialog(name);
   if (stack.length && stack[stack.length - 1].name === name) {
     stack[stack.length - 1].close = close;
     return;

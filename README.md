@@ -3,7 +3,7 @@
 A streaming-service style web UI for the public [iptv-org](https://github.com/iptv-org/iptv)
 channel index: hero banner, category carousels, search, My List, and an in-page HLS player.
 
-No build step, no dependencies to install, no server code. Plain ES modules + one CDN script (hls.js).
+No build step or dependencies to install. Plain ES modules, CDN playback/casting helpers, and an optional Python home-network server.
 
 ## Run it
 
@@ -346,3 +346,26 @@ row length, cache lifetime, stream timeout) live in `js/config.js`.
 PrismTV ships no video. It is a viewer over a public, community-maintained list of stream URLs
 published by third parties. Availability and broadcast rights for any given stream are between you
 and whoever publishes it.
+
+## Cast to a TV, phone or tablet
+
+Restart the server after updating these files. For receiving on another device, run:
+
+```bash
+cd ~/Documents/TV/prismtv
+./serve.sh --lan
+```
+
+Open a video, then select the **Cast** icon in its player:
+
+- **Google Cast** opens the TV/device picker in supported Chrome browsers. Open the sender on `http://localhost:8080` on this Mac (or HTTPS when hosted). A compatible Chromecast/Google Cast receiver must be available on the same Wi-Fi. Direct HLS and movie files are sent to Google's Default Media Receiver; source codecs, access restrictions and CORS must allow playback on that TV.
+- **AirPlay / browser device picker** appears when the current browser and video support it. Safari can use its AirPlay picker; available destinations depend on your devices.
+- **Connect a phone, tablet or browser TV** shows a QR code and receiving link. Open it on the destination, name it, tap **Connect this device**, then select that name in the sender's Cast panel. Tap **Play on this device** there if requested. Keep the receiving page and the Mac's server running. A device needs a browser that can play the source.
+
+Direct videos support sender Play/Pause and Stop. Casting pauses local playback; use **Play here** for live/embedded videos or the movie's Play control to resume locally. Choosing a different video or source requires sending it again from Cast. Stop casting before resuming locally if you want playback on only one device.
+
+YouTube/Twitch embeds can open on a paired browser receiver, using their own playback controls there. They cannot be loaded as raw media on the Default Media Receiver; use the provider's own app for its native TV casting. Local automatic captions are not sent to the TV. Phones/tablets are connected through the receiving page rather than automatic Chromecast discovery.
+
+Pairing keys are temporary and held in server memory. Restarting the server expires them; inactive sessions expire after an hour. Anyone with the receiving link on your home network can join, so share it only with intended receivers. Creating new links and commands requires this server's same-origin JSON API; receiving links do not grant sender control.
+
+Run the pairing server tests with `python3 -m unittest discover -s tests`.

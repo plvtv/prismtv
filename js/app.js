@@ -1,10 +1,11 @@
+import { loadQr } from './qr.js';
 import {
   ROW_CATEGORIES, SPOTLIGHT_COUNTRIES, HERO_COUNT, HERO_ROTATE_MS, PAGE_SIZE, MAX_ROW_ITEMS
 } from './config.js';
 import { loadDataset, indexDataset, rankForDisplay, daySeededShuffle, clearCache } from './data.js';
 import { SOURCE_KEY, COUNTRY_ALIASES } from './config.js';
 import { myList, watchHistory } from './store.js';
-import { createRow, createHero, renderGrid, channelSubtitle, toast } from './ui.js';
+import { createRow, createHero, renderGrid, channelSubtitle, toast, syncFavouriteButton } from './ui.js';
 import { initPlayer, openPlayer } from './player.js';
 import { initMovies, showMovies, setYouTubeOpener } from './movies.js';
 import { initLearn, showLearn, learnChannel, openYouTube } from './learn.js';
@@ -197,6 +198,9 @@ function setProgress(fraction, label) {
 }
 
 async function boot({ force = false } = {}) {
+  const retry = document.getElementById('boot-retry');
+  retry.hidden = true;
+  retry.disabled = true;
   try {
     const { dataset: data, fromCache } = await loadDataset({ force, onProgress: setProgress });
     dataset = data;
@@ -227,11 +231,16 @@ async function boot({ force = false } = {}) {
     }
   } catch (err) {
     console.error('PrismTV boot failed:', err);
-    dom.bootNote.innerHTML =
-      'Could not reach the channel index.<br>' + String(err.message || err) +
-      '<br><small>Check your connection, then reload.</small>';
+    dom.bootNote.textContent = 'Could not load the channel index. Check your connection and try again. ' + String(err.message || err);
+    retry.hidden = false;
+    retry.disabled = false;
   }
 }
+
+document.getElementById('boot-retry').addEventListener('click', () => {
+  setProgress(0.05, 'Trying the channel index again…');
+  boot();
+});
 
 /* ---------------- home ---------------- */
 const REGION_KEY = 'prismtv.region';
@@ -282,6 +291,7 @@ function renderHome() {
   const heroPool = daySeededShuffle(
     index.channels.filter((c) => c.logo && c.streams.length > 1 && !c.streams[0].restricted && !c.geo && !c.external)
   ).slice(0, HERO_COUNT);
+  if (!heroPool.length) heroPool.push(...rankForDisplay(index.channels).slice(0, HERO_COUNT));
   if (heroCtl) heroCtl.stop();
   heroCtl = createHero(heroPool, dataset, play, toggleList, HERO_ROTATE_MS);
 
@@ -293,7 +303,7 @@ function renderHome() {
     frag.append(createRow('Continue watching', historyChannels, dataset, 'on this device'));
   }
 
-  const listChannels = myList.ids().map((id) => index.byId.get(id)).filter(Boolean);
+  const listChannels = myList.ids().map((id) => index.byId.get(id) || learnChannel(id)).filter(Boolean);
   if (listChannels.length) {
     frag.append(createRow('My List', listChannels, dataset, '', () => setView('mylist')));
   }
@@ -416,7 +426,7 @@ function renderBrowse(titleOverride) {
   const f = currentFilters();
   let results;
   if (view === 'mylist') {
-    results = myList.ids().map((id) => index.byId.get(id)).filter(Boolean);
+    results = myList.ids().map((id) => index.byId.get(id) || learnChannel(id)).filter(Boolean);
     dom.filtersWrap.hidden = true;
   } else {
     results = applyFilters();
@@ -428,7 +438,9 @@ function renderBrowse(titleOverride) {
     ? results.length.toLocaleString() + ' channel' + (results.length === 1 ? '' : 's') +
       (view === 'mylist' ? ' saved on this device' : ' with a playable source')
     : (view === 'mylist' ? 'Nothing saved yet — hit “+ My List” on any channel.' : '');
-  renderGrid(dom.browseGrid, results, dataset, pageLimit);
+  renderGrid(dom.browseGrid, results, dataset, pageLimit, view === 'mylist'
+    ? 'Your list is ready for your favourites. Open a channel and choose “My List” to save it here.'
+    : 'No channels match. Try a different search or reset the filters.');
   dom.browseMore.hidden = results.length <= pageLimit;
 }
 
@@ -453,7 +465,9 @@ function setView(next, titleOverride) {
   void shown.offsetWidth;
   shown.classList.add('view-enter');
   document.querySelectorAll('.nav-link').forEach((b) => {
-    b.classList.toggle('is-active', b.dataset.view === next || (next === 'search' && b.dataset.view === 'browse'));
+    const selected = b.dataset.view === next || (next === 'search' && b.dataset.view === 'browse');
+    b.classList.toggle('is-active', selected);
+    if (selected) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
   });
   window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
 }
@@ -493,7 +507,7 @@ function relatedFor(channel) {
     take(daySeededShuffle(pool.slice(0, 120)), country ? 'From ' + country.name : 'Same country', 12);
   }
 
-  const list = myList.ids().map((id) => index.byId.get(id)).filter(Boolean);
+  const list = myList.ids().map((id) => index.byId.get(id) || learnChannel(id)).filter(Boolean);
   take(list, 'From My List', 8);
 
   take(daySeededShuffle(index.channels.filter((c) => c.logo).slice(0, 4000)), 'Elsewhere', 10);
@@ -508,19 +522,7 @@ function toggleList(id) {
 }
 
 function refreshCardBadges() {
-  document.querySelectorAll('.card').forEach((card) => {
-    const art = card.querySelector('.art');
-    const existing = art.querySelector('.fav');
-    const should = myList.has(card.dataset.id);
-    if (should && !existing) {
-      const fav = document.createElement('span');
-      fav.className = 'fav';
-      fav.textContent = '✓';
-      art.append(fav);
-    } else if (!should && existing) {
-      existing.remove();
-    }
-  });
+  document.querySelectorAll('[data-list-id]').forEach(syncFavouriteButton);
 }
 
 /* ---------------- wiring ---------------- */
@@ -530,6 +532,19 @@ function debounce(fn, ms) {
 }
 
 document.addEventListener('click', (e) => {
+  const save = e.target.closest('.card-save');
+  if (save && index) {
+    const position = [...dom.browseGrid.querySelectorAll('.card-save')].indexOf(save);
+    toggleList(save.dataset.listId);
+    if (view === 'mylist') {
+      renderBrowse();
+      const remaining = dom.browseGrid.querySelectorAll('.card-save');
+      const target = remaining[Math.min(position, remaining.length - 1)] || dom.browseTitle;
+      if (!remaining.length) target.tabIndex = -1;
+      target.focus({ preventScroll: true });
+    }
+    return;
+  }
   const card = e.target.closest('.card');
   if (card && index) {
     const channel = index.byId.get(card.dataset.id) || learnChannel(card.dataset.id);
@@ -585,7 +600,9 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 document.addEventListener('keydown', (e) => {
-  if (e.key === '/' && document.activeElement !== dom.search) {
+  if (e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey &&
+      !e.target.closest('input, textarea, select, [contenteditable], [role="dialog"]') &&
+      !document.body.classList.contains('player-open')) {
     e.preventDefault();
     dom.search.focus();
   }
@@ -600,6 +617,10 @@ function setPrefsOpen(open) {
   prefsPanel.hidden = !open;
   prefsBtn.setAttribute('aria-expanded', String(open));
 }
+
+document.addEventListener('focusin', (e) => {
+  if (!prefsPanel.hidden && !e.target.closest('#prefs')) setPrefsOpen(false);
+});
 
 function updatePrefsLabel() {
   if (!dataset || !index) return;
@@ -662,7 +683,7 @@ function pick(list) { return list[Math.floor(Math.random() * list.length)]; }
 /** The channels Random draws from: what the current page is showing. */
 function randomPool() {
   if (view === 'browse' || view === 'search') return applyFilters();       // Browse filters + search
-  if (view === 'mylist') return myList.ids().map((id) => index.byId.get(id)).filter(Boolean);
+  if (view === 'mylist') return myList.ids().map((id) => index.byId.get(id) || learnChannel(id)).filter(Boolean);
   return index.channels;
 }
 function randomChannel() {
@@ -745,21 +766,6 @@ document.addEventListener('keydown', (e) => {
  */
 const shareBtn = document.getElementById('share-btn');
 const sharePanel = document.getElementById('share-panel');
-const QR_LIB = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
-let qrLoading = null;
-function loadQr() {
-  if (window.QRCode) return Promise.resolve();
-  if (!qrLoading) {
-    qrLoading = new Promise((resolve, reject) => {
-      const s = document.createElement('script');
-      s.src = QR_LIB;
-      s.onload = resolve;
-      s.onerror = reject;
-      document.head.append(s);
-    });
-  }
-  return qrLoading;
-}
 function escapeHtml(t) {
   return String(t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07070b">
+  <meta name="referrer" content="no-referrer">
+  <title>Receive video · PrismTV</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="receiver-page">
+  <header class="receiver-header">
+    <a class="brand" href="./"><svg width="24" height="24" aria-hidden="true"><path d="M12 3 21 20H3z" fill="#9d8cff"/></svg><span>Prism<b>TV</b></span></a>
+    <button class="text-btn" id="receive-leave" type="button" hidden>Disconnect device</button>
+  </header>
+  <main class="receiver-main">
+    <section id="receive-setup" class="receiver-setup">
+      <p class="receiver-eyebrow">WATCH TOGETHER · SAME WI-FI</p>
+      <h1>Receive on this device</h1>
+      <p>Connect this page, then select this device in PrismTV’s Cast panel. Keep this page open while watching.</p>
+      <form id="receive-connect-form">
+        <label class="field"><span class="field-label">Device name</span><input class="text-input" id="receive-name" type="text" maxlength="60" value="My receiving device" required autocomplete="off"></label>
+        <button class="btn btn-play" id="receive-connect" type="submit">Connect this device</button>
+      </form>
+    </section>
+    <section class="receiver-stage" id="receive-stage" aria-label="Received video" hidden></section>
+    <div class="receiver-info">
+      <h2 id="receive-title"></h2>
+      <p id="receive-status" role="status" aria-live="polite">Open a receiving link from PrismTV’s Cast panel to connect.</p>
+      <div class="receiver-actions">
+        <button class="btn btn-play" id="receive-play" type="button" hidden>Play on this device</button>
+        <button class="text-btn" id="receive-retry" type="button" hidden>Retry video</button>
+        <button class="text-btn" id="receive-fullscreen" type="button" hidden>Full screen</button>
+      </div>
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js"></script>
+  <script type="module" src="js/cast-receiver.js"></script>
+</body>
+</html>

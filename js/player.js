@@ -1,3 +1,4 @@
+import { bindCast } from './cast.js';
 import { STREAM_TIMEOUT_MS, MAX_AUTO_ATTEMPTS } from './config.js';
 import { myList, watchHistory } from './store.js';
 import { createSideItem, createSideGroup, toast, icon, hashHue } from './ui.js';
@@ -216,6 +217,7 @@ function teardown() {
  * or a Twitch channel name. Links like youtube.com/@name/live carry no id, so
  * data/youtube-live.json (tools/build-youtube-live.py) maps them to one.
  */
+let castEmbed = null;
 let ytLiveMap = null;
 function youtubeLiveMap() {
   if (!ytLiveMap) ytLiveMap = fetch('data/youtube-live.json').then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
@@ -262,6 +264,7 @@ async function playEmbed(stream) {
   frame.allowFullscreen = true;
   frame.referrerPolicy = 'strict-origin-when-cross-origin';
   frame.src = embed.src;
+  castEmbed = { source: stream.url, url: embed.src };
   // Escape hatch when the channel refuses to play outside YouTube.
   const out = document.createElement('a');
   out.className = 'stage-frame stage-out';
@@ -1004,6 +1007,19 @@ export function initPlayer({ onFavourite, getRelated } = {}) {
   onFavouriteChange = onFavourite || (() => {});
   relatedFor = getRelated || (() => []);
 
+  bindCast({ root: el.root, button: document.getElementById('player-cast'), getVideo: () => el.video,
+    getMedia: () => {
+      const stream = current?.streams[sourceIndex];
+      if (!stream) return null;
+      const embedded = stream.kind && stream.kind !== 'hls';
+      return { kind: embedded ? 'embed' : 'hls', url: embedded ? (castEmbed?.source === stream.url ? castEmbed.url : '') : stream.url,
+        title: current.name, live: true, contentType: 'application/x-mpegURL' };
+    }, suspend: () => {
+      teardown(); showStatus('Watching on your receiving device.');
+      const resume = document.createElement('button'); resume.type = 'button'; resume.className = 'btn btn-play';
+      resume.textContent = 'Play here'; resume.addEventListener('click', () => attach()); el.status.append(resume);
+    }
+  });
   const sideOpen = pref(PREF_SIDE, true);
   el.inner.classList.toggle('no-side', !sideOpen);
   el.sideToggle.classList.toggle('on', sideOpen);
@@ -1081,7 +1097,9 @@ export function initPlayer({ onFavourite, getRelated } = {}) {
     if (typing) return;
     if (e.key === 'f' || e.key === 'F') toggleFullscreen();
     if (e.key === 'c' || e.key === 'C') toggleCaptions();
-    if (e.key === ' ') { e.preventDefault(); el.video.paused ? el.video.play() : el.video.pause(); }
+    if (e.key === ' ' && !e.target.closest('button, a, input, select, textarea, [contenteditable]')) {
+      e.preventDefault(); el.video.paused ? el.video.play() : el.video.pause();
+    }
   });
 
   // Test hook (only with ?debug in the URL): lets automated checks inspect playback state.

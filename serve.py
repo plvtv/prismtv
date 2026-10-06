@@ -52,11 +52,13 @@ import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
 from urllib.parse import urlparse, parse_qs, urljoin, quote
+from casting import CastSessions, CastError
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 ARGS = sys.argv[1:]
 LAN = '--lan' in ARGS
 PORT = next((int(a) for a in ARGS if a.isdigit()), 8080)
+CAST_SESSIONS = CastSessions()
 
 
 def is_local(ip):
@@ -266,7 +268,34 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
     def api_info(self):
         self.send_json(200, {'lan': LAN, 'port': PORT, 'urls': lan_addresses() if LAN else [],
-                             'thisMac': self.from_this_mac()})
+                             'thisMac': self.from_this_mac(), 'casting': True})
+
+    def api_cast(self, action, post=False):
+        if not LAN:
+            return self.send_json(409, {'error': 'Start PrismTV with ./serve.sh --lan to connect another device.'})
+        # JSON requests and same-origin checks prevent a third-party page issuing commands.
+        origin = self.headers.get('Origin')
+        if origin and urlparse(origin).netloc != self.headers.get('Host'):
+            return self.send_json(403, {'error': 'Cast requests must come from this PrismTV server.'})
+        if self.headers.get('Sec-Fetch-Site') == 'cross-site':
+            return self.send_json(403, {'error': 'Cross-site cast requests are not accepted.'})
+        try:
+            data = {'deviceId': self.headers.get('X-Prism-Receiver-Id', '')}
+            if post:
+                size = int(self.headers.get('Content-Length', '0'))
+                if size <= 0 or size > 16384:
+                    return self.send_json(400, {'error': 'Invalid cast request size.'})
+                if self.headers.get('Content-Type', '').split(';')[0] != 'application/json':
+                    return self.send_json(415, {'error': 'Cast requests require JSON.'})
+                data = json.loads(self.rfile.read(size))
+                if not isinstance(data, dict):
+                    return self.send_json(400, {'error': 'Expected a JSON object.'})
+            payload = CAST_SESSIONS.handle(action, self.headers.get('X-Prism-Cast-Key', ''), data)
+            self.send_json(200, payload)
+        except CastError as err:
+            self.send_json(err.status, {'error': str(err)})
+        except (ValueError, TypeError):
+            self.send_json(400, {'error': 'Invalid cast request.'})
 
     def api_health(self):
         # mpv plays on this Mac's screen, so other devices are told it is not available.
@@ -404,7 +433,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def do_POST(self):
         if self.refuse_outsiders():
             return
-        if urlparse(self.path).path == '/api/scan':
+        path = urlparse(self.path).path
+        if path in ('/api/cast/create', '/api/cast/join', '/api/cast/report', '/api/cast/command', '/api/cast/leave'):
+            return self.api_cast(path.rsplit('/', 1)[1], post=True)
+        if path == '/api/scan':
             return self.api_scan_post()
         self.send_json(404, {'error': 'Not found'})
 
@@ -421,6 +453,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if self.refuse_outsiders():
             return
         parsed = urlparse(self.path)
+        if parsed.path == '/api/cast/state':
+            return self.api_cast('state')
         if parsed.path == '/api/health':
             return self.api_health()
         if parsed.path == '/api/info':

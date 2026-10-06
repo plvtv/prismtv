@@ -1,3 +1,4 @@
+import { bindCast } from './cast.js';
 /**
  * Learn English.
  *
@@ -10,6 +11,7 @@
  * index) and open in the normal player with auto-captions on.
  */
 import { fetchText, fetchCustomPlaylist, mirrorName } from './sources.js';
+import { scrollBehavior, loadRowWithRetry } from './ui.js';
 import { overlayOpened, overlayClosed } from './mobile.js';
 
 const LEVEL_KEY = 'prismtv.learnLevel';
@@ -166,7 +168,7 @@ function row(title, items, note = '') {
     btn.setAttribute('aria-label', side === 'left' ? 'Scroll left' : 'Scroll right');
     btn.innerHTML = '<span><svg class="i"><use href="#i-arrow"/></svg></span>';
     const dir = side === 'left' ? -1 : 1;
-    btn.addEventListener('click', () => scroll.scrollBy({ left: dir * Math.max(scroll.clientWidth * 0.86, 240), behavior: 'smooth' }));
+    btn.addEventListener('click', () => scroll.scrollBy({ left: dir * Math.max(scroll.clientWidth * 0.86, 240), behavior: scrollBehavior() }));
     return btn;
   };
   const left = arrow('left');
@@ -199,6 +201,7 @@ async function relayText(url) {
 async function feed(ch) {
   const url = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + ch.id;
   const xml = new DOMParser().parseFromString(await relayText(url), 'application/xml');
+  if (xml.querySelector('parsererror')) throw new Error('Invalid lesson feed');
   return [...xml.getElementsByTagName('entry')].map((e) => {
     const vid = (e.getElementsByTagName('yt:videoId')[0] || {}).textContent;
     const title = (e.getElementsByTagName('title')[0] || {}).textContent || '';
@@ -217,14 +220,14 @@ function shortDate(iso) {
   return d.toLocaleDateString(undefined, { day: 'numeric', month: 'short' });
 }
 
-async function newLessonsRow(holder) {
+async function newLessonsRow() {
   const results = await Promise.allSettled(FEEDS.map(feed));
   const items = results.flatMap((r) => (r.status === 'fulfilled' ? r.value : []))
     .sort((a, b) => b.published.localeCompare(a.published))
     .slice(0, 30)
     .map((x) => ({ ...x, date: shortDate(x.published) }));
-  if (!items.length) { holder.remove(); return; }
-  holder.replaceWith(row('New lessons', items, 'Latest uploads from 6 teaching channels'));
+  if (!items.length && results.some((r) => r.status === 'rejected')) throw new Error('Lesson feeds unavailable');
+  return items.length ? row('New lessons', items, 'Latest uploads from 6 teaching channels') : null;
 }
 
 /* ---------------- page ---------------- */
@@ -255,7 +258,7 @@ function render() {
 
   const holder = document.createElement('div');
   el.rows.append(holder);
-  newLessonsRow(holder).catch(() => holder.remove());
+  loadRowWithRetry(holder, 'New lessons', newLessonsRow);
 
   el.rows.append(row(ROW_TITLES.pronunciation, COURSES.filter((c) => c.level === 'pronunciation')));
 
@@ -286,7 +289,11 @@ function saveMine(list) {
 }
 
 /** Looks up a stream/playlist channel added here, for app.js's card click handler. */
-export function learnChannel(id) { return mineChannels.get(id) || null; }
+export function learnChannel(id) {
+  if (mineChannels.has(id)) return mineChannels.get(id);
+  const saved = mine().find((item) => item.type === 'stream' && 'mine:' + item.key === id);
+  return saved ? streamChannel(saved) : null;
+}
 
 function ytParts(raw) {
   let u;
@@ -377,12 +384,10 @@ function renderMine() {
   for (const ch of list.filter((x) => x.type === 'channel')) {
     const holder = document.createElement('div');
     el.rows.append(holder);
-    feed({ id: ch.channelId, name: ch.title })
-      .then((items) => {
-        if (!items.length) { holder.remove(); return; }
-        holder.replaceWith(row(ch.title, items.map((x) => ({ ...x, date: shortDate(x.published) })), 'Your channel · latest videos'));
-      })
-      .catch(() => holder.remove());
+    loadRowWithRetry(holder, ch.title, async () => {
+      const items = await feed({ id: ch.channelId, name: ch.title });
+      return items.length ? row(ch.title, items.map((x) => ({ ...x, date: shortDate(x.published) })), 'Your channel · latest videos') : null;
+    });
   }
 
   const streams = list.filter((x) => x.type === 'stream').map(streamChannel);
@@ -391,13 +396,11 @@ function renderMine() {
   for (const pl of list.filter((x) => x.type === 'm3u')) {
     const holder = document.createElement('div');
     el.rows.append(holder);
-    fetchCustomPlaylist(pl.url)
-      .then((channels) => {
-        channels.forEach((c) => { c.id = 'mine:' + pl.key + ':' + c.id; c.via = pl.title; mineChannels.set(c.id, c); });
-        if (!channels.length || !renderChannelRow) { holder.remove(); return; }
-        holder.replaceWith(renderChannelRow(pl.title, channels.slice(0, 60), channels.length + ' channels · your playlist'));
-      })
-      .catch(() => holder.remove());
+    loadRowWithRetry(holder, pl.title, async () => {
+      const channels = await fetchCustomPlaylist(pl.url);
+      channels.forEach((c) => { c.id = 'mine:' + pl.key + ':' + c.id; c.via = pl.title; mineChannels.set(c.id, c); });
+      return channels.length && renderChannelRow ? renderChannelRow(pl.title, channels.slice(0, 60), channels.length + ' channels · your playlist') : null;
+    });
   }
 }
 
@@ -485,6 +488,8 @@ export function openYouTube(item, { learning = false } = {}) {
   }
   el.tips.hidden = !learning;
   el.kicker.textContent = learning ? 'Learn English' : 'YouTube';
+  el.root.querySelector('.cast-local-resume')?.remove();
+  el.frame.hidden = false;
   el.frame.src = embedUrl(item);
   el.title.textContent = item.title;
   el.sub.textContent = item.channel + (item.list && learning ? ' · full course' : '');
@@ -530,6 +535,16 @@ export function initLearn({ getPractice, channelRow } = {}) {
     mineMsg: document.getElementById('learn-add-msg'),
     mineList: document.getElementById('learn-add-list'),
     mineEmpty: document.getElementById('learn-add-empty')
+  });
+  bindCast({ root: el.root, button: document.getElementById('lplayer-cast'),
+    getMedia: () => current ? { kind: 'embed', url: embedUrl(current), title: current.title, live: false } : null,
+    suspend: () => {
+      el.frame.src = 'about:blank'; el.frame.hidden = true;
+      el.root.querySelector('.cast-local-resume')?.remove();
+      const resume = document.createElement('button'); resume.type = 'button'; resume.className = 'btn btn-play cast-local-resume';
+      resume.textContent = 'Play here'; resume.addEventListener('click', () => { if (current) el.frame.src = embedUrl(current); el.frame.hidden = false; resume.remove(); });
+      el.frame.parentElement.append(resume);
+    }
   });
   el.mineBtn.addEventListener('click', () => {
     const open = el.minePanel.hidden;

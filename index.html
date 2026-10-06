@@ -17,6 +17,7 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
 
 <!-- ============ reusable icons ============ -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -37,6 +38,7 @@
   <symbol id="i-pulse" viewBox="0 0 24 24"><path d="M3 12h4l2.5-6 5 12 2.5-6h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-screen" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="12.5" rx="2.2"/><path d="M9 21h6M12 17v4"/></g><path d="M10.4 8.2v5.1l4.2-2.55z" fill="currentColor"/></symbol>
   <symbol id="i-rail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4.5" width="18" height="15" rx="2.2"/><path d="M14.5 4.5v15"/></g></symbol>
+  <symbol id="i-cast" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5M3 10a11 11 0 0 1 11 11M3 14a7 7 0 0 1 7 7M3 18a3 3 0 0 1 3 3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="3" cy="21" r="1" fill="currentColor"/></symbol>
   <symbol id="i-close" viewBox="0 0 24 24"><path d="m6.5 6.5 11 11m0-11-11 11" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
   <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
   <symbol id="i-grid" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.6"/></g></symbol>
@@ -60,6 +62,7 @@
   </div>
   <div class="boot-bar"><i id="boot-fill"></i></div>
   <div class="boot-note" id="boot-note">Contacting channel index&hellip;</div>
+  <button class="btn btn-ghost" id="boot-retry" type="button" hidden>Try again</button>
 </div>
 
 <!-- ============ top bar ============ -->
@@ -70,7 +73,7 @@
   </a>
 
   <nav class="nav" aria-label="Primary">
-    <button class="nav-link is-active" data-view="home">Home</button>
+    <button class="nav-link is-active" data-view="home" aria-current="page">Home</button>
     <button class="nav-link" data-view="browse">Browse</button>
     <button class="nav-link" data-view="movies">Movies</button>
     <button class="nav-link" data-view="learn">Learn English</button>
@@ -89,7 +92,7 @@
     </label>
 
     <div class="prefs" id="prefs">
-      <button class="prefs-btn" id="prefs-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="prefs-panel">
+      <button class="prefs-btn" id="prefs-btn" type="button" aria-label="Preferences" aria-expanded="false" aria-controls="prefs-panel">
         <svg class="i"><use href="#i-globe"/></svg>
         <span class="prefs-label" id="prefs-label">Preferences</span>
         <svg class="i chev"><use href="#i-chevron"/></svg>
@@ -135,7 +138,7 @@
 </header>
 
 <!-- ============ main ============ -->
-<main id="main" hidden>
+<main id="main" tabindex="-1" hidden>
   <section class="hero" id="hero" aria-label="Featured channel"></section>
   <div class="rows" id="rows"></div>
 
@@ -143,7 +146,7 @@
     <header class="browse-head">
       <div class="browse-title-row">
         <h1 id="browse-title">Browse</h1>
-        <p class="browse-count" id="browse-count"></p>
+        <p class="browse-count" id="browse-count" role="status" aria-live="polite" aria-atomic="true"></p>
       </div>
       <div class="filters">
         <label class="field"><span class="sr-only">Category</span><span class="select"><select id="f-category"></select></span></label>
@@ -180,7 +183,7 @@
         <label class="field"><span class="sr-only">Decade</span><span class="select"><select id="mb-decade"></select></span></label>
         <label class="field"><span class="sr-only">Sort</span><span class="select"><select id="mb-sort"></select></span></label>
       </div>
-      <p class="browse-count" id="movies-count"></p>
+      <p class="browse-count" id="movies-count" role="status" aria-live="polite" aria-atomic="true"></p>
       <div class="mgrid" id="movies-grid"></div>
       <button class="more-btn" id="movies-more" type="button" hidden>Show more</button>
     </div>
@@ -226,7 +229,7 @@
 
 <!-- ============ mobile tab bar ============ -->
 <nav class="tabbar" aria-label="Sections">
-  <button class="nav-link is-active" data-view="home"><svg class="i"><use href="#i-home"/></svg><span>Home</span></button>
+  <button class="nav-link is-active" data-view="home" aria-current="page"><svg class="i"><use href="#i-home"/></svg><span>Home</span></button>
   <button class="nav-link" data-view="browse"><svg class="i"><use href="#i-grid"/></svg><span>Browse</span></button>
   <button class="nav-link" data-view="movies"><svg class="i"><use href="#i-film"/></svg><span>Movies</span></button>
   <button class="nav-link" data-view="learn"><svg class="i"><use href="#i-book"/></svg><span>Learn</span></button>
@@ -246,7 +249,7 @@
         <div class="player-overlay" id="player-overlay">
           <div class="msg">
             <div class="spinner" aria-hidden="true"></div>
-            <div class="msg-body" id="player-status">Connecting&hellip;</div>
+            <div class="msg-body" id="player-status" role="status" aria-live="polite">Connecting&hellip;</div>
           </div>
         </div>
       </div>
@@ -286,6 +289,7 @@
           <button class="icon-btn side-toggle" id="player-side-toggle" type="button" data-tip="Up next" aria-label="Toggle Up next">
             <svg class="i"><use href="#i-rail"/></svg>
           </button>
+          <button class="icon-btn cast-btn" id="player-cast" type="button" data-tip="Cast to another device" aria-label="Cast to a TV or another device"><svg class="i"><use href="#i-cast"/></svg><span>Cast</span></button>
           <button class="icon-btn" id="player-close" type="button" data-tip="Close &middot; Esc" aria-label="Close player">
             <svg class="i"><use href="#i-close"/></svg>
           </button>
@@ -309,13 +313,14 @@
   <div class="mplayer-inner" role="dialog" aria-modal="true" aria-labelledby="mplayer-title">
     <div class="mplayer-stage">
       <video id="mvideo" controls playsinline preload="metadata"></video>
-      <div class="mplayer-status" id="mplayer-status" hidden></div>
+      <div class="mplayer-status" id="mplayer-status" role="status" aria-live="polite" hidden></div>
     </div>
     <aside class="mplayer-info">
       <div class="mplayer-top">
         <span class="mplayer-kicker"><svg class="i"><use href="#i-film"/></svg> Internet Archive</span>
         <span class="mplayer-actions"><button class="icon-btn js-random" type="button" data-tip="Random &middot; R" aria-label="Play something random"><svg class="i"><use href="#i-dice"/></svg></button>
-        <button class="icon-btn" id="mplayer-close" type="button" data-tip="Close &middot; Esc" aria-label="Close player">
+        <button class="icon-btn cast-btn" id="mplayer-cast" type="button" data-tip="Cast to another device" aria-label="Cast to a TV or another device"><svg class="i"><use href="#i-cast"/></svg><span>Cast</span></button>
+          <button class="icon-btn" id="mplayer-close" type="button" data-tip="Close &middot; Esc" aria-label="Close player">
           <svg class="i"><use href="#i-close"/></svg>
         </button></span>
       </div>
@@ -338,7 +343,8 @@
       <div class="mplayer-top">
         <span class="mplayer-kicker" id="lplayer-kicker"><svg class="i"><use href="#i-book"/></svg> <span>Learn English</span></span>
         <span class="mplayer-actions"><button class="icon-btn js-random" type="button" data-tip="Random &middot; R" aria-label="Play something random"><svg class="i"><use href="#i-dice"/></svg></button>
-        <button class="icon-btn" id="lplayer-close" type="button" data-tip="Close &middot; Esc" aria-label="Close player">
+        <button class="icon-btn cast-btn" id="lplayer-cast" type="button" data-tip="Cast to another device" aria-label="Cast to a TV or another device"><svg class="i"><use href="#i-cast"/></svg><span>Cast</span></button>
+          <button class="icon-btn" id="lplayer-close" type="button" data-tip="Close &middot; Esc" aria-label="Close player">
           <svg class="i"><use href="#i-close"/></svg>
         </button></span>
       </div>

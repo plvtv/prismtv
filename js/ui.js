@@ -28,6 +28,85 @@ export function icon(name, cls = 'i') {
   return '<svg class="' + cls + '" aria-hidden="true"><use href="#i-' + name + '"/></svg>';
 }
 
+export function scrollBehavior() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+}
+
+export function syncFavouriteButton(button) {
+  const on = myList.has(button.dataset.listId);
+  button.classList.toggle('on', on);
+  button.setAttribute('aria-pressed', String(on));
+  button.setAttribute('aria-label', (on ? 'Remove ' : 'Add ') + button.dataset.listName + (on ? ' from My List' : ' to My List'));
+  button.innerHTML = icon(on ? 'check' : 'plus') + (button.classList.contains('card-save') ? '' : (on ? 'In My List' : 'My List'));
+}
+
+/** Retrying reloads only this row, preserving neighbouring content and scroll position. */
+export function loadRowWithRetry(holder, title, load) {
+  holder.classList.add('row');
+  let content = holder.querySelector('.row-scroll');
+  if (!content) {
+    const head = document.createElement('div');
+    head.className = 'row-head';
+    const heading = document.createElement('h2');
+    heading.textContent = title;
+    head.append(heading);
+    content = document.createElement('div');
+    content.className = 'row-recovery';
+    holder.append(head, content);
+  }
+  let running = false;
+  let first = true;
+  async function attempt() {
+    if (running || !holder.isConnected) return;
+    running = true;
+    const refocus = holder.contains(document.activeElement);
+    holder.setAttribute('aria-busy', 'true');
+    const keepSkeleton = first && content.querySelector('.mcard-skel');
+    first = false;
+    if (!keepSkeleton) {
+      const message = document.createElement('p');
+      message.className = 'mrow-err';
+      message.setAttribute('role', 'status');
+      message.textContent = 'Loading ' + title + '…';
+      content.replaceChildren(message);
+    }
+    try {
+      const next = await load();
+      if (!holder.isConnected) return;
+      const returnFocus = refocus && (document.activeElement === document.body || holder.contains(document.activeElement));
+      holder.removeAttribute('aria-busy');
+      if (next) {
+        holder.replaceWith(next);
+        if (returnFocus) { const heading = next.querySelector('h2'); heading.tabIndex = -1; heading.focus({ preventScroll: true }); }
+      } else {
+        const message = document.createElement('p');
+        message.className = 'mrow-err';
+        message.setAttribute('role', 'status');
+        message.textContent = 'Nothing available in this row yet.';
+        content.replaceChildren(message);
+        if (returnFocus) { const heading = holder.querySelector('h2'); heading.tabIndex = -1; heading.focus({ preventScroll: true }); }
+      }
+    } catch {
+      if (!holder.isConnected) return;
+      const returnFocus = refocus && (document.activeElement === document.body || holder.contains(document.activeElement));
+      holder.removeAttribute('aria-busy');
+      const message = document.createElement('p');
+      message.className = 'mrow-err';
+      message.setAttribute('role', 'status');
+      message.textContent = 'Could not load ' + title + '. Check your connection and try again.';
+      const retry = document.createElement('button');
+      retry.type = 'button';
+      retry.className = 'text-btn row-retry';
+      retry.setAttribute('aria-label', 'Retry ' + title);
+      retry.innerHTML = icon('refresh') + 'Try again';
+      retry.addEventListener('click', attempt);
+      content.replaceChildren(message, retry);
+      if (returnFocus) retry.focus({ preventScroll: true });
+    } finally { running = false; }
+  }
+  attempt();
+}
+
 export function channelSubtitle(channel, dataset) {
   const bits = [];
   const country = channel.country && dataset.countries[channel.country];
@@ -110,6 +189,8 @@ function statusGlyphs(channel) {
    Cards
    ===================================================================== */
 export function createCard(channel, dataset) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'channel-card';
   const card = document.createElement('button');
   card.type = 'button';
   card.className = 'card';
@@ -124,12 +205,12 @@ export function createCard(channel, dataset) {
   const glyphs = statusGlyphs(channel);
   if (glyphs) art.append(glyphs);
 
-  if (myList.has(channel.id)) {
-    const fav = document.createElement('span');
-    fav.className = 'fav';
-    fav.textContent = '✓';
-    art.append(fav);
-  }
+  const save = document.createElement('button');
+  save.type = 'button';
+  save.className = 'card-save';
+  save.dataset.listId = channel.id;
+  save.dataset.listName = channel.name;
+  syncFavouriteButton(save);
 
   const shade = document.createElement('div');
   shade.className = 'shade';
@@ -154,7 +235,8 @@ export function createCard(channel, dataset) {
   meta.append(name, sub);
 
   card.append(art, meta);
-  return card;
+  wrapper.append(card, save);
+  return wrapper;
 }
 
 /* =====================================================================
@@ -248,8 +330,8 @@ export function createRow(title, channels, dataset, note = '', onMore = null) {
   const right = arrow('right');
 
   const page = () => Math.max(scroll.clientWidth * 0.86, 240);
-  left.addEventListener('click', () => scroll.scrollBy({ left: -page(), behavior: 'smooth' }));
-  right.addEventListener('click', () => scroll.scrollBy({ left: page(), behavior: 'smooth' }));
+  left.addEventListener('click', () => scroll.scrollBy({ left: -page(), behavior: scrollBehavior() }));
+  right.addEventListener('click', () => scroll.scrollBy({ left: page(), behavior: scrollBehavior() }));
 
   const sync = () => {
     left.disabled = scroll.scrollLeft < 8;
@@ -276,6 +358,7 @@ export function createHero(channels, dataset, onPlay, onList, rotateMs = 11000) 
   const host = document.getElementById('hero');
   host.innerHTML = '';
   host.classList.remove('paused');
+  host.classList.remove('rotation-stopped');
   host.style.setProperty('--hero-dur', rotateMs + 'ms');
 
   const ctl = new AbortController();
@@ -297,7 +380,18 @@ export function createHero(channels, dataset, onPlay, onList, rotateMs = 11000) 
   badge.append(badgeImg);
   const body = document.createElement('div');
   body.className = 'hero-body';
-  host.append(layers[0], layers[1], bloom, grain, badge, body);
+  const rotation = document.createElement('button');
+  rotation.type = 'button';
+  rotation.className = 'hero-rotation text-btn';
+  rotation.setAttribute('aria-pressed', 'false');
+  rotation.textContent = 'Pause featured channels';
+  rotation.hidden = channels.length < 2;
+  rotation.addEventListener('click', () => {
+    const stopped = host.classList.toggle('rotation-stopped');
+    rotation.setAttribute('aria-pressed', String(stopped));
+    rotation.textContent = stopped ? 'Resume featured channels' : 'Pause featured channels';
+  }, { signal });
+  host.append(layers[0], layers[1], bloom, grain, badge, body, rotation);
 
   let index = 0;
   let front = 0;
@@ -317,6 +411,8 @@ export function createHero(channels, dataset, onPlay, onList, rotateMs = 11000) 
     // Fade the logo out, swap it while invisible, fade the new one in once decoded.
     badge.classList.remove('on');
     bloom.classList.remove('on');
+    badge.hidden = !channel.logo;
+    bloom.hidden = !channel.logo;
     clearTimeout(swapTimer);
     if (!channel.logo) return;
     swapTimer = setTimeout(() => {
@@ -375,11 +471,9 @@ export function createHero(channels, dataset, onPlay, onList, rotateMs = 11000) 
     const add = document.createElement('button');
     add.type = 'button';
     add.className = 'btn btn-ghost';
-    const syncAdd = () => {
-      const on = myList.has(channel.id);
-      add.classList.toggle('on', on);
-      add.innerHTML = icon(on ? 'check' : 'plus') + (on ? 'In My List' : 'My List');
-    };
+    add.dataset.listId = channel.id;
+    add.dataset.listName = channel.name;
+    const syncAdd = () => syncFavouriteButton(add);
     syncAdd();
     add.addEventListener('click', () => { onList(channel.id); syncAdd(); });
     actions.append(watch, add);
@@ -390,6 +484,7 @@ export function createHero(channels, dataset, onPlay, onList, rotateMs = 11000) 
       const seg = document.createElement('button');
       seg.type = 'button';
       seg.setAttribute('aria-label', 'Show ' + c.name);
+      seg.setAttribute('aria-pressed', String(i === index));
       if (i === index) seg.className = 'on';
       seg.append(document.createElement('i'));
       seg.addEventListener('click', () => go(i));
@@ -399,17 +494,21 @@ export function createHero(channels, dataset, onPlay, onList, rotateMs = 11000) 
       if (e.animationName === 'progress') go((index + 1) % channels.length);
     });
 
-    body.append(eyebrow, h1, desc, actions, progress);
+    body.append(eyebrow, h1, desc, actions, progress, rotation);
     body.classList.remove('swap');
     void body.offsetWidth;          // restart the entrance animation
     body.classList.add('swap');
   }
 
   function go(i) {
+    if (!channels.length) return;
+    const focusedSegment = document.activeElement?.closest('.hero-progress button');
+    const segmentIndex = focusedSegment ? [...focusedSegment.parentElement.children].indexOf(focusedSegment) : -1;
     index = i;
     const channel = channels[index];
     paintBackdrop(channel);
     renderBody(channel);
+    if (segmentIndex >= 0) body.querySelectorAll('.hero-progress button')[segmentIndex]?.focus({ preventScroll: true });
   }
 
   // Pause while the viewer is reading, interacting, or looking elsewhere.
@@ -428,6 +527,15 @@ export function createHero(channels, dataset, onPlay, onList, rotateMs = 11000) 
   }
 
   if (channels.length) go(0);
+  else {
+    badge.hidden = true;
+    const title = document.createElement('h1');
+    title.textContent = 'Discover live TV';
+    const note = document.createElement('p');
+    note.className = 'hero-desc';
+    note.textContent = 'No channels are available in this index. Choose another index in Preferences or refresh the channel list.';
+    body.append(title, note);
+  }
 
   return {
     next() { go((index + 1) % channels.length); },
@@ -442,12 +550,12 @@ export function createHero(channels, dataset, onPlay, onList, rotateMs = 11000) 
 /* =====================================================================
    Grid, toast
    ===================================================================== */
-export function renderGrid(host, channels, dataset, limit) {
+export function renderGrid(host, channels, dataset, limit, emptyMessage = 'No channels match those filters.') {
   host.innerHTML = '';
   if (!channels.length) {
     const p = document.createElement('p');
     p.className = 'empty';
-    p.textContent = 'No channels match those filters.';
+    p.textContent = emptyMessage;
     host.append(p);
     return;
   }
