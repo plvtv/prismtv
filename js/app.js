@@ -1,3 +1,4 @@
+import {initBooks} from './books.js';
 import { FEATURED_LANGUAGES, languageName, languageCodes, isKidsChannel } from './content.js';
 import { initKids, showKids, kidsChannels } from './kids.js';
 import { guideNow } from './guide.js';
@@ -40,6 +41,7 @@ const dom = {
   movies: document.getElementById('movies'),
   learn: document.getElementById('learn'),
   kids: document.getElementById('kids'),
+  books: document.getElementById('books'),
   hideDead: document.getElementById('hide-dead'),
   healthNote: document.getElementById('health-note'),
   healthScan: document.getElementById('health-scan')
@@ -122,7 +124,7 @@ function refreshView() {
   dom.fCategory.value=previous.category;dom.fCountry.value=previous.country;dom.fLanguage.value=previous.language;
   buildRegionPicker();
   pageLimit = PAGE_SIZE;
-  if (view === 'home') renderHome(); else if (view === 'kids') showKids(); else if (view !== 'movies' && view !== 'learn') renderBrowse();
+  if (view === 'home') renderHome(); else if (view === 'kids') showKids(); else if (view !== 'movies' && view !== 'learn' && view !== 'books') renderBrowse();
   renderHealthNote();
 }
 
@@ -193,7 +195,7 @@ function buildSourcePicker() {
     pageLimit = PAGE_SIZE;
     toast(index.channels.length.toLocaleString() + ' channels from ' +
       (dom.source.value === 'both' ? 'all indexes' : dom.source.value));
-    if (view === 'home') renderHome(); else if (view === 'kids') showKids(); else if (view !== 'movies' && view !== 'learn') renderBrowse();
+    if (view === 'home') renderHome(); else if (view === 'kids') showKids(); else if (view !== 'movies' && view !== 'learn' && view !== 'books') renderBrowse();
   });
 }
 
@@ -288,7 +290,7 @@ function buildRegionPicker() {
     try { localStorage.setItem(REGION_KEY, dom.region.value); } catch { /* ignore */ }
     const code = viewerCountry();
     toast(code ? 'Top billing: ' + dataset.countries[code].name : 'Using your browser region');
-    if (view === 'home') renderHome(); else if (view === 'kids') showKids(); else if (view !== 'movies' && view !== 'learn') renderBrowse();
+    if (view === 'home') renderHome(); else if (view === 'kids') showKids(); else if (view !== 'movies' && view !== 'learn' && view !== 'books') renderBrowse();
   });
 }
 
@@ -487,18 +489,20 @@ function setView(next, titleOverride) {
   const isMovies = next === 'movies';
   const isLearn = next === 'learn';
   const isKids = next === 'kids';
+  const isBooks = next === 'books';
   dom.hero.hidden = !isHome;
   dom.rows.hidden = !isHome;
-  dom.browse.hidden = isHome || isMovies || isLearn || isKids;
+  dom.browse.hidden = isHome || isMovies || isLearn || isKids || isBooks;
   dom.movies.hidden = !isMovies;
   dom.learn.hidden = !isLearn;
   dom.kids.hidden = !isKids;
+  dom.books.hidden = !isBooks;
   if (isHome) renderHome();
   else if (isMovies) showMovies();
   else if (isLearn) showLearn();
   else if (isKids) { showKids(); showKidsMovies(); }
-  else renderBrowse(titleOverride);
-  const shown = isHome ? dom.rows : isMovies ? dom.movies : isLearn ? dom.learn : isKids ? dom.kids : dom.browse;
+  else if (!isBooks) renderBrowse(titleOverride);
+  const shown = isHome ? dom.rows : isMovies ? dom.movies : isLearn ? dom.learn : isKids ? dom.kids : isBooks ? dom.books : dom.browse;
   shown.classList.remove('view-enter');
   void shown.offsetWidth;
   shown.classList.add('view-enter');
@@ -692,6 +696,7 @@ initPlayer({
 boot();
 
 initMovies();
+initBooks();
 initKids({getChannels: () => index?.channels || [], getDataset: () => dataset});
 setYouTubeOpener((item) => openYouTube(item, { learning: false }));
 
@@ -760,6 +765,7 @@ function randomCard(selector, skip) {
 function playRandom(from = randomBtn) {
   spin(from);
   // Inside a player: stay in that kind of player.
+  if (view === 'books') { randomCard('#books .story-library-card'); return; }
   if (isOpen('archive-audio-player') && randomCard('#learn .archive-lesson-card')) return;
   if (isOpen('mplayer') && randomCard(view === 'kids' ? '#kids .mcard[data-movie]' : '#movies .mcard[data-movie]')) return;
   if (isOpen('lplayer') && randomCard(view === 'kids' ? '#kids .mcard-yt[data-movie]' : view === 'movies' ? '#movies .mcard-yt[data-movie]' : '#learn .lcard')) return;

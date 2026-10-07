@@ -78,6 +78,7 @@
     <button class="nav-link" data-view="browse">Browse</button>
     <button class="nav-link" data-view="movies">Movies</button>
     <button class="nav-link" data-view="kids">Kids</button>
+    <button class="nav-link" data-view="books">Books</button>
     <button class="nav-link" data-view="learn">Learn English</button>
     <button class="nav-link" data-view="mylist">My List</button>
   </nav>
@@ -228,11 +229,22 @@
     </section>
   </section>
 
+  <section id="books" class="movies" hidden>
+    <header class="movies-head"><div><h1>Books</h1><p class="movies-lede">Explore free historic English books from Archive.org. Read in the app or open the original scan.</p></div></header>
+    <section class="learn-video-sources" aria-label="Book library">
+      <label class="search-box"><svg class="i"><use href="#i-search"/></svg><span class="sr-only">Search books by title or author</span><input id="books-search" type="search" placeholder="Search books or authors" autocomplete="off"></label>
+      <p id="books-count" class="browse-count" role="status" aria-live="polite"></p>
+      <div id="books-grid" class="learn-source-grid learn-book-grid"></div>
+      <button id="books-more" class="more-btn" type="button" hidden>Load more books</button>
+      <button id="books-retry" class="btn" type="button" hidden>Retry library</button>
+    </section>
+  </section>
   <section class="movies learn" id="learn" hidden>
-    <header class="movies-head">
+    <header class="movies-head learn-hero">
       <div>
-        <h1>Learn English</h1>
-        <p class="movies-lede">Lessons from BBC Learning English, VOA Learning English and other teaching channels, plus short Archive.org recordings for listening and reading aloud. YouTube lessons request English subtitles; live practice starts with captions enabled.</p>
+        <span class="learn-eyebrow">YOUR EVERYDAY ENGLISH STUDIO</span>
+        <h1>Learn English<span class="learn-hero-dot">.</span></h1>
+        <p class="movies-lede">Build confidence, one lesson at a time. Explore conversations, grammar and listening practice from trusted teachers.</p>
       </div>
       <div class="learn-tools">
         <div class="chips" id="learn-levels" role="group" aria-label="Your level"></div>
@@ -258,22 +270,65 @@
       <ul class="mine-list" id="learn-add-list"></ul>
     </div>
     <section class="learn-video-sources" aria-labelledby="learn-video-sources-title">
-      <h2 id="learn-video-sources-title">More English learning videos</h2>
+      <h2 id="learn-video-sources-title">Discover your next lesson</h2>
       <p class="learn-source-intro">Explore these video collections on their official sites. Links open in a new tab.</p>
       <div class="learn-source-grid">
         <a class="learn-source-card" href="https://learnenglish.britishcouncil.org/free-resources/general/video-series/starting-out" target="_blank" rel="noopener noreferrer">
+          <div class="learn-cover learn-cover-conversation" aria-hidden="true"><span class="learn-cover-tag">Everyday conversations</span><span class="learn-cover-word">Hello!</span><span class="learn-cover-caption">Let’s talk</span><span class="learn-cover-play">▶</span><svg viewBox="0 0 180 120"><rect x="20" y="20" width="130" height="78" rx="22"/><path d="M45 98v16l24-16M45 45h78M45 62h52"/></svg></div>
           <span class="learn-source-level">Beginner · A1–A2</span><h3>Starting Out</h3><span class="learn-source-provider">British Council</span><p>Follow everyday conversations and practise with the accompanying exercises.</p><span class="learn-source-action">Watch the series ↗<span class="sr-only"> (opens in a new tab)</span></span>
         </a>
         <a class="learn-source-card" href="https://learnenglish.britishcouncil.org/free-resources/general/video-series/word-street" target="_blank" rel="noopener noreferrer">
+          <div class="learn-cover learn-cover-culture" aria-hidden="true"><span class="learn-cover-tag">Stories & culture</span><span class="learn-cover-word">Explore</span><span class="learn-cover-caption">English in action</span><span class="learn-cover-play">▶</span><svg viewBox="0 0 180 120"><rect x="20" y="20" width="130" height="78" rx="22"/><path d="M45 98v16l24-16M45 45h78M45 62h52"/></svg></div>
           <span class="learn-source-level">Intermediate · B1–B2</span><h3>Word on the Street</h3><span class="learn-source-provider">British Council</span><p>Explore life in the UK with video stories, language explanations, transcripts and exercises.</p><span class="learn-source-action">Watch the series ↗<span class="sr-only"> (opens in a new tab)</span></span>
         </a>
         <a class="learn-source-card" href="https://www.easyenglish.video/" target="_blank" rel="noopener noreferrer">
+          <div class="learn-cover learn-cover-listening" aria-hidden="true"><span class="learn-cover-tag">Real-life listening</span><span class="learn-cover-word">Listen</span><span class="learn-cover-caption">Slow & clear</span><span class="learn-cover-play">▶</span><svg viewBox="0 0 180 120"><rect x="20" y="20" width="130" height="78" rx="22"/><path d="M45 98v16l24-16M45 45h78M45 62h52"/></svg></div>
           <span class="learn-source-level">Beginner–intermediate</span><h3>Easy English</h3><span class="learn-source-provider">Easy Languages</span><p>Practise listening with Slow Easy English and conversations about real-life situations.</p><span class="learn-source-action">Explore the videos ↗<span class="sr-only"> (opens in a new tab)</span></span>
         </a>
         <a class="learn-source-card" href="https://www.engvid.com/level/beginner/" target="_blank" rel="noopener noreferrer">
+          <div class="learn-cover learn-cover-grammar" aria-hidden="true"><span class="learn-cover-tag">Grammar made simple</span><span class="learn-cover-word">Aa</span><span class="learn-cover-caption">Build your skills</span><span class="learn-cover-play">▶</span><svg viewBox="0 0 180 120"><rect x="20" y="20" width="130" height="78" rx="22"/><path d="M45 98v16l24-16M45 45h78M45 62h52"/></svg></div>
           <span class="learn-source-level">Beginner</span><h3>engVid</h3><span class="learn-source-provider">English video lessons</span><p>Choose teacher-led lessons to practise grammar, vocabulary and everyday English.</p><span class="learn-source-action">Browse the lessons ↗<span class="sr-only"> (opens in a new tab)</span></span>
         </a>
       </div>
+    </section>
+    <section class="learn-video-sources" aria-labelledby="public-audiobooks-title">
+      <h2 id="public-audiobooks-title">Stories to listen to</h2>
+      <p class="learn-source-intro">Longer English stories for listening practice.</p>
+      <div class="learn-source-grid learn-book-grid">
+        <button type="button" class="learn-source-card learn-book-card" id="public-audiobook-open">
+          <div class="learn-cover learn-cover-book" aria-hidden="true"><img src="https://archive.org/services/img/fifteenstoriesbykeithlaumer_2608_librivox" alt="" loading="lazy" decoding="async"><span class="learn-cover-play">▶</span></div>
+          <span class="learn-source-level">15 stories · 23 tracks · English</span><h3>Fifteen Stories by Keith Laumer</h3><span class="learn-source-provider">LibriVox · Read by cyndajm</span><p>Classic science-fiction adventures for extended listening. Total listening time: 15 hours 47 minutes.</p><span class="learn-source-action">▶ Open listening playlist</span>
+        </button>
+        <button type="button" class="learn-source-card learn-book-card" id="public-holmes-open">
+          <div class="learn-cover learn-cover-book" aria-hidden="true"><img src="https://archive.org/services/img/adventures_holmes" alt="" loading="lazy" decoding="async"><span class="learn-cover-play">▶</span></div>
+          <span class="learn-source-level">12 stories · English</span><h3>The Adventures of Sherlock Holmes</h3><span class="learn-source-provider">Arthur Conan Doyle · LibriVox Volunteers</span><p>Listen to classic mysteries featuring Holmes and Watson. Total listening time: 10 hours 18 minutes.</p><span class="learn-source-action">▶ Open listening playlist</span>
+        </button>
+        <button type="button" class="learn-source-card learn-book-card" id="public-moby-open">
+          <div class="learn-cover learn-cover-book" aria-hidden="true"><img src="https://archive.org/services/img/moby_dick_librivox" alt="" loading="lazy" decoding="async"><span class="learn-cover-play">▶</span></div>
+          <span class="learn-source-level">44 tracks · English</span><h3>Moby-Dick, or the Whale</h3><span class="learn-source-provider">Herman Melville · Read by Stewart Wills</span><p>An epic sea voyage for extended English listening. Total listening time: 24 hours 38 minutes.</p><span class="learn-source-action">▶ Open listening playlist</span>
+        </button>
+        <button type="button" class="learn-source-card learn-book-card" id="public-alice-open">
+          <div class="learn-cover learn-cover-book" aria-hidden="true"><img src="https://archive.org/services/img/alice_in_wonderland_librivox" alt="" loading="lazy" decoding="async"><span class="learn-cover-play">▶</span></div>
+          <span class="learn-source-level">12 tracks · English</span><h3>Alice’s Adventures in Wonderland</h3><span class="learn-source-provider">Lewis Carroll · LibriVox Volunteers</span><p>Follow Alice into a strange world of talking creatures and curious conversations. About 2 hours 59 minutes.</p><span class="learn-source-action">▶ Open listening playlist</span>
+        </button>
+        <button type="button" class="learn-source-card learn-book-card" id="public-oz-open">
+          <div class="learn-cover learn-cover-book" aria-hidden="true"><img src="https://archive.org/services/img/wizard_of_oz" alt="" loading="lazy" decoding="async"><span class="learn-cover-play">▶</span></div>
+          <span class="learn-source-level">25 tracks · English</span><h3>The Wonderful Wizard of Oz</h3><span class="learn-source-provider">L. Frank Baum · Read by J. Hall</span><p>Join Dorothy and her companions on the road to the Emerald City. About 3 hours 45 minutes.</p><span class="learn-source-action">▶ Open listening playlist</span>
+        </button>
+        <button type="button" class="learn-source-card learn-book-card" id="public-treasure-open">
+          <div class="learn-cover learn-cover-book" aria-hidden="true"><img src="https://archive.org/services/img/treasure_island_dram_1306_librivox" alt="" loading="lazy" decoding="async"><span class="learn-cover-play">▶</span></div>
+          <span class="learn-source-level">35 tracks · English</span><h3>Treasure Island — Dramatic Reading</h3><span class="learn-source-provider">Robert Louis Stevenson · LibriVox Volunteers</span><p>A cast of voices brings Jim Hawkins, pirates and buried treasure to life. About 6 hours 20 minutes.</p><span class="learn-source-action">▶ Open listening playlist</span>
+        </button>
+      </div>
+    </section>
+    <section class="learn-video-sources" aria-labelledby="story-library-title">
+      <h2 id="story-library-title">Explore the story library</h2>
+      <p class="learn-source-intro">600 English LibriVox recordings from Archive.org. Different readings of the same book may appear.</p>
+      <label class="search-box"><svg class="i"><use href="#i-search"/></svg><span class="sr-only">Search audiobooks by title or author</span><input id="story-library-search" type="search" placeholder="Search titles or authors" autocomplete="off"></label>
+      <p id="story-library-count" class="browse-count" role="status" aria-live="polite"></p>
+      <div id="story-library-grid" class="learn-source-grid learn-book-grid"></div>
+      <button id="story-library-more" class="more-btn" type="button" hidden>Load more audiobooks</button>
+      <button id="story-library-retry" class="btn" type="button" hidden>Retry library</button>
     </section>
     <section id="learn-archive" class="learn-archive" aria-labelledby="learn-archive-title">
       <div class="kids-live-head"><h2 id="learn-archive-title" tabindex="-1">Archive.org listening lab</h2><button id="learn-archive-all" class="row-more" type="button">See all</button></div>
@@ -299,6 +354,7 @@
   <button class="nav-link" data-view="browse"><svg class="i"><use href="#i-grid"/></svg><span>Browse</span></button>
   <button class="nav-link" data-view="movies"><svg class="i"><use href="#i-film"/></svg><span>Movies</span></button>
   <button class="nav-link" data-view="kids"><svg class="i"><use href="#i-kids"/></svg><span>Kids</span></button>
+  <button class="nav-link" data-view="books"><svg class="i"><use href="#i-book"/></svg><span>Books</span></button>
   <button class="nav-link" data-view="learn"><svg class="i"><use href="#i-book"/></svg><span>Learn</span></button>
   <button class="nav-link" data-view="mylist"><svg class="i"><use href="#i-bookmark"/></svg><span>My List</span></button>
 </nav>

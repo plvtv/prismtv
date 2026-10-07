@@ -10,7 +10,7 @@ export async function initLocalLearn() {
     const entries=await response.json();if(!Array.isArray(entries))return;
     const make=(tag,className,text)=>{const node=document.createElement(tag);node.className=className||'';if(text)node.textContent=text;return node;};
     const section=make('section','learn-video-sources');section.append(make('h2','','Your local courses'),make('p','learn-source-intro','Private playlists · available on localhost only'));
-    const grid=make('div','learn-source-grid');section.append(grid);
+    const grid=make('div','learn-source-grid learn-book-grid');section.append(grid);
     const root=make('div','mplayer');root.id='local-course-player';root.hidden=true;
     const dialog=make('div','mplayer-inner local-course-inner');dialog.setAttribute('role','dialog');dialog.setAttribute('aria-modal','true');dialog.setAttribute('aria-labelledby','local-course-title');
     const stage=make('div','mplayer-stage');const video=make('video');video.controls=true;video.playsInline=true;stage.append(video);
@@ -51,7 +51,7 @@ export async function initLocalLearn() {
       if(typeof entry.title!=='string'||typeof entry.url!=='string')continue;
       const url=new URL(entry.url);if(url.hostname!=='archive.org'||!url.pathname.startsWith('/details/'))continue;
       const id=url.pathname.split('/')[2];if(!id)continue;
-      const button=make('button','learn-source-card');button.type='button';button.append(make('span','learn-source-level','Private video playlist'),make('h3','',entry.title),make('span','learn-source-action','▶ Open playlist'));
+      const button=make('button','learn-source-card local-course-card learn-book-card');button.type='button';const cover=make('div','learn-cover learn-cover-book');cover.setAttribute('aria-hidden','true');const image=make('img');image.src='https://archive.org/services/img/'+encodeURIComponent(id);image.alt='';image.loading='lazy';image.decoding='async';cover.append(image,make('span','learn-cover-play','▶'));button.append(cover);button.append(make('span','learn-source-level','Private video playlist'),make('h3','',entry.title),make('span','learn-source-action','▶ Open playlist'));
       button.addEventListener('click',()=>{current={id,title:entry.title};title.textContent=entry.title;root.hidden=false;overlayOpened(root.id,()=>stop(true));focusDialog(root.id);load();});grid.append(button);
     }
     if(grid.childElementCount)document.getElementById('learn-archive').before(section);

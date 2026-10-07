@@ -1,0 +1,3005 @@
+{
+  "source": "Archive.org LibriVox English fiction/story search",
+  "items": [
+    {
+      "id": "adventures_holmes",
+      "title": "The Adventures of Sherlock Holmes",
+      "author": "Sir Arthur Conan Doyle"
+    },
+    {
+      "id": "adventures_sherlockholmes_1007_librivox",
+      "title": "The Adventures of Sherlock Holmes",
+      "author": "Sir Arthur Conan Doyle"
+    },
+    {
+      "id": "count_monte_cristo_0711_librivox",
+      "title": "The Count of Monte Cristo",
+      "author": "Alexandre Dumas"
+    },
+    {
+      "id": "peter_pan_0707_librivox",
+      "title": "Peter Pan",
+      "author": "J. M. Barrie"
+    },
+    {
+      "id": "odyssey_butler_librivox",
+      "title": "The Odyssey",
+      "author": "Homer"
+    },
+    {
+      "id": "1891_collection_bt_librivox",
+      "title": "1891 Collection",
+      "author": "Various"
+    },
+    {
+      "id": "alices_adventures_1003",
+      "title": "Alice's Adventures in Wonderland",
+      "author": "Lewis Carroll"
+    },
+    {
+      "id": "adventures_sherlock_holmes_rg_librivox",
+      "title": "The Adventures of Sherlock Holmes (Version 2)",
+      "author": "Sir Arthur Conan Doyle"
+    },
+    {
+      "id": "huckleberry_mfs_librivox",
+      "title": "Adventures of Huckleberry Finn (version 02)",
+      "author": "Mark Twain"
+    },
+    {
+      "id": "memoirs_holmes_0709_librivox",
+      "title": "The Memoirs of Sherlock Holmes",
+      "author": "Sir Arthur Conan Doyle"
+    },
+    {
+      "id": "andersensfairy_1307_librivox",
+      "title": "Andersen's Fairy Tales (Version 2)",
+      "author": "Hans Christian Andersen"
+    },
+    {
+      "id": "andersens_fairytales_librivox",
+      "title": "Andersen's Fairy Tales",
+      "author": "Hans Christian Andersen"
+    },
+    {
+      "id": "return_holmes_0708_librivox",
+      "title": "The Return of Sherlock Holmes",
+      "author": "Sir Arthur Conan Doyle"
+    },
+    {
+      "id": "great_expectations_mfs_0812_librivox",
+      "title": "Great Expectations",
+      "author": "Charles Dickens"
+    },
+    {
+      "id": "robinson_crusoe_librivox",
+      "title": "The Life and Strange Surprising Adventures of Robinson Crusoe of York, Mariner",
+      "author": "Daniel Defoe"
+    },
+    {
+      "id": "anthem_librivox",
+      "title": "Anthem",
+      "author": "Ayn Rand"
+    },
+    {
+      "id": "anne_greengables_librivox",
+      "title": "Anne of Green Gables (version 3)",
+      "author": "Lucy Maud Montgomery"
+    },
+    {
+      "id": "invisible_man_librivox",
+      "title": "The Invisible Man",
+      "author": "H.G. Wells"
+    },
+    {
+      "id": "grimm_fairy_tales_1202_librivox",
+      "title": "Grimm's Fairy Tales (version 2)",
+      "author": "Jacob & Wilhelm Grimm"
+    },
+    {
+      "id": "timemachine_sjm_librivox",
+      "title": "The Time Machine (version 3)",
+      "author": "H. G. Wells"
+    },
+    {
+      "id": "1601_0903_librivox",
+      "title": "1601: Conversation, as it was by the Social Fireside, in the Time of the Tudors",
+      "author": "Mark Twain"
+    },
+    {
+      "id": "secret_garden_version2_librivox",
+      "title": "The Secret Garden",
+      "author": "Frances Hodgson Burnett"
+    },
+    {
+      "id": "city_worlds_end_1203_librivox",
+      "title": "The City at World's End",
+      "author": "Edmond Hamilton"
+    },
+    {
+      "id": "king_solomon_librivox",
+      "title": "King Solomon's Mines",
+      "author": "H. Rider Haggard"
+    },
+    {
+      "id": "count_montecristo_1308_librivox",
+      "title": "The Count of Monte Cristo",
+      "author": "Alexandre Dumas"
+    },
+    {
+      "id": "terror_mystery_0707_librivox",
+      "title": "Tales of Terror and Mystery",
+      "author": "Sir Arthur Conan Doyle"
+    },
+    {
+      "id": "ghost_stories_001_librivox",
+      "title": "Ghost Story Collection 001",
+      "author": "Various"
+    },
+    {
+      "id": "bequest_jg_librivox",
+      "title": "The $30,000 Bequest and Other Stories",
+      "author": "Mark Twain"
+    },
+    {
+      "id": "as_a_man_thinketh_mc_librivox",
+      "title": "As a Man Thinketh",
+      "author": "James Allen"
+    },
+    {
+      "id": "reluctant_dragon_librivox",
+      "title": "The Reluctant Dragon",
+      "author": "Kenneth Grahame"
+    },
+    {
+      "id": "2br02b_0801_librivox",
+      "title": "2 B R 0 2 B",
+      "author": "Kurt Vonnegut"
+    },
+    {
+      "id": "amateur_cracksman_librivox",
+      "title": "The Amateur Cracksman",
+      "author": "E.W. Hornung"
+    },
+    {
+      "id": "mysterious_island_ms_librivox",
+      "title": "The Mysterious Island",
+      "author": "Jules Verne"
+    },
+    {
+      "id": "war_worlds_solo_librivox",
+      "title": "War of the Worlds",
+      "author": "H.G. Wells"
+    },
+    {
+      "id": "alice_wonderland_0711_librivox",
+      "title": "Alice's Adventures in Wonderland",
+      "author": "Lewis Carroll"
+    },
+    {
+      "id": "memoirsofsherlockholmesv3_1502_librivox",
+      "title": "The Memoirs of Sherlock Holmes",
+      "author": "Sir Arthur Conan Doyle"
+    },
+    {
+      "id": "girl_boat_1109_librivox",
+      "title": "The Girl on the Boat",
+      "author": "P.G. Wodehouse"
+    },
+    {
+      "id": "power_concentration_0810_librivox",
+      "title": "The Power of Concentration",
+      "author": "Theron Q. Dumont"
+    },
+    {
+      "id": "three_musketeers_0712_librivox",
+      "title": "The Three Musketeers",
+      "author": "Alexandre Dumas"
+    },
+    {
+      "id": "five_sci-fi_piper_librivox",
+      "title": "Five Sci-Fi Short Stories by H. Beam Piper",
+      "author": "H. Beam Piper"
+    },
+    {
+      "id": "merry_adventures_robin_hood_librivox",
+      "title": "The Merry Adventures of Robin Hood",
+      "author": "Howard Pyle"
+    },
+    {
+      "id": "39_steps_0807_librivox",
+      "title": "The Thirty-nine Steps",
+      "author": "John Buchan"
+    },
+    {
+      "id": "time_machine_0805_librivox",
+      "title": "The Time Machine",
+      "author": "H.G. Wells"
+    },
+    {
+      "id": "kidnapped_0807_librivox",
+      "title": "Kidnapped",
+      "author": "Robert Louis Stevenson"
+    },
+    {
+      "id": "his_last_bow_version_3_1603_librivox",
+      "title": "His Last Bow (version 3)",
+      "author": "Sir Arthur Conan Doyle"
+    },
+    {
+      "id": "venus_furs_0810_librivox",
+      "title": "Venus in Furs",
+      "author": "Leopold von Sacher-Masoch"
+    },
+    {
+      "id": "robinson_crusoe_1006_librivox",
+      "title": "Robinson Crusoe",
+      "author": "Daniel DeFoe"
+    },
+    {
+      "id": "scarlet_pimpernel_ks_librivox",
+      "title": "The Scarlet Pimpernel",
+      "author": "Baroness Emmuska Orczy"
+    },
+    {
+      "id": "whymarry_1112_librivox",
+      "title": "Why Marry?",
+      "author": "Jesse Lynch Williams"
+    },
+    {
+      "id": "art_public_speaking_1101_librivox",
+      "title": "The Art of Public Speaking",
+      "author": "Dale Carnegie, Joseph Berg Esenwein"
+    },
+    {
+      "id": "bishops_secret_1309_librivox",
+      "title": "The Bishop's Secret",
+      "author": "Fergus Hume"
+    },
+    {
+      "id": "dream_psychology_librivox",
+      "title": "Dream Psychology",
+      "author": "Sigmund Freud"
+    },
+    {
+      "id": "studyinscarlet_0811_librivox",
+      "title": "A Study in Scarlet",
+      "author": "Sir Arthur Conan Doyle"
+    },
+    {
+      "id": "war_of_the_worlds_librivox",
+      "title": "The War of the Worlds",
+      "author": "H. G. Wells"
+    },
+    {
+      "id": "adventures_pinocchio_1207_librivox",
+      "title": "The Adventures of Pinocchio",
+      "author": "Carlo Collodi"
+    },
+    {
+      "id": "broad_highway_1309_librivox",
+      "title": "The Broad Highway",
+      "author": "John Jeffery Farnol"
+    },
+    {
+      "id": "sex_life_gods_1208_librivox",
+      "title": "Sex Life of the Gods",
+      "author": "Michael Knerr"
+    },
+    {
+      "id": "enchanted_castle_pe_librivox",
+      "title": "The Enchanted Castle",
+      "author": "E. Nesbit"
+    },
+    {
+      "id": "journey_verne_librivox",
+      "title": "A Journey to the Interior of the Earth",
+      "author": "Jules Verne"
+    },
+    {
+      "id": "whose_body_librivox",
+      "title": "Whose Body?",
+      "author": "Dorothy L. Sayers"
+    },
+    {
+      "id": "amadisofgaul_1306_librivox",
+      "title": "Amadis of Gaul",
+      "author": "Vasco de Lobeira"
+    },
+    {
+      "id": "picture_doriangray_1012_librivox",
+      "title": "The Picture of Dorian Gray",
+      "author": "Oscar Wilde"
+    },
+    {
+      "id": "land_time_forgot_rs_0808_librivox",
+      "title": "The Land that Time Forgot",
+      "author": "Edgar Rice Burroughs"
+    },
+    {
+      "id": "mystery_yellow_room_0901_librivox",
+      "title": "The Mystery of the Yellow Room",
+      "author": "Gaston Leroux"
+    },
+    {
+      "id": "emma_mt_librivox",
+      "title": "Emma",
+      "author": "Jane Austen"
+    },
+    {
+      "id": "princess_mars_0810_librivox",
+      "title": "A Princess of Mars",
+      "author": "Edgar Rice Burroughs"
+    },
+    {
+      "id": "20shortsfstories_1908_librivox",
+      "title": "20 Short Science Fiction Stories",
+      "author": "Various"
+    },
+    {
+      "id": "janeeyre3_1212_librivox",
+      "title": "Jane Eyre (dramatic reading)",
+      "author": "Charlotte Bronte"
+    },
+    {
+      "id": "twentyyearsafter_0904_librivox",
+      "title": "Twenty Years After",
+      "author": "Alexandre Dumas"
+    },
+    {
+      "id": "robin_hood_1101_librivox",
+      "title": "Robin Hood",
+      "author": "J. Walker McSpadden"
+    },
+    {
+      "id": "ghost_breaker_1204_librivox",
+      "title": "The Ghost Breaker",
+      "author": "Charles Goddard & Paul Dickey"
+    },
+    {
+      "id": "frankenstein_cs_librivox",
+      "title": "Frankenstein; or, The Modern Prometheus (1818)",
+      "author": "Mary Wollstonecraft Shelley"
+    },
+    {
+      "id": "christmascarol_librivox",
+      "title": "A Christmas Carol",
+      "author": "Charles Dickens"
+    },
+    {
+      "id": "adventures_sally_0903",
+      "title": "The Adventures of Sally",
+      "author": "P. G. Wodehouse"
+    },
+    {
+      "id": "mother_goose_prose_librivox",
+      "title": "Mother Goose in Prose",
+      "author": "L. Frank Baum"
+    },
+    {
+      "id": "blue_fairy_book_0707_librivox",
+      "title": "The Blue Fairy Book",
+      "author": "Andrew Lang"
+    },
+    {
+      "id": "memoirs_sherlock_holmes_1007_librivox",
+      "title": "The Memoirs of Sherlock Holmes",
+      "author": "Sir Arthur Conan Doyle"
+    },
+    {
+      "id": "invisibleman_1209_librivox_cb",
+      "title": "The Invisible Man (solo)",
+      "author": "H.G. Wells"
+    },
+    {
+      "id": "blackbeauty_0910_librivox",
+      "title": "Black Beauty",
+      "author": "Anna Sewell"
+    },
+    {
+      "id": "american_rivals_sherlock_holmes_1301_librivox",
+      "title": "The American Rivals of Sherlock Holmes",
+      "author": "Various"
+    },
+    {
+      "id": "siddhartha_ap_librivox",
+      "title": "Siddhartha",
+      "author": "Hermann Hesse"
+    },
+    {
+      "id": "sign_of_four_librivox",
+      "title": "The Sign of the Four",
+      "author": "Arthur Conan Doyle"
+    },
+    {
+      "id": "thuviamaidofmars_1308_librivox",
+      "title": "Thuvia, Maid of Mars",
+      "author": "Edgar Rice Burroughs"
+    },
+    {
+      "id": "foolish_dictionary_librivox",
+      "title": "The Foolish Dictionary",
+      "author": "Gideon Wurdz"
+    },
+    {
+      "id": "alices_adventures_1005_librivox",
+      "title": "Alice's Adventures in Wonderland",
+      "author": "Lewis Carroll"
+    },
+    {
+      "id": "fighting_flying_circus_1104_librivox",
+      "title": "Fighting the Flying Circus",
+      "author": "Eddie Rickenbacker"
+    },
+    {
+      "id": "anthony_trent_1307",
+      "title": "Anthony Trent, Master Criminal",
+      "author": "Wyndham Martyn"
+    },
+    {
+      "id": "bull_hunter_1309_librivox",
+      "title": "Bull Hunter",
+      "author": "Max Brand"
+    },
+    {
+      "id": "theblondelady_lrl_0904_librivox",
+      "title": "The Blonde Lady",
+      "author": "Maurice Leblanc"
+    },
+    {
+      "id": "danny_meadow_mouse_1301_librivox",
+      "title": "The Adventures of Danny Meadow Mouse",
+      "author": "Thornton W. Burgess"
+    },
+    {
+      "id": "anneshouseofdreams_1111_librivox",
+      "title": "Anne's House of Dreams",
+      "author": "Lucy Maud Montgomery"
+    },
+    {
+      "id": "justwilliam_dw_librivox",
+      "title": "Just William",
+      "author": "Richmal Crompton"
+    },
+    {
+      "id": "hill_of_dreams_1309_librivox",
+      "title": "The Hill of Dreams",
+      "author": "Arthur Machen"
+    },
+    {
+      "id": "twelvestories_1603_librivox",
+      "title": "Twelve Stories and a Dream",
+      "author": "H. G. Wells"
+    },
+    {
+      "id": "aesopforchildren_1308_librivox",
+      "title": "The Aesop for Children",
+      "author": "Aesop"
+    },
+    {
+      "id": "allan_quatermain_librivox",
+      "title": "Allan Quatermain",
+      "author": "H. Rider Haggard"
+    },
+    {
+      "id": "sleepyhollow_1206_librivox",
+      "title": "The Legend of Sleepy Hollow",
+      "author": "Washington Irving"
+    },
+    {
+      "id": "warlord_mars_jd_librivox",
+      "title": "Warlord of Mars",
+      "author": "Edgar Rice Burroughs"
+    },
+    {
+      "id": "scarlet_letter_0710",
+      "title": "The Scarlet Letter",
+      "author": "Nathaniel Hawthorne"
+    },
+    {
+      "id": "picture_dorian_gray_1204_librivox",
+      "title": "The Picture of Dorian Gray (1891 Version)",
+      "author": "Oscar Wilde"
+    },
+    {
+      "id": "lifeofantony_1308_librivox",
+      "title": "Life of Anthony",
+      "author": "Athanasius of Alexandria"
+    },
+    {
+      "id": "rilla_ingleside_librivox",
+      "title": "Rilla of Ingleside",
+      "author": "Lucy Maud Montgomery"
+    },
+    {
+      "id": "hislastbow_0711_librivox",
+      "title": "His Last Bow",
+      "author": "Sir Arthur Conan Doyle"
+    },
+    {
+      "id": "mansfield_park_1104_librivox",
+      "title": "Mansfield Park",
+      "author": "Jane Austen"
+    },
+    {
+      "id": "prince_and_pauper_librivox",
+      "title": "The Prince and the Pauper",
+      "author": "Mark Twain"
+    },
+    {
+      "id": "prince_pa_librivox",
+      "title": "The Prince",
+      "author": "Niccolo Machiavelli"
+    },
+    {
+      "id": "stories_006_librivox",
+      "title": "Librivox's Short Story Collection 006",
+      "author": "LibriVox"
+    },
+    {
+      "id": "phantom6_librivox",
+      "title": "The Phantom of the Opera",
+      "author": "Gaston Leroux"
+    },
+    {
+      "id": "ghost_stories_002_librivox",
+      "title": "Ghost Story Collection 002",
+      "author": "LibriVox"
+    },
+    {
+      "id": "32caliber_1003_librivox",
+      "title": "32 Caliber",
+      "author": "Donald McGibney"
+    },
+    {
+      "id": "plague_ship_librivox",
+      "title": "Plague Ship",
+      "author": "Andre Norton"
+    },
+    {
+      "id": "black_tulip_gtv_librivox",
+      "title": "The Black Tulip",
+      "author": "Alexandre Dumas"
+    },
+    {
+      "id": "studyinscarlet_bn_librivox",
+      "title": "A Study in Scarlet",
+      "author": "Sir Arthur Conan Doyle"
+    },
+    {
+      "id": "huckleberry_finn_0908_librivox",
+      "title": "Adventures of Huckleberry Finn (Tom Sawyer's Comrade)",
+      "author": "Mark Twain"
+    },
+    {
+      "id": "tale_of_two_cities_1012_librivox",
+      "title": "A Tale of Two Cities",
+      "author": "Charles Dickens"
+    },
+    {
+      "id": "warlord_mars_tac_librivox",
+      "title": "The Warlord of Mars",
+      "author": "Edgar Rice Burroughs"
+    },
+    {
+      "id": "sense_sensibility_1104_librivox",
+      "title": "Sense and Sensibility",
+      "author": "Jane Austen"
+    },
+    {
+      "id": "the_american_claimant_1205_librivox",
+      "title": "The American Claimant",
+      "author": "Mark Twain"
+    },
+    {
+      "id": "four_sf_stories_1907_librivox",
+      "title": "Four Science Fiction Stories",
+      "author": "Alan E. Nourse"
+    },
+    {
+      "id": "pride_prejudice_1102_librivox",
+      "title": "Pride and Prejudice (version 5)",
+      "author": "Jane Austen"
+    },
+    {
+      "id": "hound_baskervilles_bn_librivox",
+      "title": "The Hound of the Baskervilles",
+      "author": "Sir Arthur Conan Doyle"
+    },
+    {
+      "id": "reginald_0709_librivox",
+      "title": "Reginald",
+      "author": "Saki"
+    },
+    {
+      "id": "fifty_famous_stories_lc_librivox",
+      "title": "Fifty Famous Stories Retold",
+      "author": "James Baldwin"
+    },
+    {
+      "id": "horror_001_librivox",
+      "title": "Horror Story Collection 001",
+      "author": "LibriVox"
+    },
+    {
+      "id": "story_5_librivox",
+      "title": "LibriVox's Short Story Collection 005",
+      "author": "LibriVox"
+    },
+    {
+      "id": "red_house_mystery_librivox",
+      "title": "The Red House Mystery",
+      "author": "A. A. Milne"
+    },
+    {
+      "id": "wizardofoz_1001_librivox",
+      "title": "The Wonderful Wizard of Oz (Dramatic Reading)",
+      "author": "L. Frank Baum"
+    },
+    {
+      "id": "gentlemenpreferblondes_2201_librivox",
+      "title": "Gentlemen Prefer Blondes",
+      "author": "Anita Loos"
+    },
+    {
+      "id": "astounding_stories_01_1305_librivox",
+      "title": "Astounding Stories 01, January 1930",
+      "author": "Victor Rousseau.Captain S.P. Meek, Ray Cummins, M'L. Staley, Murray Leinster, Anthonu Pelcher"
+    },
+    {
+      "id": "captain_blood_librivox",
+      "title": "Captain Blood",
+      "author": "Rafael Sabatini"
+    },
+    {
+      "id": "around_world_80_days_mfs_librivox",
+      "title": "Around the World in 80 Days",
+      "author": "Jules Verne"
+    },
+    {
+      "id": "bookofdragons_0904_librivox",
+      "title": "The Book of Dragons",
+      "author": "Edith Nesbit"
+    },
+    {
+      "id": "typhoon_conrad_librivox",
+      "title": "Typhoon",
+      "author": "Joseph Conrad"
+    },
+    {
+      "id": "wealth_nations01_se",
+      "title": "The Wealth of Nations - Book 1",
+      "author": "Adam Smith"
+    },
+    {
+      "id": "stories_003_librivox",
+      "title": "Librivox Short Story Collection 003",
+      "author": "LibriVox"
+    },
+    {
+      "id": "ruthfieldingbriarwood_1309_librivox",
+      "title": "Ruth Fielding at Briarwood Hall",
+      "author": "Alice B. Emerson"
+    },
+    {
+      "id": "extraordinary_lupin",
+      "title": "Extraordinary Adventures of Arsène Lupin, Gentleman-Burglar, The",
+      "author": "Leblanc, Maurice"
+    },
+    {
+      "id": "20000_leagues_under_seas_1110_librivox",
+      "title": "20,000 Leagues under the Seas",
+      "author": "Jules Verne"
+    },
+    {
+      "id": "money_moon_jl_0907_librivox",
+      "title": "The Money Moon: A Romance",
+      "author": "Jeffery Farnol"
+    },
+    {
+      "id": "lady_audleys_secret_ek_librivox",
+      "title": "Lady Audley's Secret",
+      "author": "Mary Elizabeth Braddon"
+    },
+    {
+      "id": "story_mankind_0906",
+      "title": "The Story of Mankind",
+      "author": "Hendrik van Loon"
+    },
+    {
+      "id": "drnikolasexperiment_1711_librivox",
+      "title": "Dr. Nikola’s Experiment",
+      "author": "Guy Boothby"
+    },
+    {
+      "id": "heart_of_darkness_1203_librivox",
+      "title": "Heart of Darkness (version 2)",
+      "author": "Joseph Conrad"
+    },
+    {
+      "id": "short_story_007",
+      "title": "Short Story Collection Vol. 007",
+      "author": "LibriVox"
+    },
+    {
+      "id": "ranald_bannermans_boyhood_librivox",
+      "title": "Ranald Bannerman's Boyhood",
+      "author": "MacDonald, George"
+    },
+    {
+      "id": "works_poe_raven_edition_vol2_0912",
+      "title": "The Works of Edgar Allan Poe, Raven Edition, Volume 2",
+      "author": "Edgar Allan Poe"
+    },
+    {
+      "id": "sailing_alone_around_librivox_1",
+      "title": "Sailing Alone Around the World",
+      "author": "Joshua Slocum"
+    },
+    {
+      "id": "biltmore_oswald_1108_librivox",
+      "title": "Biltmore Oswald",
+      "author": "J. Thorne Smith, Jr."
+    },
+    {
+      "id": "treasure_island_1307_librivox",
+      "title": "Treasure Island",
+      "author": "Robert Louis Stevenson"
+    },
+    {
+      "id": "creature_beyond_infinity_mn_0901_librivox",
+      "title": "The Creature from Beyond Infinity",
+      "author": "Henry Kuttner"
+    },
+    {
+      "id": "the_adventures_of_sherlock_holmes_v5_1904_librivox",
+      "title": "The Adventures of Sherlock Holmes (version 5)",
+      "author": "Sir Arthur Conan Doyle"
+    },
+    {
+      "id": "story_girl_librivox",
+      "title": "The Story Girl",
+      "author": "Lucy Maud Montgomery"
+    },
+    {
+      "id": "jungle_tw_0908_librivox",
+      "title": "The Jungle",
+      "author": "Upton Sinclair"
+    },
+    {
+      "id": "mrspaceship_pc_librivox",
+      "title": "Mr. Spaceship",
+      "author": "Philip K. Dick"
+    },
+    {
+      "id": "woman_white_0811_librivox",
+      "title": "The Woman in White",
+      "author": "Wilkie Collins"
+    },
+    {
+      "id": "813_cb_librivox",
+      "title": "813",
+      "author": "Maurice Leblanc"
+    },
+    {
+      "id": "jekyll_and_hyde_klh_0904_librivox",
+      "title": "The Strange Case of Dr. Jekyll and Mr. Hyde",
+      "author": "Robert Louis Stevenson"
+    },
+    {
+      "id": "middle_temple_murder1_librivox",
+      "title": "The Middle Temple Murder",
+      "author": "J.S. Fletcher"
+    },
+    {
+      "id": "ghost_stories_antiquary_librivox",
+      "title": "Ghost Stories of an Antiquary",
+      "author": "Montague Rhodes James"
+    },
+    {
+      "id": "short_story_008",
+      "title": "Librivox's Short Story Collection Vol. 008",
+      "author": "LibriVox"
+    },
+    {
+      "id": "short_scifi_001_0711",
+      "title": "Short Science Fiction Collection Vol. 001",
+      "author": "LibriVox"
+    },
+    {
+      "id": "princess_goblin_0907_librivox",
+      "title": "The Princess and the Goblin",
+      "author": "George MacDonald"
+    },
+    {
+      "id": "idiot_mg_librivox",
+      "title": "The Idiot (Part 01 and 02)",
+      "author": "Fyodor Dostoyevsky"
+    },
+    {
+      "id": "tom_swift_and_his_war_tank_0809",
+      "title": "Tom Swift and His War Tank",
+      "author": "Victor Appleton"
+    },
+    {
+      "id": "light_princess_librivox",
+      "title": "The Light Princess",
+      "author": "George MacDonald"
+    },
+    {
+      "id": "sky_island_librivox",
+      "title": "Sky Island",
+      "author": "L. Frank Baum"
+    },
+    {
+      "id": "looking-glass_1007",
+      "title": "Through the Looking-Glass",
+      "author": "Lewis Carroll"
+    },
+    {
+      "id": "modern_ghost_stories_0801_librivox",
+      "title": "Famous Modern Ghost Stories",
+      "author": "Dororthy Scarborough"
+    },
+    {
+      "id": "sadhana_realisation_librivox",
+      "title": "Sadhana, the Realisation of Life",
+      "author": "Rabindranath Tagore"
+    },
+    {
+      "id": "greatgatsby_2101_librivox",
+      "title": "The Great Gatsby",
+      "author": "F. Scott Fitzgerald"
+    },
+    {
+      "id": "mrs_caudles_curtain_lectures_librivox",
+      "title": "Mrs. Caudle's Curtain Lectures",
+      "author": "Jerrold, Douglas William"
+    },
+    {
+      "id": "king_arthur_rc_librivox",
+      "title": "King Arthur and His Knights",
+      "author": "Maude L. Radford"
+    },
+    {
+      "id": "dere_mable_rk_librivox",
+      "title": "Dere Mable",
+      "author": "Edward Streeter"
+    },
+    {
+      "id": "worlds_best_mystery_1_librivox",
+      "title": "Library of World's Best Mystery and Detective Stories, Volume 1",
+      "author": "Various"
+    },
+    {
+      "id": "lost_world_mfs_librivox",
+      "title": "The Lost World",
+      "author": "Arthur Conan Doyle"
+    },
+    {
+      "id": "scaramouche_gm_librivox",
+      "title": "Scaramouche",
+      "author": "Rafael Sabatini"
+    },
+    {
+      "id": "adeline_mowbray_1101_librivox",
+      "title": "Adeline Mowbray",
+      "author": "Amelia Opie"
+    },
+    {
+      "id": "sea_wolf_0907_librivox",
+      "title": "The Sea Wolf",
+      "author": "Jack London"
+    },
+    {
+      "id": "christmascarol_km_librivox",
+      "title": "A Christmas Carol",
+      "author": "Charles Dickens"
+    },
+    {
+      "id": "persuasion_0912_librivox",
+      "title": "Persuasion (version 5)",
+      "author": "Jane Austen"
+    },
+    {
+      "id": "grell_mystery_0901_librivox",
+      "title": "The Grell Mystery",
+      "author": "Frank Froest"
+    },
+    {
+      "id": "peter_schlemihl_1711_librivox",
+      "title": "The wonderful History of Peter Schlemihl, the Man who lost his Shadow",
+      "author": "Adelbert von Chamisso"
+    },
+    {
+      "id": "spy_cooper_librivox",
+      "title": "The Spy",
+      "author": "James Fenimore Cooper"
+    },
+    {
+      "id": "wit_humor_america1_1102",
+      "title": "The Wit and Humor of America Vol 01",
+      "author": "Various"
+    },
+    {
+      "id": "maya_the_bee_0902_librivox",
+      "title": "Adventures of Maya the Bee",
+      "author": "Waldemar Bonsels"
+    },
+    {
+      "id": "around_the_world_in_eighty_days_0908_librivox",
+      "title": "Around the World in Eighty Days",
+      "author": "Jules Verne"
+    },
+    {
+      "id": "earth_to_moon_librivox",
+      "title": "From the Earth to the Moon",
+      "author": "Jules Verne"
+    },
+    {
+      "id": "alices_adventures",
+      "title": "Alice's Adventures in Wonderland",
+      "author": "Carroll, Lewis"
+    },
+    {
+      "id": "monte-cristos_daughter_1709_librivox",
+      "title": "Monte-Cristo's Daughter",
+      "author": "Edmund Flagg"
+    },
+    {
+      "id": "adventures_of_dog_1101_librivox",
+      "title": "The Adventures of a Dog, and a Good Dog Too",
+      "author": "Alfred Elwes"
+    },
+    {
+      "id": "lastofthemohicans_0809_librivox",
+      "title": "The Last of the Mohicans - A Narrative of 1757 (version 2)",
+      "author": "James Fenimore Cooper"
+    },
+    {
+      "id": "short_scifi_34_1003_librivox",
+      "title": "Short Science Fiction Collection 034",
+      "author": "Various"
+    },
+    {
+      "id": "faeriequeene_1401_librivox",
+      "title": "The Faerie Queene",
+      "author": "Edmund Spenser"
+    },
+    {
+      "id": "moonstone_0802_librivox",
+      "title": "The Moonstone",
+      "author": "Wilkie Collins"
+    },
+    {
+      "id": "twenty-four_hours_a_day_librivox",
+      "title": "How to Live on Twenty-Four Hours a Day",
+      "author": "Arnold Bennett"
+    },
+    {
+      "id": "christopher_quarles_tp_librivox",
+      "title": "Christopher Quarles College Professor and Master Detective",
+      "author": "Percy James Brebner"
+    },
+    {
+      "id": "autobiography_seaman_1206_librivox",
+      "title": "Autobiography of a Seaman, Vol. 1",
+      "author": "Lord Thomas Cochrane"
+    },
+    {
+      "id": "in_bishops_carriage_1001_librivox",
+      "title": "In the Bishop's Carriage",
+      "author": "Miriam Michelson"
+    },
+    {
+      "id": "stories_001_librivox",
+      "title": "Librivox Short Story Collection 001",
+      "author": "LibriVox"
+    },
+    {
+      "id": "abandoned_1012_librivox",
+      "title": "Abandoned",
+      "author": "W. Clark Russell"
+    },
+    {
+      "id": "narrative_gordon_pym_librivox",
+      "title": "Narrative of Arthur Gordon Pym",
+      "author": "Poe, Edgar Allan"
+    },
+    {
+      "id": "3sfstoriesbywilliamtenn_1910_librivox",
+      "title": "3 Science Fiction Stories",
+      "author": "William Tenn"
+    },
+    {
+      "id": "aliceinwonderland_drama_1310_librivox",
+      "title": "Alice in Wonderland (Drama)",
+      "author": "Alice Gerstenberg"
+    },
+    {
+      "id": "last_trail_mv_0811_librivox",
+      "title": "The Last Trail",
+      "author": "Zane Grey"
+    },
+    {
+      "id": "deathworld_gm_0904_librivox",
+      "title": "Deathworld",
+      "author": "Harry Harrison"
+    },
+    {
+      "id": "valley_of_fear_kl_librivox",
+      "title": "The Valley of Fear",
+      "author": "Sir Arthur Conan Doyle"
+    },
+    {
+      "id": "abaft_funnel_1307_librivox",
+      "title": "Abaft The Funnel",
+      "author": "Rudyard Kipling"
+    },
+    {
+      "id": "anthem_1305_librivox",
+      "title": "Anthem Version 2",
+      "author": "Ayn Rand"
+    },
+    {
+      "id": "short_scifi_32_1001_librivox",
+      "title": "Short Science Fiction Collection 032",
+      "author": "Various"
+    },
+    {
+      "id": "white_company_0907_librivox",
+      "title": "The White Company",
+      "author": "Sir Arthur Conan Doyle"
+    },
+    {
+      "id": "30ghoststories_1909_librivox",
+      "title": "30 Ghost Stories",
+      "author": "Various"
+    },
+    {
+      "id": "powell_1803_librivox",
+      "title": "Biographical Memoir of John Wesley Powell, 1834-1902",
+      "author": "William Morris Davis"
+    },
+    {
+      "id": "gettingofwisdom_1309_librivox",
+      "title": "The Getting of Wisdom (Version 2)",
+      "author": "Henry Handel Richardson"
+    },
+    {
+      "id": "roughing_it_jg",
+      "title": "Roughing It",
+      "author": "Mark Twain"
+    },
+    {
+      "id": "carrados_librivox",
+      "title": "Four Max Carrodos Detective Stories",
+      "author": "Ernest Bramah"
+    },
+    {
+      "id": "revenge_1708_librivox",
+      "title": "Revenge!",
+      "author": "Robert Barr"
+    },
+    {
+      "id": "abandoned_room_1101_librivox",
+      "title": "The Abandoned Room",
+      "author": "Wadsworth Camp"
+    },
+    {
+      "id": "coinofedwardvii_1712_librivox",
+      "title": "A Coin Of Edward VII",
+      "author": "Fergus Hume"
+    },
+    {
+      "id": "short_stories_009",
+      "title": "Librivoxs Short Story Collection Vol. 009",
+      "author": "LibriVox"
+    },
+    {
+      "id": "marvellous_underground_journey_1710_librivox",
+      "title": "Baron Trump's Marvellous Underground Journey",
+      "author": "Ingersoll Lockwood"
+    },
+    {
+      "id": "3storiesbyjackwilliamson_1908_librivox",
+      "title": "3 SF Stories by Jack Williamson",
+      "author": "Jack Williamson"
+    },
+    {
+      "id": "she_0802_librivox",
+      "title": "She",
+      "author": "H. Rider Haggard"
+    },
+    {
+      "id": "youknowme_al_0908_librivox",
+      "title": "You Know Me Al",
+      "author": "Ring Lardner"
+    },
+    {
+      "id": "little_men_1107_librivox",
+      "title": "Little Men (version 2)",
+      "author": "Louisa May Alcott"
+    },
+    {
+      "id": "man_iron_mask_ms_librivox",
+      "title": "The Man in the Iron Mask",
+      "author": "Alexandre Dumas (pere)"
+    },
+    {
+      "id": "iliad_of_homer_1011_librivox",
+      "title": "The Iliad of Homer",
+      "author": "Homer"
+    },
+    {
+      "id": "short_scifi_041_1010_librivox",
+      "title": "Short Science Fiction Collection 041",
+      "author": "Various"
+    },
+    {
+      "id": "lost_world_librivox",
+      "title": "The Lost World",
+      "author": "Sir Arthur Conan Doyle"
+    },
+    {
+      "id": "stories_004_librivox",
+      "title": "Librivox's Short Story Collection 004",
+      "author": "LibriVox"
+    },
+    {
+      "id": "secresy_1703_librivox",
+      "title": "Secresy, or, the Ruin on the Rock",
+      "author": "Eliza Fenwick"
+    },
+    {
+      "id": "short_ghohor_001_librivox",
+      "title": "Ghost and Horror Story Collection 001",
+      "author": "Various"
+    },
+    {
+      "id": "thirteenth_chair_1604_librivox",
+      "title": "The Thirteenth Chair",
+      "author": "Bayard Veiller"
+    },
+    {
+      "id": "huckleberry_finn7_1904_librivox",
+      "title": "Adventures of Huckleberry Finn (version 7)",
+      "author": "Mark Twain"
+    },
+    {
+      "id": "astoundingstories_sep1930_0911_librivox",
+      "title": "Astounding Stories 09, September 1930",
+      "author": "Harry Bates, Editor"
+    },
+    {
+      "id": "childrensbible_1308_librivox",
+      "title": "The Children's Bible",
+      "author": "Henry A. Sherman"
+    },
+    {
+      "id": "mystery_31newinn_1005_librivox",
+      "title": "The Mystery of 31 New Inn",
+      "author": "R. Austin Freeman"
+    },
+    {
+      "id": "breaking_point_1103_librivox",
+      "title": "The Breaking Point",
+      "author": "Mary Roberts Rinehart"
+    },
+    {
+      "id": "wives_daughters_0710_librivox",
+      "title": "Wives and Daughters",
+      "author": "Elizabeth Gaskell"
+    },
+    {
+      "id": "men_moon_mfs_librivox",
+      "title": "The First Men in the Moon",
+      "author": "H.G. Wells"
+    },
+    {
+      "id": "astoundingstories14_1506_librivox",
+      "title": "Astounding Stories 14, February 1931",
+      "author": "Various"
+    },
+    {
+      "id": "four_million_librivox",
+      "title": "The Four Million",
+      "author": "O. Henry"
+    },
+    {
+      "id": "mastery_of_destiny_af_librivox",
+      "title": "The Mastery of Destiny",
+      "author": "James Allen"
+    },
+    {
+      "id": "afloat_onthe_ohio_1208_librivox",
+      "title": "Afloat on the Ohio",
+      "author": "Reuben Gold Thwaites"
+    },
+    {
+      "id": "around_world_rs_1005_librivox",
+      "title": "Around the World in Eighty Days",
+      "author": "Jules Verne"
+    },
+    {
+      "id": "childrensshortworksvol024_1709_librivox",
+      "title": "Children's Short Works Collection, Vol. 024",
+      "author": "Various"
+    },
+    {
+      "id": "anneofgreengables_sp_librivox",
+      "title": "Anne of Green Gables (version 6)",
+      "author": "Lucy Maud Montgomery"
+    },
+    {
+      "id": "hollow_needle",
+      "title": "The Hollow Needle: Further Adventures of Arsene Lupin",
+      "author": "Maurice Leblanc"
+    },
+    {
+      "id": "gullibles_travels_etc_wt_1411_librivox",
+      "title": "Gullible's Travels, Etc.",
+      "author": "Ring Lardner"
+    },
+    {
+      "id": "eldorado_krs_librivox",
+      "title": "El Dorado",
+      "author": "Baroness Emmuska Orczy"
+    },
+    {
+      "id": "stories_002_librivox",
+      "title": "Librivox's Short Story Collection 002",
+      "author": "LibriVox"
+    },
+    {
+      "id": "talisman_0810_librivox",
+      "title": "The Talisman",
+      "author": "Sir Walter Scott"
+    },
+    {
+      "id": "adventures_tom_sawyer_3_1903_librivox",
+      "title": "The Adventures of Tom Sawyer (version 3)",
+      "author": "Mark Twain"
+    },
+    {
+      "id": "study_in_scarlet_1105_librivox",
+      "title": "A Study in Scarlet",
+      "author": "Sir Arthur Conan Doyle"
+    },
+    {
+      "id": "colors_space_0707_librivox",
+      "title": "The Colors of Space",
+      "author": "Marion Zimmer Bradley"
+    },
+    {
+      "id": "connecticut_yankee_king_arthurs_court_jg_librivox",
+      "title": "A Connecticut Yankee in King Arthur's Court (version 2)",
+      "author": "Mark Twain"
+    },
+    {
+      "id": "dream_collection_1_2002_librivox",
+      "title": "Dreams Collection 1 - Stories and Poems",
+      "author": "Various"
+    },
+    {
+      "id": "return_of_tarzan_rs_librivox",
+      "title": "The Return of Tarzan",
+      "author": "Edgar Rice Burroughs"
+    },
+    {
+      "id": "grand_babylon_0808",
+      "title": "The Grand Babylon Hotel",
+      "author": "Arnold Bennett"
+    },
+    {
+      "id": "circular_staircase1_librivox",
+      "title": "The Circular Staircase",
+      "author": "Mary Roberts Rinehart"
+    },
+    {
+      "id": "flatland_rg_librivox",
+      "title": "Flatland: A Romance of Many Dimensions",
+      "author": "Edwin Abbott Abbott"
+    },
+    {
+      "id": "dhammapada_0707_librivox",
+      "title": "The Dhammapada",
+      "author": "Translated by F. Max Muller"
+    },
+    {
+      "id": "democracy_nc_1106_librivox",
+      "title": "Democracy - An American Novel",
+      "author": "Henry Adams"
+    },
+    {
+      "id": "the_dead_i_librivox",
+      "title": "The Dead",
+      "author": "James Joyce"
+    },
+    {
+      "id": "mohicans_gs_librivox",
+      "title": "The Last Of The Mohicans (A Narrative of 1757)",
+      "author": "James Fenimore Cooper"
+    },
+    {
+      "id": "aliens_0910_librivox",
+      "title": "The Aliens",
+      "author": "Murray Leinster"
+    },
+    {
+      "id": "ashtonkirk_1209_pm",
+      "title": "Ashton-Kirk, Investigator",
+      "author": "John Thomas McIntyre"
+    },
+    {
+      "id": "last_days_of_pompeii_1006_librivox",
+      "title": "Last Days of Pompeii",
+      "author": "Edward Bulwer-Lytton"
+    },
+    {
+      "id": "threehostages_2006_librivox",
+      "title": "The Three Hostages",
+      "author": "John Buchan"
+    },
+    {
+      "id": "shortmysterycoll005_0908_librivox",
+      "title": "Short Mystery Story Collection 005",
+      "author": "Various"
+    },
+    {
+      "id": "childhoods_favorites_fairy_stories_0812_librivox",
+      "title": "Childhood's Favorites and Fairy Stories",
+      "author": "Various"
+    },
+    {
+      "id": "triplanetary_0907_librivox",
+      "title": "Triplanetary",
+      "author": "“Doc” E.E. Smith"
+    },
+    {
+      "id": "bladys_stewponey_ajm_librivox",
+      "title": "Bladys of the Stewponey",
+      "author": "Sabine Baring-Gould"
+    },
+    {
+      "id": "insidious_dr_fumanchu_fnh_librivox",
+      "title": "The Insidious Dr. Fu-Manchu",
+      "author": "Sax Rohmer"
+    },
+    {
+      "id": "tomjones_0811_librivox",
+      "title": "The History of Tom Jones, A Foundling",
+      "author": "Henry Fielding"
+    },
+    {
+      "id": "chessmen_mars_3_1405_librivox",
+      "title": "The Chessmen of Mars (version 3)",
+      "author": "Edgar Rice Burroughs"
+    },
+    {
+      "id": "ulysses_lamb_rd_librivox",
+      "title": "The Adventures of Ulysses",
+      "author": "Charles Lamb"
+    },
+    {
+      "id": "mysteryofthesycamore_1804_librivox",
+      "title": "The Mystery of the Sycamore",
+      "author": "Carolyn Wells"
+    },
+    {
+      "id": "willows_mtr_librivox",
+      "title": "The Willows",
+      "author": "Algernon Blackwood"
+    },
+    {
+      "id": "tales_shakespeare_librivox",
+      "title": "Tales from Shakespeare",
+      "author": "Charles and Mary Lamb"
+    },
+    {
+      "id": "moll_flanders_librivox",
+      "title": "The Fortunes and Misfortunes of the Famous Moll Flanders",
+      "author": "Daniel Defoe"
+    },
+    {
+      "id": "mastersofspace_1612_librivox",
+      "title": "Masters of Space",
+      "author": "E. E. Smith"
+    },
+    {
+      "id": "middlemarch_0810_librivox",
+      "title": "Middlemarch",
+      "author": "George Eliot"
+    },
+    {
+      "id": "theambulancemade_twotrips_pc_librivox",
+      "title": "The Ambulance Made Two Trips",
+      "author": "Murray Leinster"
+    },
+    {
+      "id": "anythingycdo_mn_1302_librivox",
+      "title": "Anything You Can Do...",
+      "author": "Randall Garrett"
+    },
+    {
+      "id": "twixt_land_and_sea_2209_librivox",
+      "title": "'Twixt Land and Sea",
+      "author": "Joseph Conrad"
+    },
+    {
+      "id": "penrod_and_sam_jb_librivox",
+      "title": "Penrod and Sam",
+      "author": "Booth Tarkington"
+    },
+    {
+      "id": "princess_goblin_librivox",
+      "title": "Princess and the Goblin, The",
+      "author": "George MacDonald"
+    },
+    {
+      "id": "alaskan_0805_librivox",
+      "title": "The Alaskan",
+      "author": "James Oliver Curwood"
+    },
+    {
+      "id": "art_of_money_getting_librivox",
+      "title": "The Art of Money Getting",
+      "author": "P.T. Barnum"
+    },
+    {
+      "id": "beasts_men_gods_ms_librivox",
+      "title": "Beasts, Men and Gods",
+      "author": "Ferdinand Ossendowski"
+    },
+    {
+      "id": "golden_road_librivox",
+      "title": "The Golden Road",
+      "author": "Lucy Maud Montgomery,"
+    },
+    {
+      "id": "wizardofoz_1712_librivox",
+      "title": "The Wonderful Wizard of Oz (version 7)",
+      "author": "L. Frank Baum"
+    },
+    {
+      "id": "angel_of_terror_ah_librivox2",
+      "title": "The Angel of Terror",
+      "author": "Edgar Wallace"
+    },
+    {
+      "id": "buccaneers_stockton",
+      "title": "Buccaneers and Pirates of Our Coasts",
+      "author": "Stockton, Frank Richard"
+    },
+    {
+      "id": "adam_bede_0901_librivox",
+      "title": "Adam Bede",
+      "author": "George Eliot"
+    },
+    {
+      "id": "ruemorgue_rtx_librivox",
+      "title": "The Murders in the Rue Morgue",
+      "author": "Edgar Allan Poe"
+    },
+    {
+      "id": "best_man_1009_librivox",
+      "title": "The Best Man",
+      "author": "Grace Livingston Hill"
+    },
+    {
+      "id": "enchanted_island_yew_librivox",
+      "title": "The Enchanted Island of Yew",
+      "author": "Baum, L. Frank"
+    },
+    {
+      "id": "around_the_world1_librivox",
+      "title": "Around the World in Eighty Days",
+      "author": "Jules Verne"
+    },
+    {
+      "id": "clockstrikesthirteen_1511_librivox",
+      "title": "The Clock Strikes Thirteen",
+      "author": "Mildred A. Wirt-Benson"
+    },
+    {
+      "id": "monstermen_1707_librivox",
+      "title": "The Monster Men",
+      "author": "Edgar Rice Burroughs"
+    },
+    {
+      "id": "age_reason_0910_librivox",
+      "title": "The Age of Reason",
+      "author": "Thomas Paine"
+    },
+    {
+      "id": "treasureisland_ks_1510_librivox",
+      "title": "Treasure Island",
+      "author": "Robert Louis Stevenson"
+    },
+    {
+      "id": "1912_shortworks_0906_librivox",
+      "title": "1912: Short Works Collection",
+      "author": "Various"
+    },
+    {
+      "id": "alicesadventuresinwonderland_1902_librivox",
+      "title": "Alice's Adventures in Wonderland (version 6)",
+      "author": "Lewis Carroll"
+    },
+    {
+      "id": "thuvia_maid_of_mars_3_1404_librivox",
+      "title": "Thuvia, Maid of Mars (version 3)",
+      "author": "Edgar Rice Burroughs"
+    },
+    {
+      "id": "colorsofspace_v2_1111_librivox",
+      "title": "The Colors of Space",
+      "author": "Marion Zimmer Bradley"
+    },
+    {
+      "id": "moonstone_1610_librivox",
+      "title": "The Moonstone (version 2)",
+      "author": "Wilkie Collins"
+    },
+    {
+      "id": "beasts_tarzan_jc_librivox",
+      "title": "The Beasts of Tarzan",
+      "author": "Edgar Rice Burroughs"
+    },
+    {
+      "id": "herbertwest_reanimator_pc_librivox",
+      "title": "Herbert West: Re-Animator by H. P. Lovecraft",
+      "author": "H. P. Lovecraft"
+    },
+    {
+      "id": "dolittle_0707_librivox",
+      "title": "The Voyages of Doctor Dolittle",
+      "author": "Hugh Lofting"
+    },
+    {
+      "id": "outwitting_the_hun_1304_librivox",
+      "title": "Outwitting The Hun; My Escape From A German Prison Camp",
+      "author": "Pat O'Brien"
+    },
+    {
+      "id": "nightland_1501_librivox",
+      "title": "The Night Land",
+      "author": "William Hope Hodgson"
+    },
+    {
+      "id": "penrod_0904_lb_librivox",
+      "title": "Penrod",
+      "author": "Booth Tarkington"
+    },
+    {
+      "id": "crimeandpunishment_1911_librivox",
+      "title": "Crime and Punishment (Version 4 Dramatic Reading)",
+      "author": "Fyodor Dostoyevsky"
+    },
+    {
+      "id": "ivanhoe_0906_librivox",
+      "title": "Ivanhoe",
+      "author": "Sir Walter Scott"
+    },
+    {
+      "id": "after_london_rg_librivox",
+      "title": "After London, or Wild England",
+      "author": "Richard Jefferies"
+    },
+    {
+      "id": "callofthewild_tc_1010_librivox",
+      "title": "The Call of the Wild",
+      "author": "Jack London"
+    },
+    {
+      "id": "curiosity_shop_mn_librivox",
+      "title": "The Old Curiosity Shop",
+      "author": "Charles Dickens"
+    },
+    {
+      "id": "ssf_078_2105_librivox",
+      "title": "Short Science Fiction Collection 078",
+      "author": "Various"
+    },
+    {
+      "id": "falconsofnarabedla_1709_librivox",
+      "title": "Falcons of Narabedla",
+      "author": "Marion Zimmer Bradley"
+    },
+    {
+      "id": "hauntedbookshop_0807_librivox",
+      "title": "The Haunted Bookshop",
+      "author": "Christopher Morley"
+    },
+    {
+      "id": "dubliners_0906_librivox",
+      "title": "Dubliners",
+      "author": "James Joyce"
+    },
+    {
+      "id": "greenmantle_0709_librivox",
+      "title": "Greenmantle",
+      "author": "John Buchan"
+    },
+    {
+      "id": "the_stolen_singer_1712_librivox",
+      "title": "The Stolen Singer",
+      "author": "Martha Bellinger"
+    },
+    {
+      "id": "security_0912_librivox",
+      "title": "Security",
+      "author": "Poul Anderson"
+    },
+    {
+      "id": "coming_race_0806_librivox",
+      "title": "The Coming Race",
+      "author": "Edward George Bulwer-Lytton"
+    },
+    {
+      "id": "young_diana_1802_librivox",
+      "title": "The Young Diana",
+      "author": "Marie Corelli"
+    },
+    {
+      "id": "kathleen_kv_librivox",
+      "title": "Kathleen",
+      "author": "Christopher Morley"
+    },
+    {
+      "id": "sevenhplovecraftstories_pc_librivox",
+      "title": "Seven Stories by H.P. Lovecraft",
+      "author": "H. P. Lovecraft"
+    },
+    {
+      "id": "out_of_the_closet_2202_librivox",
+      "title": "Out of the Closet: A Collection of Early LGBTQ+ Fiction",
+      "author": "Various"
+    },
+    {
+      "id": "the_conqueror_worm_1705.poem_librivox",
+      "title": "The Conqueror Worm",
+      "author": "Edgar Allan Poe"
+    },
+    {
+      "id": "poormrsquack_1307_librivox",
+      "title": "The Adventures of Poor Mrs. Quack",
+      "author": "Thornton W. Burgess"
+    },
+    {
+      "id": "maker_of_moons_1607_librivox",
+      "title": "The Maker of Moons, and Other Short Stories",
+      "author": "Robert W. Chambers"
+    },
+    {
+      "id": "haunted_hotel_1001_librivox",
+      "title": "The Haunted Hotel, A Mystery of Modern Venice",
+      "author": "Wilkie Collins"
+    },
+    {
+      "id": "30000_dollar_bequest_1002_librivox",
+      "title": "The 30,000 Dollar Bequest and Other Stories",
+      "author": "Mark Twain"
+    },
+    {
+      "id": "aliasmisssherlock_2008_librivox",
+      "title": "Alias Miss Sherlock",
+      "author": "Arthur Lewis Tubbs"
+    },
+    {
+      "id": "daddy-long-legs_librivox",
+      "title": "Daddy-Long-Legs",
+      "author": "Jean Webster"
+    },
+    {
+      "id": "awitchshallbeborn_pc_librivox",
+      "title": "A Witch Shall Be Born",
+      "author": "Robert E. Howard"
+    },
+    {
+      "id": "short_science_fiction_collection_067_2003_librivox",
+      "title": "Short Science Fiction Collection 067",
+      "author": "Various"
+    },
+    {
+      "id": "octave_of_claudius_1704_librivox",
+      "title": "The Octave of Claudius",
+      "author": "Barry Pain"
+    },
+    {
+      "id": "lifeofdickens_1712_librivox",
+      "title": "Life of Charles Dickens",
+      "author": "Sir Frank T. Marzials"
+    },
+    {
+      "id": "house_of_thousand_candles_0901_librivox",
+      "title": "The House of a Thousand Candles",
+      "author": "Meredith Nicholson"
+    },
+    {
+      "id": "benhur_0906_librivox",
+      "title": "Ben-Hur: A Tale of the Christ",
+      "author": "Lew Wallace"
+    },
+    {
+      "id": "heart_world_ph_librivox",
+      "title": "Heart of the World",
+      "author": "H. Rider Haggard"
+    },
+    {
+      "id": "woodstock_1708_librivox",
+      "title": "Woodstock, or, The Cavalier",
+      "author": "Sir Walter Scott"
+    },
+    {
+      "id": "call_ofthe_wild_1010_librivox",
+      "title": "The Call of the Wild",
+      "author": "Jack London"
+    },
+    {
+      "id": "phantom_opera_rs_librivox",
+      "title": "The Phantom of the Opera",
+      "author": "Gaston Leroux"
+    },
+    {
+      "id": "short_story_011_librivox",
+      "title": "Librivoxs Short Story Collection Vol. 011",
+      "author": "LibriVox"
+    },
+    {
+      "id": "warlord_of_kor_librivox",
+      "title": "Warlord of Kor",
+      "author": "Terry Carr"
+    },
+    {
+      "id": "whitefang2_1010_librivox",
+      "title": "White Fang, version 2",
+      "author": "Jack London"
+    },
+    {
+      "id": "garlandforgirls_0810_librivox",
+      "title": "A Garland For Girls",
+      "author": "Louisa May Alcott"
+    },
+    {
+      "id": "hypnotism_alpheus_0906_librivox",
+      "title": "Complete Hypnotism, Mesmerism, Mind-Reading and Spiritualism",
+      "author": "A. Alpheus"
+    },
+    {
+      "id": "roughing_in_bush_mf_librivox",
+      "title": "Roughing It in the Bush",
+      "author": "Susanna Moodie"
+    },
+    {
+      "id": "town_took_off_tw_librivox",
+      "title": "And Then the Town Took Off",
+      "author": "Richard Wilson"
+    },
+    {
+      "id": "couldnotstop_1305_librivox",
+      "title": "Because I Could Not Stop for Death",
+      "author": "Emily Dickinson"
+    },
+    {
+      "id": "medshipman_1602_librivox",
+      "title": "Med Ship Man",
+      "author": "Murray Leinster"
+    },
+    {
+      "id": "childrensshortworks025_1804_librivox",
+      "title": "Children's Short Works, Vol. 025",
+      "author": "Various"
+    },
+    {
+      "id": "son_of_tarzan_rs_librivox",
+      "title": "Son of Tarzan",
+      "author": "Edgar Rice Burroughs"
+    },
+    {
+      "id": "door_through_space_0908",
+      "title": "The Door Through Space",
+      "author": "Marion Zimmer Bradley"
+    },
+    {
+      "id": "chessmenofmars_tc_1404_librivox",
+      "title": "The Chessmen of Mars",
+      "author": "Edgar Rice Burroughs"
+    },
+    {
+      "id": "happyprinceothertales_1705_librivox",
+      "title": "The Happy Prince and Other Tales (version 5)",
+      "author": "Oscar Wilde"
+    },
+    {
+      "id": "dancing_girls_pc_librivox",
+      "title": "The Dancing Girls",
+      "author": "Edna Ferber"
+    },
+    {
+      "id": "commentaries_blackstone_0810_librivox",
+      "title": "Commentaries on the Laws of England (1765)",
+      "author": "William Blackstone"
+    },
+    {
+      "id": "rillaofingleside_version_2_1309_librivox",
+      "title": "Rilla of Ingleside (version 2)",
+      "author": "Lucy Maud Montgomery"
+    },
+    {
+      "id": "american_fairytales_1104_librivox",
+      "title": "American Fairy Tales",
+      "author": "L. Frank Baum"
+    },
+    {
+      "id": "fast_in_ice_ehl_librivox",
+      "title": "Fast in the Ice",
+      "author": "R.M. Ballantyne"
+    },
+    {
+      "id": "ourmutualfriend_1101_librivox",
+      "title": "Our Mutual Friend",
+      "author": "Charles Dickens"
+    },
+    {
+      "id": "short_story_020_0710_librivox",
+      "title": "LibriVox Short Story Collection Vol. 019",
+      "author": "LibriVox"
+    },
+    {
+      "id": "christmas_story_1112_librivox",
+      "title": "Christmas, A Story",
+      "author": "Zona Gale"
+    },
+    {
+      "id": "grammar-land_1011",
+      "title": "Grammar-Land",
+      "author": "M.L. Nesbitt"
+    },
+    {
+      "id": "lanagan_amateur_detective_1804_librivox",
+      "title": "Lanagan Amateur Detective",
+      "author": "Edward H. Hurlbut"
+    },
+    {
+      "id": "creatures_abyss_mn_librivox",
+      "title": "Creatures of the Abyss",
+      "author": "Murray Leinster"
+    },
+    {
+      "id": "women_in_love_0901_librivox",
+      "title": "Women in Love",
+      "author": "D. H. Lawrence"
+    },
+    {
+      "id": "eric_blackburn_1703_librivox",
+      "title": "The Strange Adventures of Eric Blackburn",
+      "author": "Harry Collingwood"
+    },
+    {
+      "id": "spacehounds_of_ipc_1005_librivox",
+      "title": "Spacehounds of IPC",
+      "author": "E. E. \"Doc\" Smith"
+    },
+    {
+      "id": "thiscrowdedearth_0903_librivox",
+      "title": "This Crowded Earth",
+      "author": "Robert Bloch"
+    },
+    {
+      "id": "twisted_candle_librivox",
+      "title": "The Clue of the Twisted Candle",
+      "author": "Edgar Wallace"
+    },
+    {
+      "id": "four_day_planet_1012_librivox",
+      "title": "Four-Day Planet",
+      "author": "H. Beam Piper"
+    },
+    {
+      "id": "firstlensman_1507_librivox",
+      "title": "First Lensman",
+      "author": "E. E. Smith"
+    },
+    {
+      "id": "chessmenofmars_0902_librivox",
+      "title": "The Chessmen of Mars",
+      "author": "Edgar Rice Burroughs"
+    },
+    {
+      "id": "abominationsofmodernsociety_1306_librivox",
+      "title": "The Abominations of Modern Society",
+      "author": "Thomas Dewitt Talmage"
+    },
+    {
+      "id": "swissrobinson_ks_0908",
+      "title": "The Swiss Family Robinson",
+      "author": "Johann R. Wyss"
+    },
+    {
+      "id": "south_shackleton_0710_librivox",
+      "title": "South! The Story of Shackleton's Last Expedition 1914-1917",
+      "author": "Ernest Shackleton"
+    },
+    {
+      "id": "hushed_up_1106_librivox",
+      "title": "Hushed Up! A Mystery of London",
+      "author": "William Le Queux"
+    },
+    {
+      "id": "acrosstheyears_1212_librivox",
+      "title": "Across The Years",
+      "author": "Eleanor H. Porter"
+    },
+    {
+      "id": "just_so_stories",
+      "title": "Just So Stories",
+      "author": "Rudyard Kipling"
+    },
+    {
+      "id": "waterbabies_cs_librivox",
+      "title": "The Water-Babies",
+      "author": "Charles Kingsley"
+    },
+    {
+      "id": "old_man_in_corner_jms_librivox",
+      "title": "The Old Man in the Corner",
+      "author": "Baroness Emmuska Orczy"
+    },
+    {
+      "id": "angel_terror_librivox_le",
+      "title": "The Angel of Terror",
+      "author": "Edgar Wallace"
+    },
+    {
+      "id": "pirates_of_ersatz_0911_librivox",
+      "title": "The Pirates of Ersatz",
+      "author": "Murray Leinster"
+    },
+    {
+      "id": "people_minus_x_1511_librivox",
+      "title": "People Minus X",
+      "author": "Raymond Z. Gallun"
+    },
+    {
+      "id": "peterpandramaticreading_1409_librivox",
+      "title": "Peter Pan (Dramatic Reading)",
+      "author": "J. M. Barrie"
+    },
+    {
+      "id": "hislastbow_dr_1503_librivox",
+      "title": "His Last Bow: Some Reminiscences of Sherlock Holmes (Dramatic Reading)",
+      "author": "Sir Arthur Conan Doyle"
+    },
+    {
+      "id": "ultimate_weapon_1110_librivox",
+      "title": "The Ultimate Weapon",
+      "author": "John W. Campbell"
+    },
+    {
+      "id": "doublelifeofalfredburton_1801_librivox",
+      "title": "The Double Life Of Mr. Alfred Burton",
+      "author": "E. Phillips Oppenheim"
+    },
+    {
+      "id": "threemen_onbummel_tm_librivox",
+      "title": "Three Men on the Bummel (Version 2)",
+      "author": "Jerome K. Jerome"
+    },
+    {
+      "id": "hans_of_iceland_1608_librivox",
+      "title": "Hans of Iceland",
+      "author": "Victor Hugo"
+    },
+    {
+      "id": "john_deane_nottingham_1702_librivox",
+      "title": "John Deane of Nottingham: Historic Adventures by Land and Sea",
+      "author": "William Henry Giles Kingston"
+    },
+    {
+      "id": "ssf_070_2008_librivox",
+      "title": "Short Science Fiction Collection 070",
+      "author": "Various"
+    },
+    {
+      "id": "lilith_pw_librivox",
+      "title": "Lilith",
+      "author": "George MacDonald"
+    },
+    {
+      "id": "star_born_mfs_librivox",
+      "title": "Star Born",
+      "author": "Andre Norton"
+    },
+    {
+      "id": "keyoutoftime_2_1405_librivox",
+      "title": "Key Out of Time (version 2)",
+      "author": "Andre Norton"
+    },
+    {
+      "id": "time_machine_1201_librivox",
+      "title": "The Time Machine (version 4)",
+      "author": "H. G. Wells"
+    },
+    {
+      "id": "short_scifi_collection_064_1901_librivox",
+      "title": "Short Science Fiction Collection 064",
+      "author": "Various"
+    },
+    {
+      "id": "adventureofthespeckledband_1311_librivox",
+      "title": "The Adventure of the Speckled Band",
+      "author": "Sir Arthur Conan Doyle"
+    },
+    {
+      "id": "opalserpent_1609_librivox",
+      "title": "The Opal Serpent",
+      "author": "Fergus Hume"
+    },
+    {
+      "id": "earths_core_0810_librivox",
+      "title": "At the Earth's Core",
+      "author": "Edgar Rice Burroughs"
+    },
+    {
+      "id": "olga_romanoff_cf_2004_librivox",
+      "title": "Olga Romanoff",
+      "author": "George Griffith"
+    },
+    {
+      "id": "adventures_bindle_dwj_librivox",
+      "title": "Adventures of Bindle",
+      "author": "Herbert Jenkins"
+    },
+    {
+      "id": "tramp_abroad_jg_0906_librivox",
+      "title": "A Tramp Abroad",
+      "author": "Mark Twain"
+    },
+    {
+      "id": "whitemoll_0811_librivox",
+      "title": "The White Moll",
+      "author": "Frank L. Packard"
+    },
+    {
+      "id": "melmoththewanderer_1612_librivox",
+      "title": "Melmoth The Wanderer",
+      "author": "Charles Robert Maturin"
+    },
+    {
+      "id": "morerooseveltbears_1801_librivox",
+      "title": "More About the Roosevelt Bears",
+      "author": "Seymour Eaton"
+    },
+    {
+      "id": "in_the_fog_1112_librivox",
+      "title": "In the Fog",
+      "author": "Richard Harding Davis"
+    },
+    {
+      "id": "hanging_librivox",
+      "title": "Present at a Hanging and Other Ghost Stories",
+      "author": "Ambrose Bierce"
+    },
+    {
+      "id": "treasury_beatrixpotter_0910",
+      "title": "The Great Big Treasury of Beatrix Potter",
+      "author": "Beatrix Potter"
+    },
+    {
+      "id": "abbotts_ghost_0910_librivox",
+      "title": "The Abbots Ghost or Maurice Treherne Temptation",
+      "author": "Louisa May Alcott"
+    },
+    {
+      "id": "mysteryofboulecabinet_1410_librivox",
+      "title": "The Mystery of the Boule Cabinet",
+      "author": "Burton Egbert Stevenson"
+    },
+    {
+      "id": "antarctic_mystery_ehl_librivox",
+      "title": "An Antarctic Mystery or The Sphinx of the Ice Fields",
+      "author": "Jules Verne"
+    },
+    {
+      "id": "john_dough_and_the_cherub_1607_librivox",
+      "title": "John Dough and the Cherub",
+      "author": "L. Frank Baum"
+    },
+    {
+      "id": "lost_prince_su_librivox",
+      "title": "The Lost Prince",
+      "author": "Frances Hodgson Burnett"
+    },
+    {
+      "id": "talesofspaceandtime_1401_librivox",
+      "title": "Tales of Space and Time",
+      "author": "H. G. Wells"
+    },
+    {
+      "id": "ssf_075_2102_librivox",
+      "title": "Short Science Fiction Collection 075",
+      "author": "Various"
+    },
+    {
+      "id": "fiftyonetales_1505_librivox",
+      "title": "Fifty-one tales",
+      "author": "Lord Dunsany"
+    },
+    {
+      "id": "unclewiggilystravels_1309_librivox",
+      "title": "Uncle Wiggily's Travels",
+      "author": "Howard R. Garis"
+    },
+    {
+      "id": "eye_for_an_eye_1301_librivox",
+      "title": "An Eye for an Eye",
+      "author": "William Le Queux"
+    },
+    {
+      "id": "ssf087_2208_librivox",
+      "title": "Short Science Fiction Collection 087",
+      "author": "Various"
+    },
+    {
+      "id": "cynthiawakehamsmoney_1703_librivox",
+      "title": "Cynthia Wakeham's Money",
+      "author": "Anna Katharine Green"
+    },
+    {
+      "id": "revelations_wife_mr_0906_librivox",
+      "title": "Revelations of a Wife",
+      "author": "Adele Garrison"
+    },
+    {
+      "id": "great_composers_1102_librivox",
+      "title": "Stories of Great Composers for Children",
+      "author": "Thomas Tapper"
+    },
+    {
+      "id": "lookingglass_ap_librivox",
+      "title": "Through the Looking-glass and What Alice Found There",
+      "author": "Lewis Carroll"
+    },
+    {
+      "id": "royalbookofoz_1410_librivox",
+      "title": "The Royal Book of Oz (Dramatic Reading)",
+      "author": "Ruth Plumly Thompson"
+    },
+    {
+      "id": "story_candy_rabbit_cs_librivox",
+      "title": "The Story of a Candy Rabbit",
+      "author": "Laura Lee Hope"
+    },
+    {
+      "id": "psychopathology_everyday_life_ms_librivox",
+      "title": "Psychopathology of Everyday Life",
+      "author": "Sigmund Freud"
+    },
+    {
+      "id": "returnsherlockholmes_1405_librivox",
+      "title": "The Return of Sherlock Holmes (Dramatic Reading)",
+      "author": "Sir Arthur Conan Doyle"
+    },
+    {
+      "id": "hyp011_1712_librivox",
+      "title": "Harper's Young People, Vol. 01, Issue 11, January 13, 1880",
+      "author": "Various"
+    },
+    {
+      "id": "shadowofaman_1608_librivox",
+      "title": "The Shadow of a Man",
+      "author": "E. W. Hornung"
+    },
+    {
+      "id": "this_side_of_paradise_0806_librivox",
+      "title": "This Side of Paradise",
+      "author": "F. Scott Fitzgerald"
+    },
+    {
+      "id": "grayplague_1110_librivox",
+      "title": "The Gray Plague",
+      "author": "Lloyd Eshbach"
+    },
+    {
+      "id": "autobiography_seaman_2_1607_librivox",
+      "title": "Autobiography of a Seaman, Vol. 2",
+      "author": "Lord Thomas Cochrane"
+    },
+    {
+      "id": "enchanted_april_dk_librivox",
+      "title": "The Enchanted April",
+      "author": "Elizabeth von Arnim"
+    },
+    {
+      "id": "machine_stops_librivox",
+      "title": "The Machine Stops",
+      "author": "E. M. Forster"
+    },
+    {
+      "id": "deadmensshoes_1606_librivox",
+      "title": "Dead Men's Shoes",
+      "author": "Mary Elizabeth Braddon"
+    },
+    {
+      "id": "amazing_interlude_1102_librivox",
+      "title": "The Amazing Interlude",
+      "author": "Mary Roberts Rinehart"
+    },
+    {
+      "id": "whitecat_rk_1002_librivox",
+      "title": "The Window at the White Cat",
+      "author": "Mary Roberts Rinehart"
+    },
+    {
+      "id": "something_new_librivox",
+      "title": "Something New",
+      "author": "P.G. Wodehouse."
+    },
+    {
+      "id": "selected_stories_fitzgerald_0902_librivox",
+      "title": "Selected Short Stories",
+      "author": "F. Scott Fitzgerald"
+    },
+    {
+      "id": "captains_courageous_mfs_librivox",
+      "title": "Captains Courageous",
+      "author": "Rudyard Kipling"
+    },
+    {
+      "id": "short_science_fiction_collection_066_1910_librivox",
+      "title": "Short Science Fiction Collection 066",
+      "author": "Various"
+    },
+    {
+      "id": "thehandinthedark_1702_librivox",
+      "title": "The Hand in the Dark",
+      "author": "Arthur J. Rees"
+    },
+    {
+      "id": "ghohor033_1905_librivox",
+      "title": "Short Ghost and Horror Collection 033",
+      "author": "Various"
+    },
+    {
+      "id": "coffee_break_collection_001_0909_librivox",
+      "title": "Coffee Break Collection 001",
+      "author": "Various"
+    },
+    {
+      "id": "worlds_best_literature_11_2103_librivox",
+      "title": "Library of the World's Best Literature, Ancient and Modern, volume 11",
+      "author": "Various"
+    },
+    {
+      "id": "oldfashionedgirl_0810",
+      "title": "An Old-Fashioned Girl",
+      "author": "Louisa May Alcott"
+    },
+    {
+      "id": "antonia_0801_librivox1",
+      "title": "My Antonia",
+      "author": "Willa Cather"
+    },
+    {
+      "id": "evilshepherd_1709_librivox",
+      "title": "The Evil Shepherd",
+      "author": "E. Phillips Oppenheim"
+    },
+    {
+      "id": "fevers_physicians_in_space_2303_librivox",
+      "title": "Fevers and Physicians in Space",
+      "author": "Robert Silverberg; Murray Leinster; Lester del Rey; Robert Sheckley; Jesse Franklin Bone; Lyn Venable; Kurt Vonnegut, Jr.; Katherine MacLean; William Morrison; Jack G. Huekels; Floyd L. Wallace; Charles Beaumont; Winston K. Marks; Richard Matheson; Larry Maddock"
+    },
+    {
+      "id": "three_musketeers_v_2_mfs_1805_librivox",
+      "title": "The Three Musketeers, Version 2",
+      "author": "Alexandre Dumas"
+    },
+    {
+      "id": "dolls_house_0812_librivox",
+      "title": "A Doll's House",
+      "author": "Henrik Ibsen"
+    },
+    {
+      "id": "roundtheblock_gh_librivox",
+      "title": "Round the Block",
+      "author": "John Bell Bouton"
+    },
+    {
+      "id": "wishing_well_1604_librivox",
+      "title": "The Wishing Well",
+      "author": "Mildred A. Wirt Benson"
+    },
+    {
+      "id": "a_dreamers_tales_dm_1501_librivox",
+      "title": "A Dreamer's Tales",
+      "author": "Lord Dunsany"
+    },
+    {
+      "id": "beautiful_damned_0809_librivox",
+      "title": "The Beautiful and Damned",
+      "author": "F. Scott Fitzgerald"
+    },
+    {
+      "id": "north_and_south2_0711_librivox",
+      "title": "North and South2",
+      "author": "Elizabeth Cleghorn Gaskell"
+    },
+    {
+      "id": "brothers_valiant_rm_librivox",
+      "title": "All the Brothers Were Valiant",
+      "author": "Ben Ames Williams"
+    },
+    {
+      "id": "adrift_newyork_0910_librivox",
+      "title": "Adrift in New York",
+      "author": "Horatio Alger, Jr."
+    },
+    {
+      "id": "onwar_1005_librivox",
+      "title": "On War Volume 1",
+      "author": "Carl von Clausewitz"
+    },
+    {
+      "id": "sense_and_sensibility_ms_librivox",
+      "title": "Sense and Sensibility - (Version 02)",
+      "author": "Jane Austen"
+    },
+    {
+      "id": "secret_of_night_dj_librivox",
+      "title": "The Secret of the Night",
+      "author": "Gaston Leroux"
+    },
+    {
+      "id": "adventuresofmabel_1803_librivox",
+      "title": "The Adventures of Mabel",
+      "author": "Lyndon Orr"
+    },
+    {
+      "id": "carmilla_s_lefanu_librivox",
+      "title": "Carmilla",
+      "author": "LeFanu, Joseph Sheridan"
+    },
+    {
+      "id": "horror_002_librivox",
+      "title": "Horror Story Collection 002",
+      "author": "Various"
+    },
+    {
+      "id": "arabian_nights_0911_librivox",
+      "title": "The Arabian Nights Entertainments",
+      "author": "Andrew Lang"
+    },
+    {
+      "id": "prideandprejudice_1212_librivox",
+      "title": "Pride and Prejudice: A Play",
+      "author": "Mary Keith Medbery Mackaye"
+    },
+    {
+      "id": "time_machine_ms_librivox",
+      "title": "The Time Machine (version 2)",
+      "author": "H. G. Wells"
+    },
+    {
+      "id": "texasmatchmaker_1804_librivox",
+      "title": "A Texas Matchmaker",
+      "author": "Andy Adams"
+    },
+    {
+      "id": "millmystery_1802_librivox",
+      "title": "The Mill Mystery",
+      "author": "Anna Katharine Green"
+    },
+    {
+      "id": "golden_web_1506_librivox",
+      "title": "The Golden Web",
+      "author": "E. Phillips Oppenheim"
+    },
+    {
+      "id": "lone_star_planet_0910_librivox",
+      "title": "Lone Star Planet",
+      "author": "H. Beam Piper and John J. McGuire"
+    },
+    {
+      "id": "people_time_forgot_rs_0809_librivox",
+      "title": "The People that Time Forgot",
+      "author": "Edgar Rice Burroughs"
+    },
+    {
+      "id": "montessori_method_0906_librivox",
+      "title": "The Montessori Method",
+      "author": "Maria Montessori"
+    },
+    {
+      "id": "cricket_hearth_rg_librivox",
+      "title": "The Cricket on the Hearth",
+      "author": "Charles Dickens"
+    },
+    {
+      "id": "outlaw_of_torn_1003_librivox",
+      "title": "The Outlaw of Torn",
+      "author": "Edgar Rice Burroughs"
+    },
+    {
+      "id": "grey_woman_0901_librivox",
+      "title": "The Grey Woman",
+      "author": "Elizabeth Cleghorn Gaskell"
+    },
+    {
+      "id": "religious_experience_1008_librivox",
+      "title": "Varieties of Religious Experience",
+      "author": "William James"
+    },
+    {
+      "id": "alonso_fitz_1002_librivox",
+      "title": "Alonzo Fitz and Other Stories",
+      "author": "Twain, Mark"
+    },
+    {
+      "id": "man_obsessed_1710_librivox",
+      "title": "A Man Obsessed",
+      "author": "Alan Edward Nourse"
+    },
+    {
+      "id": "boxcarchildren_1310_librivox",
+      "title": "The Box-Car Children",
+      "author": "Gertrude Chandler Warner"
+    },
+    {
+      "id": "next_door_dl_librivox",
+      "title": "That Affair Next Door",
+      "author": "Anna Katharine Green"
+    },
+    {
+      "id": "akissforcinderella_1701_librivox",
+      "title": "A Kiss for Cinderella",
+      "author": "J. M. Barrie"
+    },
+    {
+      "id": "therepairman_pc_librivox",
+      "title": "The Repairman",
+      "author": "Harry Harrison"
+    },
+    {
+      "id": "this_country_pt1_ks",
+      "title": "This Country of Ours, Part 1",
+      "author": "H.E. Marshall"
+    },
+    {
+      "id": "brotherskaramazov2_1606_librivox",
+      "title": "The Brothers Karamazov",
+      "author": "Fyodor Dostoyevsky"
+    },
+    {
+      "id": "short_science_fiction_collection_053_1511_librivox",
+      "title": "Short Science Fiction Collection 053",
+      "author": "Various"
+    },
+    {
+      "id": "agathawebb_1310_librivox",
+      "title": "Agatha Webb",
+      "author": "Anna Katharine Green"
+    },
+    {
+      "id": "vicar_of_wakefield_librivox",
+      "title": "The Vicar of Wakefield",
+      "author": "Oliver Goldsmith"
+    },
+    {
+      "id": "milliondollarsuitcase_1702_librivox",
+      "title": "The Million-Dollar Suitcase",
+      "author": "Alice MacGowan"
+    },
+    {
+      "id": "omnilingual_librivox",
+      "title": "Omnilingual",
+      "author": "H. Beam Piper"
+    },
+    {
+      "id": "island_nights_entertainments_1601_librivox",
+      "title": "Island Nights' Entertainments",
+      "author": "Robert Louis Stevenson"
+    },
+    {
+      "id": "worlds_best_mystery_2_librivox",
+      "title": "Library of World's Best Mystery and Detective Stories, Volume 2",
+      "author": "Various"
+    },
+    {
+      "id": "godsofthenorth_1501_librivox",
+      "title": "Gods of the North",
+      "author": "Robert E. Howard"
+    },
+    {
+      "id": "gambler_1011_librivox",
+      "title": "The Gambler",
+      "author": "Fyodor Dostoyevsky"
+    },
+    {
+      "id": "planetofdread_pc_librivox",
+      "title": "Planet of Dread",
+      "author": "Murray Leinster"
+    },
+    {
+      "id": "dragonssecret_0808_librivox",
+      "title": "The Dragon's Secret",
+      "author": "Augusta Huiell Seaman"
+    },
+    {
+      "id": "elusive_pimpernel_krs_librivox",
+      "title": "The Elusive Pimpernel",
+      "author": "Baroness Emmuska Orczy"
+    },
+    {
+      "id": "bobbsey_twins_deep_blue_sea_1902_librivox",
+      "title": "The Bobbsey Twins on the Deep Blue Sea",
+      "author": "Laura Lee Hope"
+    },
+    {
+      "id": "master_of_world_mfs_librivox",
+      "title": "The Master of the World",
+      "author": "Jules Verne"
+    },
+    {
+      "id": "planet-damned_0805_librivox",
+      "title": "Planet of the Damned",
+      "author": "Harry Harrison"
+    },
+    {
+      "id": "ghost_and_horror_17_1208_librivox",
+      "title": "Short Ghost and Horror Story Collection Vol. 017",
+      "author": "Various"
+    },
+    {
+      "id": "thing_from_the_lake_rm_0904_librivox",
+      "title": "The Thing from the Lake",
+      "author": "Eleanor M. Ingram"
+    },
+    {
+      "id": "alicesadventuresinwonderland_2005_librivox",
+      "title": "Alice's Adventures in Wonderland (Version 7)",
+      "author": "Lewis Carroll"
+    },
+    {
+      "id": "postmastersdaughter_1408_librivox",
+      "title": "The Postmaster's Daughter",
+      "author": "Louis Tracy"
+    },
+    {
+      "id": "wodehouse_shorts_1103_librivox",
+      "title": "Selected Short Stories",
+      "author": "P. G. Wodehouse"
+    },
+    {
+      "id": "the_innocents_1011_librivox",
+      "title": "The Innocents, A Story for Lovers",
+      "author": "Sinclair Lewis"
+    },
+    {
+      "id": "hyp12_01_1804_librivox",
+      "title": "Harper's Young People, Vol. 01, Issue 12, Jan. 20, 1880",
+      "author": "Various"
+    },
+    {
+      "id": "that_mainwaring_affair_jms",
+      "title": "That Mainwaring Affair",
+      "author": "Anna Maynard Barbour"
+    },
+    {
+      "id": "bunnersisters_0907_librivox",
+      "title": "Bunner Sisters",
+      "author": "Edith Wharton"
+    },
+    {
+      "id": "lesmis4_1004_librivox",
+      "title": "Les Misérables, Vol. 4",
+      "author": "Victor Hugo"
+    },
+    {
+      "id": "demonofgibbet_1302_librivox",
+      "title": "The Demon of the Gibbet",
+      "author": "Fitz-James O'Brien"
+    },
+    {
+      "id": "northangerabbeydramatic_1502_librivox",
+      "title": "Northanger Abbey (Dramatic Reading)",
+      "author": "Jane Austen"
+    },
+    {
+      "id": "secret_ninth_planet_1206_librivox",
+      "title": "The Secret Of The Ninth Planet",
+      "author": "Donald Wollheim"
+    },
+    {
+      "id": "alcatraz_1105_librivox",
+      "title": "Alcatraz",
+      "author": "Max Brand"
+    },
+    {
+      "id": "jungle_tales_tarzan_0903_librivox",
+      "title": "Jungle Tales of Tarzan",
+      "author": "Edgar Rice Burroughs"
+    },
+    {
+      "id": "scarecrow_of_oz_0802_librivox",
+      "title": "Scarecrow of Oz, The",
+      "author": "L. Frank Baum"
+    },
+    {
+      "id": "rivals_sherlock_holmes1_1111_librivox",
+      "title": "The Rivals of Sherlock Holmes, Volume 1",
+      "author": "Various"
+    },
+    {
+      "id": "master_of_the_vineyard_1711_librivox",
+      "title": "Master of the Vineyard",
+      "author": "Myrtle Reed"
+    },
+    {
+      "id": "thiscountry7_1506_librivox",
+      "title": "This Country of Ours, Part 7",
+      "author": "Henrietta Elizabeth Marshall"
+    },
+    {
+      "id": "barbara_in_brittany_0901_librivox",
+      "title": "Barbara in Brittany",
+      "author": "E. A. Gillie"
+    },
+    {
+      "id": "aliceinwonderland_2106_librivox",
+      "title": "Alice's Adventures in Wonderland (Version 8)",
+      "author": "Lewis Carroll"
+    },
+    {
+      "id": "scarlet_plague_0907_librivox",
+      "title": "The Scarlet Plague",
+      "author": "Jack London"
+    },
+    {
+      "id": "historymrpolly_ap_librivox",
+      "title": "The History of Mr. Polly",
+      "author": "H. G. Wells"
+    },
+    {
+      "id": "mystery_coll_001_librivox",
+      "title": "LibriVox Short Mystery Story Collection Vol. 001",
+      "author": "LibriVox"
+    },
+    {
+      "id": "junior_classics_8_1307_librivox",
+      "title": "The Junior Classics- Volume 8: Animal and Nature Stories",
+      "author": "William Patten"
+    },
+    {
+      "id": "fantasy_faeries_ghosts_sc_1508_librivox",
+      "title": "Fantasy, Faeries and Ghosts",
+      "author": "Various"
+    },
+    {
+      "id": "brotherhood_seven_kings_jms_librivox",
+      "title": "The Brotherhood of the Seven Kings",
+      "author": "L. T. Meade and Robert Eustace"
+    },
+    {
+      "id": "threesfstoriesbypaulwfairman_2208_librivox",
+      "title": "Three SF Short Stories by Paul W. Fairman",
+      "author": "Paul W. Fairman"
+    },
+    {
+      "id": "ayesha_return_she_0805_librivox",
+      "title": "Ayesha, the Return of She",
+      "author": "Haggard, H. Rider"
+    },
+    {
+      "id": "behind_the_green_door_1512_librivox",
+      "title": "Behind the Green Door",
+      "author": "Mildred A. Wirt-Benson"
+    },
+    {
+      "id": "1000worlds_0709_librivox",
+      "title": "Life in a Thousand Worlds",
+      "author": "William Shuler Harris"
+    },
+    {
+      "id": "dark_house_0807_librivox",
+      "title": "The Dark House",
+      "author": "George Manville Fenn"
+    },
+    {
+      "id": "riddle_sands_ge_0904_librivox",
+      "title": "The Riddle of the Sands",
+      "author": "Erskine Childers"
+    },
+    {
+      "id": "rainyweek_ver2_1708_librivox",
+      "title": "Rainy Week (Version 2)",
+      "author": "Eleanor Hallowell Abbott"
+    },
+    {
+      "id": "frenziedfiction_dl_librivox",
+      "title": "Frenzied Fiction",
+      "author": "Stephen Leacock"
+    },
+    {
+      "id": "fantasy_faeries_ghosts_2_sc_1605_librivox",
+      "title": "Fantasy, Faeries and Ghosts, Volume 2",
+      "author": "Various"
+    },
+    {
+      "id": "works_poe_raven_edition_vol1_1109",
+      "title": "The Works of Edgar Allan Poe, Raven Edition, Volume 1",
+      "author": "Edgar Allan Poe"
+    },
+    {
+      "id": "alice_adams_j_librivox",
+      "title": "Alice Adams",
+      "author": "Booth Tarkington"
+    },
+    {
+      "id": "hampstead_mystery_0807_librivox",
+      "title": "The Hampstead Mystery",
+      "author": "John R. Watson and Arthur J. Rees"
+    },
+    {
+      "id": "sister_carrie_0804_librivox",
+      "title": "Sister Carrie",
+      "author": "Theodore Dreiser"
+    },
+    {
+      "id": "battles_stars_2303_librivox",
+      "title": "Battles for the Stars",
+      "author": "Various"
+    },
+    {
+      "id": "short_scifi_008_0810_librivox",
+      "title": "Short Science Fiction Collection Vol. 008",
+      "author": "Alan Edward Nourse"
+    },
+    {
+      "id": "hoofbeats_turnpike_ca_1612_librivox",
+      "title": "Hoofbeats on the Turnpike",
+      "author": "Mildred A. Wirt Benson"
+    },
+    {
+      "id": "amethyst_cross_2012_librivox",
+      "title": "The Amethyst Cross",
+      "author": "Fergus Hume"
+    },
+    {
+      "id": "sweetlittleoldlady_pc_librivox",
+      "title": "That Sweet Little Old Lady",
+      "author": "Randall Garrett"
+    },
+    {
+      "id": "love_conquers_all_librivox",
+      "title": "Love Conquers All",
+      "author": "Robert Benchley"
+    },
+    {
+      "id": "ssf_081_2109_librivox",
+      "title": "Short Science Fiction Collection 081",
+      "author": "Various"
+    },
+    {
+      "id": "gods_mars3_1306",
+      "title": "The Gods of Mars version 3",
+      "author": "Edgar Rice Burroughs"
+    },
+    {
+      "id": "short_science_fiction_collection_065_1905_librivox",
+      "title": "Short Science Fiction Collection 065",
+      "author": "Various"
+    },
+    {
+      "id": "meteorology_weather_explained_1205b_librivox",
+      "title": "Meteorology; or Weather Explained",
+      "author": "J.G. M'Pherson"
+    },
+    {
+      "id": "millionaire_baby_1001_librivox",
+      "title": "The Millionaire Baby",
+      "author": "Anna Katharine Green"
+    },
+    {
+      "id": "around_the_campfire_1803_librivox",
+      "title": "Around The Campfire",
+      "author": "Sir Charles G. D. Roberts"
+    },
+    {
+      "id": "goldenbullet_1105_librivox",
+      "title": "The Case of the Golden Bullet",
+      "author": "Grace Isabel Colbron and Auguste Groner"
+    },
+    {
+      "id": "free_air_hh_librivox",
+      "title": "Free Air",
+      "author": "Sinclair Lewis"
+    },
+    {
+      "id": "child_christopher_1803_librivox",
+      "title": "Child Christopher and Goldilind the Fair",
+      "author": "William Morris"
+    },
+    {
+      "id": "secret_pact_1606_librivox",
+      "title": "The Secret Pact",
+      "author": "Mildred A. Wirt Benson"
+    },
+    {
+      "id": "revelations_of_divine_love_drb_librivox",
+      "title": "Revelations of Divine Love",
+      "author": "Julian of Norwich"
+    },
+    {
+      "id": "thehoundfromthenorth_1708_librivox",
+      "title": "The Hound From the North",
+      "author": "Ridgwell Cullum"
+    },
+    {
+      "id": "dog_of_flanders_rm_librivox",
+      "title": "A Dog of Flanders",
+      "author": "Ouida"
+    },
+    {
+      "id": "book_wonder_ge_librivox",
+      "title": "The Book of Wonder",
+      "author": "Lord Dunsany (Edward J. M. D. Plunkett)"
+    },
+    {
+      "id": "mary_louise_in_the_country_0902_librivox",
+      "title": "Mary Louise in the Country",
+      "author": "L. Frank Baum"
+    },
+    {
+      "id": "leavenworth_case_librivox",
+      "title": "The Leavenworth Case",
+      "author": "Anna Katharine Green"
+    },
+    {
+      "id": "jimmiedale_0804_librivox",
+      "title": "The Adventures of Jimmie Dale",
+      "author": "Frank L. Packard"
+    },
+    {
+      "id": "last_plainsmen_mv_0901_librivox",
+      "title": "The Last of the Plainsmen",
+      "author": "Zane Grey"
+    },
+    {
+      "id": "easy_lessons_einstein_1103_librivox",
+      "title": "Easy Lessons in Einstein",
+      "author": "Edwin E. Slosson"
+    },
+    {
+      "id": "trilby_1008_librivox",
+      "title": "Trilby",
+      "author": "George du Maurier"
+    },
+    {
+      "id": "twainwhiteelephant",
+      "title": "The Stolen White Elephant",
+      "author": "Mark Twain"
+    },
+    {
+      "id": "childrensshortworksvol028_1907_librivox",
+      "title": "Children's Short Works, Vol. 028",
+      "author": "Various"
+    },
+    {
+      "id": "dead_mens_money_librivox",
+      "title": "Dead Men's Money",
+      "author": "J. S. Fletcher"
+    },
+    {
+      "id": "dear_enemy_0710_librivox",
+      "title": "Dear Enemy",
+      "author": "Jean Webster"
+    },
+    {
+      "id": "grotesques_and_fantasies_1412_librivox",
+      "title": "Grotesques and Fantasies",
+      "author": "Israel Zangwill"
+    },
+    {
+      "id": "thewillows_1311_librivox",
+      "title": "The Willows",
+      "author": "Algernon Blackwood"
+    },
+    {
+      "id": "arsenelupin_1910_librivox",
+      "title": "Arsène Lupin",
+      "author": "Maurice Leblanc"
+    },
+    {
+      "id": "fortieth_door_librivox",
+      "title": "Fortieth Door, The",
+      "author": "Mary Hastings Bradley"
+    },
+    {
+      "id": "the_wild_huntress_1803_librivox",
+      "title": "The Wild Huntress",
+      "author": "Thomas Mayne Reid"
+    },
+    {
+      "id": "a_chicago_princess_1709_librivox",
+      "title": "A Chicago Princess",
+      "author": "Robert Barr"
+    },
+    {
+      "id": "sorcery_club_dj_1711_librivox",
+      "title": "The Sorcery Club",
+      "author": "Elliott O'Donnell"
+    },
+    {
+      "id": "wonderclock_1309_librivox",
+      "title": "The Wonder Clock",
+      "author": "Howard Pyle"
+    },
+    {
+      "id": "astounding_stories_02_1306_librivox",
+      "title": "Astounding Stories 02, February 1930",
+      "author": "Harl Vincent, C. W. Diffin, Hugh B. Cave, Sophie Wenzel Ellis, Sterner St. Paul, Victor Rousseau, Anthony Pelcher, Captain S.P. Meek"
+    },
+    {
+      "id": "confessions1_2_mg_librivox",
+      "title": "Confessions, volumes 1 and 2",
+      "author": "Jean-Jacques Rousseau"
+    },
+    {
+      "id": "mill_on_the_floss_0812_librivox",
+      "title": "The Mill on the Floss",
+      "author": "George Eliot"
+    },
+    {
+      "id": "ssf_069_2007_librivox",
+      "title": "Short Science Fiction Collection 069",
+      "author": "Various"
+    },
+    {
+      "id": "five_children_it_1208_librivox",
+      "title": "Five Children and It",
+      "author": "Edith Nesbit"
+    },
+    {
+      "id": "the_black_box_1907_librivox",
+      "title": "The Black Box",
+      "author": "E. Phillips Oppenheim"
+    },
+    {
+      "id": "seven_little_australians_librivox",
+      "title": "Seven Little Australians",
+      "author": "Ethel Sybil Turner"
+    },
+    {
+      "id": "ssf_076_2103_librivox",
+      "title": "Short Science Fiction Collection 076",
+      "author": "Various"
+    },
+    {
+      "id": "spurgeons_sermons_librivox",
+      "title": "Spurgeon's Sermons May 1858",
+      "author": "Charles Sturgeon"
+    },
+    {
+      "id": "invaders_from_the_infinite_mn_librivox",
+      "title": "Invaders from the Infinite",
+      "author": "John Wood Campbell Jr."
+    },
+    {
+      "id": "thuvia_0901_librivox",
+      "title": "Thuvia, Maid of Mars",
+      "author": "Edgar Rice Burroughs"
+    },
+    {
+      "id": "gargantuapantagruel2_1308_librivox",
+      "title": "Gargantua and Pantagruel, Book II",
+      "author": "François Rabelais"
+    },
+    {
+      "id": "pellucidar_0808_librivox",
+      "title": "Pellucidar",
+      "author": "Edgar Rice Burroughs"
+    }
+  ]
+}

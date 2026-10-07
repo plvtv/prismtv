@@ -1,3 +1,4 @@
+import {initPublicAudiobook} from './learn-audiobook.js';
 import {initLocalLearn} from './learn-local.js';
 import {initArchiveLearn, showArchiveLearn} from './learn-archive.js';
 import { bindCast } from './cast.js';
@@ -552,6 +553,7 @@ function closeLesson(fromHistory = false) {
 export function initLearn({ getPractice, channelRow } = {}) {
   initArchiveLearn();
   initLocalLearn();
+  initPublicAudiobook();
   if (getPractice) practice = getPractice;
   if (channelRow) renderChannelRow = channelRow;
   Object.assign(el, {

@@ -414,3 +414,9 @@ Skill filters, text search and See All work inside Learn English without requiri
 At implementation time Archive's search and a direct MP3 availability request returned 503 from this environment. Catalogue links were independently verified through LibriVox and the Archive accent item page; current media availability remains provider-dependent. Browser playback tests use a controlled audio fixture.
 
 Learn English also includes official-site links to British Council Starting Out (A1–A2), Word on the Street (B1–B2), Easy English and engVid beginner videos. These collections open in a new tab and do not depend on Archive.org. Their playback and exercises are provided by the linked sites.
+
+The public Learn English library includes Fifteen Stories by Keith Laumer under Stories to listen to. Its audiobook card and playlist code are included in GitHub Pages; private course data remains excluded. The native audio playlist loads MP3 tracks from Archive metadata, prefers a single encoding, supports track selection, automatic next-track playback, credits and retry. LibriVox lists 15 stories across 23 tracks; these are extended listening material, not a graded English course. Metadata and media availability still depend on Archive.org. Local and public-host browser checks use controlled metadata.
+
+### Books
+
+The public Books tab has a saved catalogue of 500 historic English books from Archive.org's Americana collection, selected with Text PDF availability, dates 1800–1929 and exclusion of items marked restricted or in the lending collection. Search by title/author and load 24 cards at a time. Books open Archive's embedded reader with an original-item link when reading is unavailable. Scans and access remain provider-dependent; the catalogue is included in GitHub Pages.
