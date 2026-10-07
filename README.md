@@ -373,3 +373,13 @@ Run the pairing server tests with `python3 -m unittest discover -s tests`.
 ### Pairing from GitHub Pages, or without `--lan`
 
 A hosted casting service is now supported. Deploy the included Cloudflare Worker and set its HTTPS URL in `data/cast-config.json`, then republish. Follow [cloud-cast/README.md](cloud-cast/README.md). The endpoint is currently blank until a service is deployed. A configured endpoint is used by both sender and receiver, including on localhost without LAN mode. Google Cast/AirPlay do not use this pairing server. Hosted pairing does not provide the local stream relay, so the destination must support and be allowed to fetch the media source directly.
+
+### Chromecast controls
+
+The Cast panel shows the TV name and current playback state, with Play/Pause, Stop, TV volume, mute, and a position slider for movies when their duration is available. Live streams do not show a seek slider. Failed connection attempts distinguish an unavailable receiver, a timeout/lost connection, and a source the TV could not load. Retry is available; live TV also offers **Choose another source**.
+
+**Resume on this device** stops casting and resumes the currently open matching video at the TV's estimated position. Live TV returns to the live broadcast. If a different video is open, the resume action is disabled to avoid applying the wrong movie position. After a refresh, PrismTV asks the Cast SDK to recover a previous session and restores its controls when the browser makes that session available; a saved connection marker alone does not connect to a TV.
+
+In live-TV fullscreen, a Cast button appears at the top right. Movies and lessons have a top-right **Full screen with Cast controls** button that opens the entire stage; its Cast panel remains inside the fullscreen stage. Native video fullscreen on iPhone/iPad is controlled by the browser and cannot include PrismTV's custom controls.
+
+Verification: `node --test tests/*.mjs` covers transport, state, errors and pairing. `tests/cast-browser.cjs` uses Playwright and mocked Chromecast APIs to exercise volume/mute, seeking, resume, session recovery and fullscreen. Physical Chromecast playback and receiver/provider restrictions still require device testing.

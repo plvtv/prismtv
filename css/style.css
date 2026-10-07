@@ -1124,3 +1124,15 @@ svg.i { width: 18px; height: 18px; flex: none; }
 .icon-btn.cast-btn:hover { background: rgba(255, 255, 255, .10); border-color: rgba(255, 255, 255, .24); }
 .icon-btn.cast-btn.on { color: #c6b8ff; background: var(--accent-soft); border-color: rgba(157, 140, 255, .4); }
 @media (pointer: coarse) { .icon-btn.cast-btn { min-height: 44px; } }
+
+.cast-recovery { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0; }
+.cast-slider { display: grid; gap: 8px; margin: 18px 0 8px; font-size: 13px; color: var(--text-2); }
+.cast-slider input { width: 100%; min-height: 32px; accent-color: var(--accent); cursor: pointer; }
+.cast-controls .text-btn, .cast-recovery .text-btn { min-height: 44px; }
+.cast-fullscreen { display: none !important; position: absolute; z-index: 25; top: 16px; right: 16px; }
+.player-stage:fullscreen .cast-fullscreen, .mplayer-stage:fullscreen .cast-fullscreen { display: inline-flex !important; background: #181820; }
+.cast-stage-fullscreen { position: absolute; z-index: 24; top: 16px; right: 16px; background: #181820d9; color: white; }
+.mplayer-stage:fullscreen .cast-stage-fullscreen { right: 108px; }
+.mplayer-stage:fullscreen { width: 100%; height: 100%; background: #000; }
+.mplayer-stage:fullscreen video, .mplayer-stage:fullscreen iframe { width: 100%; height: 100%; max-height: none; object-fit: contain; }
+.player-stage:fullscreen .cast-panel, .mplayer-stage:fullscreen .cast-panel { position: absolute; top: 64px; right: 16px; width: 360px; max-width: calc(100% - 32px); max-height: calc(100% - 80px); text-align: left; }

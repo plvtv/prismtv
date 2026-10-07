@@ -1014,7 +1014,7 @@ export function initPlayer({ onFavourite, getRelated } = {}) {
       const embedded = stream.kind && stream.kind !== 'hls';
       return { kind: embedded ? 'embed' : 'hls', url: embedded ? (castEmbed?.source === stream.url ? castEmbed.url : '') : stream.url,
         title: current.name, live: true, contentType: 'application/x-mpegURL' };
-    }, suspend: () => {
+    }, resume: () => attach(), alternate: () => { el.source.focus(); el.source.showPicker?.(); }, suspend: () => {
       teardown(); showStatus('Watching on your receiving device.');
       const resume = document.createElement('button'); resume.type = 'button'; resume.className = 'btn btn-play';
       resume.textContent = 'Play here'; resume.addEventListener('click', () => attach()); el.status.append(resume);

@@ -578,7 +578,7 @@ function setStatus(text) {
   el.status.hidden = !text;
 }
 
-function loadPart(i, resumeAt = 0) {
+function loadPart(i, resumeAt = 0, castResume = false) {
   current.part = i;
   el.parts.value = String(i);
   const f = current.files[i];
@@ -586,7 +586,7 @@ function loadPart(i, resumeAt = 0) {
   el.video.currentTime = 0;
   setStatus('Loading…');
   el.video.addEventListener('loadedmetadata', () => {
-    if (resumeAt > 0 && resumeAt < el.video.duration - 30) el.video.currentTime = resumeAt;
+    if (resumeAt > 0 && Number.isFinite(el.video.duration) && (castResume || resumeAt < el.video.duration - 30)) el.video.currentTime = Math.min(resumeAt, Math.max(0, el.video.duration - .1));
   }, { once: true });
   el.video.play().catch(() => setStatus(''));
 }
@@ -759,6 +759,7 @@ export function initMovies() {
   });
 
   bindCast({ root: el.root, button: document.getElementById('mplayer-cast'), getVideo: () => el.video,
+    resume: position => loadPart(current.part, position, true),
     getMedia: () => {
       const file = current?.files[current.part];
       if (!file) return null;

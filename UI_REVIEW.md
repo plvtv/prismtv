@@ -76,3 +76,9 @@ Added Cast buttons to live, movie and lesson players. Controls stay within the e
 Validation: six Python tests cover media validation, owner/receiver permissions, load/pause/stop revisions, offline/expired sessions, status/disconnect and device limits. Two-page Chromium integration verifies pairing, device selection, original stream URL transfer, stop/disconnect, Escape and panel bounds at 320/375/768/1024/1440px. Physical Chromecast/AirPlay receivers and provider playback restrictions require hardware verification.
 
 Additional browser checks passed with mocked platform/media APIs: Chromecast live and buffered media requests, native picker invocation, embedded-source guidance, receiver tap-to-play fallback and phone layout. The live HTTP endpoint also rejected a cross-origin create request with 403. These validate the integration, not actual receiver hardware playback.
+
+### Chromecast controls follow-up
+
+Added current TV/status feedback with receiver media/volume/session listeners, movie seeking and time display, volume/mute, specific errors and retry/source selection, resume to the matching local video, and SDK session recovery after refresh. Fullscreen stage controls keep Cast visible and preserve keyboard focus after closing its panel. Live broadcasts hide movie seeking; unrelated local videos cannot receive a restored movie's position.
+
+Six JavaScript protocol/state tests and six Python LAN pairing tests pass. The Playwright fixture verifies no-device and source failures, pause status, volume/mute, seeking near the movie end, refresh recovery, mismatched-video resume prevention, resume position, live seeking suppression, panel bounds at 320/768/1440px, fullscreen panel placement and focus return. Device APIs are mocked; actual Chromecast hardware and native iOS fullscreen remain unverified.
