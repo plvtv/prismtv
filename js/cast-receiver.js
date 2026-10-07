@@ -1,10 +1,11 @@
-import { castRequest } from './cast-api.js';
+import { castRequest, castConfiguration } from './cast-api.js';
 
 const key = location.hash.slice(1);
 const el = Object.fromEntries(['setup', 'stage', 'title', 'status', 'play', 'retry', 'fullscreen', 'name', 'connect', 'leave'].map((name) => [name, document.getElementById('receive-' + name)]));
 let deviceId = '', timer = null, busy = false;
 let revision = -1, mediaRevision = -1, generation = 0;
 let media = null, video = null, hls = null, relayTried = false;
+let hosted = false;
 let phase = 'ready', message = '', desiredPaused = false;
 
 function status(text, nextPhase = phase) {
@@ -35,7 +36,7 @@ function startHls(url, token) {
   instance.on(window.Hls.Events.MANIFEST_PARSED, () => { if (token === generation && !desiredPaused) play(); });
   instance.on(window.Hls.Events.ERROR, (_event, data) => {
     if (!data.fatal || token !== generation) return;
-    if (!relayTried && data.type === window.Hls.ErrorTypes.NETWORK_ERROR) {
+    if (!hosted && !relayTried && data.type === window.Hls.ErrorTypes.NETWORK_ERROR) {
       relayTried = true;
       startHls('/api/hls?url=' + encodeURIComponent(media.url), token);
     } else status('The stream is unavailable on this device. Retry or choose another source.', 'error');
@@ -81,7 +82,7 @@ function loadMedia(next) {
   video.addEventListener('ended', () => { if (current()) status('Video finished. Choose another video in PrismTV.', 'paused'); });
   video.addEventListener('error', () => {
     if (!current()) return;
-    if (media.kind === 'hls' && !relayTried && !hls) {
+    if (!hosted && media.kind === 'hls' && !relayTried && !hls) {
       relayTried = true; playingVideo.src = '/api/hls?url=' + encodeURIComponent(media.url);
     } else status('This video could not load. Retry or choose another source.', 'error');
   });
@@ -118,6 +119,7 @@ document.getElementById('receive-connect-form').addEventListener('submit', async
   if (deviceId) return;
   el.connect.disabled = true;
   try {
+    hosted = !!(await castConfiguration()).endpoint;
     const result = await castRequest('join', key, { name: el.name.value.trim() });
     deviceId = result.deviceId; el.setup.hidden = true; el.leave.hidden = false;
     status('Connected. Select “' + el.name.value.trim() + '” in PrismTV’s Cast panel.', 'ready');

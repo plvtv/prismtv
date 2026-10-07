@@ -369,3 +369,7 @@ YouTube/Twitch embeds can open on a paired browser receiver, using their own pla
 Pairing keys are temporary and held in server memory. Restarting the server expires them; inactive sessions expire after an hour. Anyone with the receiving link on your home network can join, so share it only with intended receivers. Creating new links and commands requires this server's same-origin JSON API; receiving links do not grant sender control.
 
 Run the pairing server tests with `python3 -m unittest discover -s tests`.
+
+### Pairing from GitHub Pages, or without `--lan`
+
+A hosted casting service is now supported. Deploy the included Cloudflare Worker and set its HTTPS URL in `data/cast-config.json`, then republish. Follow [cloud-cast/README.md](cloud-cast/README.md). The endpoint is currently blank until a service is deployed. A configured endpoint is used by both sender and receiver, including on localhost without LAN mode. Google Cast/AirPlay do not use this pairing server. Hosted pairing does not provide the local stream relay, so the destination must support and be allowed to fetch the media source directly.

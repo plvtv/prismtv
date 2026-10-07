@@ -1,0 +1,15 @@
+name = "prismtv-cast"
+main = "worker.mjs"
+compatibility_date = "2026-10-01"
+[vars]
+ALLOWED_ORIGINS = "https://plvtv.github.io,http://localhost:8080,http://127.0.0.1:8080"
+[[durable_objects.bindings]]
+name = "CAST_ROOMS"
+class_name = "CastRoom"
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["CastRoom"]
+[[ratelimits]]
+name = "CREATE_LIMIT"
+namespace_id = "1001"
+simple = { limit = 10, period = 60 }

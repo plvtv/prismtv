@@ -1,5 +1,5 @@
 import { icon, toast } from './ui.js';
-import { castRequest } from './cast-api.js';
+import { castRequest, castingInfo } from './cast-api.js';
 import { loadQr } from './qr.js';
 
 let context = null, sdkLoading = null;
@@ -37,7 +37,7 @@ function loadGoogleCast() {
           updateButtons(); renderControls();
         });
         resolve(true);
-      } catch { resolve(false); }
+      } catch { context = null; resolve(false); }
     };
     window.__onGCastApiAvailable = ready;
     if (window.cast?.framework) { ready(true); return; }
@@ -47,7 +47,9 @@ function loadGoogleCast() {
     timer = setTimeout(() => resolve(false), 10000);
     document.head.append(script);
   });
-  return sdkLoading;
+  const attempt = sdkLoading;
+  attempt.then(ok => { if (!ok && sdkLoading === attempt) sdkLoading = null; });
+  return attempt;
 }
 
 function mediaNow(binding) {
@@ -72,7 +74,7 @@ async function stop() {
 async function sendGoogle(binding) {
   const media = mediaNow(binding);
   if (media.kind === 'embed') throw new Error('Open this video in the YouTube or Twitch app to use its TV casting, or connect a PrismTV receiving page below.');
-  if (!await loadGoogleCast()) throw new Error('Google Cast is unavailable in this browser. Use Chrome on HTTPS or localhost, or connect a receiving page below.');
+  if (!await loadGoogleCast()) throw new Error('Google Cast is unavailable here. Try Google Chrome on a Mac, Windows PC or Android device, using HTTPS or localhost. Chrome on iPhone/iPad does not support Google Cast.');
   if (!context.getCurrentSession()) await context.requestSession();
   const session = context.getCurrentSession();
   if (!session) return;
@@ -171,11 +173,7 @@ function startPolling() {
 }
 async function pairDevices() {
   const opened = panel;
-  const res = await fetch('/api/info', { cache: 'no-store' });
-  if (!res.ok) throw new Error('Phone and tablet receiving needs the local server. Start PrismTV with ./serve.sh --lan.');
-  const info = await res.json();
-  if (!info.lan) throw new Error('Stop PrismTV in Terminal, restart with ./serve.sh --lan, then reopen Cast.');
-  if (!info.casting) throw new Error('Restart the PrismTV server to enable the new casting feature.');
+  const info = await castingInfo();
   if (!pair) pair = await castRequest('create', '', {});
   if (panel !== opened) return;
   const base = info.urls?.[0] || location.origin;
@@ -239,7 +237,7 @@ export function bindCast({ root, button, getMedia, getVideo, suspend }) {
       if (panel !== currentPanel) return;
       const google = node.querySelector('[data-action="google"]');
       google.disabled = !ok;
-      google.querySelector('span').textContent = ok ? 'Google Cast · choose a TV' : 'Google Cast unavailable in this browser';
+      google.querySelector('span').textContent = ok ? 'Google Cast · choose a TV' : 'Google Cast unavailable · try Google Chrome';
     });
     node.querySelector('[data-action="close"]').focus();
     renderControls(); if (pair) startPolling();

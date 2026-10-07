@@ -43,7 +43,7 @@ jobs:
       - name: Assemble the site
         run: |
           mkdir -p _site
-          cp -r index.html css js data _site/
+          cp -r index.html receive.html css js data _site/
           echo '{"public": true}' > _site/data/site.json
           touch _site/.nojekyll
 
