@@ -35,7 +35,7 @@ export const SOURCE_KEY = 'prismtv.source';
 
 // How long the merged channel index is kept in IndexedDB before refetching.
 export const CACHE_TTL_MS = 12 * 60 * 60 * 1000;
-export const CACHE_KEY = 'dataset:v9';
+export const CACHE_KEY = 'dataset:v10';
 
 // iptv-org files the United Kingdom under "UK"; ISO 3166, Free-TV and browser locales use "GB".
 // Codes are normalised to iptv-org's spelling, since its country table is the one the app uses.

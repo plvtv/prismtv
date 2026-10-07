@@ -304,9 +304,7 @@ Channels with no stream, flagged NSFW, or marked closed are dropped. Counts land
 
 ## Known limits
 
-- **Language filter is approximate.** Channel records carry no language; the per-feed language
-  data lives in `feeds.json` (another ~8 MB), so language is inferred from the broadcast country's
-  languages instead. Change this in `js/data.js` → `indexDataset` if you want the exact version.
+- **Language metadata varies by provider.** Main-index channels now use `feeds.json` language metadata, matched to published stream feeds where possible. Channels without a matching language record remain unclassified; a country's official languages are not used as a substitute.
 - **Geo-locks cannot be worked around from the page.** The **Test sources** button in the player
   probes every source and reports a verdict each: playable, refused (403 — the region-lock
   signature), dead link, browser-blocked, or no response. A 403 means the server answered and
@@ -383,3 +381,36 @@ The Cast panel shows the TV name and current playback state, with Play/Pause, St
 In live-TV fullscreen, a Cast button appears at the top right. Movies and lessons have a top-right **Full screen with Cast controls** button that opens the entire stage; its Cast panel remains inside the fullscreen stage. Native video fullscreen on iPhone/iPad is controlled by the browser and cannot include PrismTV's custom controls.
 
 Verification: `node --test tests/*.mjs` covers transport, state, errors and pairing. `tests/cast-browser.cjs` uses Playwright and mocked Chromecast APIs to exercise volume/mute, seeking, resume, session recovery and fullscreen. Physical Chromecast playback and receiver/provider restrictions still require device testing.
+
+
+### Content discovery
+
+Home and Browse have Telugu, Hindi, Tamil and English shortcuts. Main-index languages come from published feed records; matching Free-TV/Shovo IDs reuse those records. Unsupported/unknown metadata stays unclassified, and a shortcut is disabled when no matching channels exist in the selected index. Movie browsing also has provider-metadata language filters; their coverage depends on Internet Archive records.
+
+Movies has Classic Thrillers, Family Film Collection, Documentary Discoveries and Short Film Discoveries collections. Short films are selected from up to 200 archive results with an explicit runtime of 30 minutes or less; unknown runtimes are excluded. Family collections use source categories rather than age certification. Film cards and player details include synopsis, year, runtime and language when supplied. Subtitle-file presence is listed as availability on the source page, not a claim that subtitles have been attached to playback. Missing facts are explicitly shown as not supplied.
+
+Learn English has four ordered paths: Beginner Foundations, Everyday Conversation, Listening Practice and Clear Pronunciation. Completed checkboxes and the selected path persist on this browser. Completion is marked manually; opening a playlist does not mark it finished.
+
+Open **Programme guide** below a live player to request its matching published XMLTV guide. Now/Next/Later use the device timezone; a **What's on now** Home row appears for channels whose guides have been loaded and contain a current programme. Guide coverage and CORS vary by provider; the local relay is used as a fallback, while public hosting needs the provider to allow browser access. No current title is invented when data is missing or expired.
+
+Channel cards distinguish recently responding sources, failed checks and unconfirmed/stale availability. Recent checks (within 48 hours) influence Home/Browse ordering, while daily variety is preserved within each availability group. A responding source is not a playback guarantee; codecs, browser restrictions and regional access still affect playback.
+
+Tests: `node --test tests/*.mjs`; `tests/content-browser.cjs` exercises the real app with fixture APIs and requires Playwright plus a local server. The content cache version is now 10, so old country-based language data is rebuilt on the next load without changing saved favourites or watch history.
+
+### Kids
+
+The Kids tab groups live channels tagged `kids` or `children` in the active indexes, an explicit children’s selection from the bundled YouTube catalogue, and five Archive.org collections: Classic Cartoons; Children’s Films; Popeye, Casper & Friends; Fairy Tales & Storybook Films; Learn & Explore (counting, arithmetic and reading instruction). Searches retain the existing playable-format and vintage-year constraints. Children's films use specific film subjects and familiar story titles rather than broad children/juvenile tags, which also describe adult dramas.
+
+Each film/show row has **See all**, opening a grid inside Kids with its own collection selector, search, language and sorting. Archive results are paginated in batches of 48, with failed-page retry preserving loaded cards and retrying the same page. The header's **See all kids films** combines the Archive collections without duplicate identifiers. YouTube has a complete grid and title search; language/sort controls are disabled because that source lacks comparable film metadata. **Kids home** restores focus to the originating action. Live TV has independent search, language/country filters, Show more paging, and See All.
+
+Existing favourites, movie progress and casting work with these cards. Random and live Up next stay within Kids while the tab is selected. Random ignores cards hidden behind the See All grid. This is source-based discovery, not an age-rating or parental-control system; vintage titles have no supplied age ratings. Provider metadata and playback availability vary.
+
+### Archive.org English listening lab
+
+Learn English includes 15 selected English audio exercises hosted on Archive.org: five short listening fables, five read-and-retell exercises, and five readings of the same fable in different accents. Titles, durations and exact MP3 links come from the official LibriVox catalogues ([Aesop volume 1](https://librivox.org/aesops-fables-volume-1-fables-1-25/), [volume 2](https://librivox.org/aesops-fables-volume-2-fables-26-50/), [accent collection](https://librivox.org/celebration-of-dialects-and-accents-vol-1/)). These are practice recordings, not graded courses.
+
+Skill filters, text search and See All work inside Learn English without requiring Archive's search API. The audio dialog supports native playback/seeking, 0.75/1/1.25 speed, ten-second replay, repeat and saved position in this browser. Fable recordings link to the matching Project Gutenberg text; accent recordings link to their credits without claiming an exact transcript. Credits and source links remain visible. Cast uses the existing controls with `audio/mpeg`; physical receiver playback remains unverified. A failed recording exposes retry and its Archive source link. No automatic captions or lesson completion are claimed for these audio exercises.
+
+At implementation time Archive's search and a direct MP3 availability request returned 503 from this environment. Catalogue links were independently verified through LibriVox and the Archive accent item page; current media availability remains provider-dependent. Browser playback tests use a controlled audio fixture.
+
+Learn English also includes official-site links to British Council Starting Out (A1–A2), Word on the Street (B1–B2), Easy English and engVid beginner videos. These collections open in a new tab and do not depend on Archive.org. Their playback and exercises are provided by the linked sites.

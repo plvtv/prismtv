@@ -49,6 +49,7 @@
   <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4.5 9V4.5H9M15 4.5h4.5V9M19.5 15v4.5H15M9 19.5H4.5V15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-collapse" viewBox="0 0 24 24"><path d="M9 4.5V9H4.5M19.5 9H15V4.5M15 19.5V15h4.5M4.5 15H9v4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
   <symbol id="i-film" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><path d="M7.5 4.5v15M16.5 4.5v15M3.5 9h4M3.5 15h4M16.5 9h4M16.5 15h4"/></g></symbol>
+  <symbol id="i-kids" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M8 14.5c2 2.5 6 2.5 8 0"/></g><circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="15" cy="10" r="1" fill="currentColor"/></symbol>
   <symbol id="i-book" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 6.5c-1.8-1.3-4.3-2-7.5-2v13c3.2 0 5.7.7 7.5 2 1.8-1.3 4.3-2 7.5-2v-13c-3.2 0-5.7.7-7.5 2z"/><path d="M12 6.5v13"/></g></symbol>
   <symbol id="i-dice" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3.5" fill="none" stroke="currentColor" stroke-width="1.7"/><g fill="currentColor"><circle cx="8.6" cy="8.6" r="1.35"/><circle cx="15.4" cy="8.6" r="1.35"/><circle cx="12" cy="12" r="1.35"/><circle cx="8.6" cy="15.4" r="1.35"/><circle cx="15.4" cy="15.4" r="1.35"/></g></symbol>
   <symbol id="i-arrow" viewBox="0 0 24 24"><path d="m9.5 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
@@ -76,6 +77,7 @@
     <button class="nav-link is-active" data-view="home" aria-current="page">Home</button>
     <button class="nav-link" data-view="browse">Browse</button>
     <button class="nav-link" data-view="movies">Movies</button>
+    <button class="nav-link" data-view="kids">Kids</button>
     <button class="nav-link" data-view="learn">Learn English</button>
     <button class="nav-link" data-view="mylist">My List</button>
   </nav>
@@ -148,6 +150,7 @@
         <h1 id="browse-title">Browse</h1>
         <p class="browse-count" id="browse-count" role="status" aria-live="polite" aria-atomic="true"></p>
       </div>
+      <div class="content-languages" id="browse-languages" role="group" aria-label="Browse by language"></div>
       <div class="filters">
         <label class="field"><span class="sr-only">Category</span><span class="select"><select id="f-category"></select></span></label>
         <label class="field"><span class="sr-only">Country</span><span class="select"><select id="f-country"></select></span></label>
@@ -175,12 +178,14 @@
         </label>
       </div>
     </header>
+    <div class="content-collections" id="movie-collections" role="group" aria-label="Movie collections"></div>
     <div id="movies-rows"></div>
     <div class="movies-results" id="movies-results" hidden>
       <div class="filters mfilters">
         <button class="text-btn" id="mb-back" type="button"><svg class="i back"><use href="#i-arrow"/></svg> Movies home</button>
         <label class="field"><span class="sr-only">Genre</span><span class="select"><select id="mb-genre"></select></span></label>
         <label class="field"><span class="sr-only">Decade</span><span class="select"><select id="mb-decade"></select></span></label>
+        <label class="field"><span class="sr-only">Movie language</span><span class="select"><select id="mb-language"></select></span></label>
         <label class="field"><span class="sr-only">Sort</span><span class="select"><select id="mb-sort"></select></span></label>
       </div>
       <p class="browse-count" id="movies-count" role="status" aria-live="polite" aria-atomic="true"></p>
@@ -189,11 +194,45 @@
     </div>
   </section>
 
+  <section class="movies kids" id="kids" hidden>
+    <header class="movies-head"><div><h1>Kids</h1><p class="movies-lede">Children’s TV, classic cartoons and films, together in one place.</p></div><button id="kids-browse-all" class="chip" type="button">See all kids films</button></header>
+    <div id="kids-home">
+    <section class="kids-live" aria-labelledby="kids-live-title">
+      <div class="kids-live-head"><h2 id="kids-live-title">Live kids TV</h2><button id="kids-live-all" class="row-more" type="button">See all</button></div>
+      <div class="kids-filters">
+        <label>Find a channel<input id="kids-search" class="text-input" type="search" placeholder="Search kids channels" autocomplete="off"></label>
+        <label>Language<span class="select"><select id="kids-language"><option value="">All languages</option></select></span></label>
+        <label>Country<span class="select"><select id="kids-country"><option value="">All countries</option></select></span></label>
+        <button id="kids-reset" class="chip" type="button">Reset</button>
+      </div>
+      <p id="kids-count" class="browse-count" role="status" aria-live="polite"></p>
+      <div id="kids-grid" class="grid"></div>
+      <button id="kids-more" class="more-btn" type="button" hidden>Show more channels</button>
+    </section>
+    <div id="kids-movies"></div>
+    <p class="kids-source-note">Collections follow source categories. Vintage films do not include age ratings.</p>
+    </div>
+    <section id="kids-results" class="movies-results" aria-labelledby="kids-results-title" hidden>
+      <div class="filters mfilters">
+        <button id="kids-catalogue-back" class="text-btn" type="button"><svg class="i back"><use href="#i-arrow"/></svg> Kids home</button>
+        <label class="field"><span class="sr-only">Kids collection</span><span class="select"><select id="kids-collection"></select></span></label>
+        <label class="field"><span class="sr-only">Film language</span><span class="select"><select id="kids-film-language"></select></span></label>
+        <label class="field"><span class="sr-only">Sort films</span><span class="select"><select id="kids-film-sort"><option value="downloads desc">Most watched</option><option value="year desc">Newest year</option><option value="titleSorter asc">Title A–Z</option></select></span></label>
+      </div>
+      <h2 id="kids-results-title" tabindex="-1">Kids films & shows</h2>
+      <label class="search-box kids-catalogue-search"><svg class="i"><use href="#i-search"/></svg><span class="sr-only">Search this kids collection</span><input id="kids-film-search" type="search" placeholder="Search this collection" autocomplete="off"></label>
+      <p id="kids-catalogue-count" class="browse-count" role="status" aria-live="polite" aria-atomic="true"></p>
+      <div id="kids-catalogue-grid" class="mgrid"></div>
+      <button id="kids-catalogue-retry" class="text-btn" type="button" hidden>Try again</button>
+      <button id="kids-catalogue-more" class="more-btn" type="button" hidden>Show more</button>
+    </section>
+  </section>
+
   <section class="movies learn" id="learn" hidden>
     <header class="movies-head">
       <div>
         <h1>Learn English</h1>
-        <p class="movies-lede">Free lessons from BBC Learning English, VOA Learning English and other teaching channels, with English subtitles on. The live-TV rows turn on captions automatically, so you can read along.</p>
+        <p class="movies-lede">Lessons from BBC Learning English, VOA Learning English and other teaching channels, plus short Archive.org recordings for listening and reading aloud. YouTube lessons request English subtitles; live practice starts with captions enabled.</p>
       </div>
       <div class="learn-tools">
         <div class="chips" id="learn-levels" role="group" aria-label="Your level"></div>
@@ -218,6 +257,33 @@
       <p class="prefs-note" id="learn-add-empty">Nothing added yet. Examples: <code>youtube.com/@bbclearningenglish</code>, a link to any YouTube playlist, or a live stream ending in <code>.m3u8</code>.</p>
       <ul class="mine-list" id="learn-add-list"></ul>
     </div>
+    <section class="learn-video-sources" aria-labelledby="learn-video-sources-title">
+      <h2 id="learn-video-sources-title">More English learning videos</h2>
+      <p class="learn-source-intro">Explore these video collections on their official sites. Links open in a new tab.</p>
+      <div class="learn-source-grid">
+        <a class="learn-source-card" href="https://learnenglish.britishcouncil.org/free-resources/general/video-series/starting-out" target="_blank" rel="noopener noreferrer">
+          <span class="learn-source-level">Beginner · A1–A2</span><h3>Starting Out</h3><span class="learn-source-provider">British Council</span><p>Follow everyday conversations and practise with the accompanying exercises.</p><span class="learn-source-action">Watch the series ↗<span class="sr-only"> (opens in a new tab)</span></span>
+        </a>
+        <a class="learn-source-card" href="https://learnenglish.britishcouncil.org/free-resources/general/video-series/word-street" target="_blank" rel="noopener noreferrer">
+          <span class="learn-source-level">Intermediate · B1–B2</span><h3>Word on the Street</h3><span class="learn-source-provider">British Council</span><p>Explore life in the UK with video stories, language explanations, transcripts and exercises.</p><span class="learn-source-action">Watch the series ↗<span class="sr-only"> (opens in a new tab)</span></span>
+        </a>
+        <a class="learn-source-card" href="https://www.easyenglish.video/" target="_blank" rel="noopener noreferrer">
+          <span class="learn-source-level">Beginner–intermediate</span><h3>Easy English</h3><span class="learn-source-provider">Easy Languages</span><p>Practise listening with Slow Easy English and conversations about real-life situations.</p><span class="learn-source-action">Explore the videos ↗<span class="sr-only"> (opens in a new tab)</span></span>
+        </a>
+        <a class="learn-source-card" href="https://www.engvid.com/level/beginner/" target="_blank" rel="noopener noreferrer">
+          <span class="learn-source-level">Beginner</span><h3>engVid</h3><span class="learn-source-provider">English video lessons</span><p>Choose teacher-led lessons to practise grammar, vocabulary and everyday English.</p><span class="learn-source-action">Browse the lessons ↗<span class="sr-only"> (opens in a new tab)</span></span>
+        </a>
+      </div>
+    </section>
+    <section id="learn-archive" class="learn-archive" aria-labelledby="learn-archive-title">
+      <div class="kids-live-head"><h2 id="learn-archive-title" tabindex="-1">Archive.org listening lab</h2><button id="learn-archive-all" class="row-more" type="button">See all</button></div>
+      <p class="prefs-note">Short English recordings for listening, reading aloud and comparing accents. Fables include a link to the source text.</p>
+      <div id="learn-archive-skills" class="chips" role="group" aria-label="Archive practice skill"></div>
+      <label class="search-box"><svg class="i"><use href="#i-search"/></svg><span class="sr-only">Search Archive English practice</span><input id="learn-archive-search" type="search" placeholder="Find a story, accent or skill" autocomplete="off"></label>
+      <p id="learn-archive-count" class="browse-count" role="status" aria-live="polite"></p>
+      <div id="learn-archive-grid" class="archive-lesson-grid"></div>
+    </section>
+    <div id="learn-paths" class="learning-paths"></div>
     <div id="learn-rows"></div>
   </section>
 
@@ -232,6 +298,7 @@
   <button class="nav-link is-active" data-view="home" aria-current="page"><svg class="i"><use href="#i-home"/></svg><span>Home</span></button>
   <button class="nav-link" data-view="browse"><svg class="i"><use href="#i-grid"/></svg><span>Browse</span></button>
   <button class="nav-link" data-view="movies"><svg class="i"><use href="#i-film"/></svg><span>Movies</span></button>
+  <button class="nav-link" data-view="kids"><svg class="i"><use href="#i-kids"/></svg><span>Kids</span></button>
   <button class="nav-link" data-view="learn"><svg class="i"><use href="#i-book"/></svg><span>Learn</span></button>
   <button class="nav-link" data-view="mylist"><svg class="i"><use href="#i-bookmark"/></svg><span>My List</span></button>
 </nav>
@@ -295,6 +362,7 @@
           </button>
         </div>
       </div>
+      <section class="programme-guide" id="programme-guide" aria-label="Programme guide"></section>
     </div>
     <aside class="player-side" id="player-side" aria-label="Up next">
       <div class="side-inner">
@@ -327,6 +395,7 @@
       <h2 id="mplayer-title"></h2>
       <p class="mplayer-sub" id="mplayer-sub"></p>
       <span class="select select-sm"><select id="mplayer-parts" aria-label="Part" hidden></select></span>
+      <dl class="movie-facts" id="movie-facts"></dl>
       <p class="mplayer-desc" id="mplayer-desc"></p>
       <a class="text-btn" id="mplayer-link" target="_blank" rel="noreferrer"><svg class="i"><use href="#i-external"/></svg> <span id="mplayer-link-label">Open on archive.org</span></a>
     </aside>
@@ -359,6 +428,25 @@
       </ul>
       <a class="text-btn" id="lplayer-link" target="_blank" rel="noreferrer"><svg class="i"><use href="#i-external"/></svg> Open on YouTube</a>
     </aside>
+  </div>
+</div>
+
+<!-- Archive.org English listening player -->
+<div id="archive-audio-player" class="mplayer" hidden>
+  <div class="archive-audio-inner" role="dialog" aria-modal="true" aria-labelledby="archive-audio-title">
+    <div class="mplayer-top"><span class="mplayer-kicker"><svg class="i"><use href="#i-book"/></svg> Learn English · Audio</span><span class="mplayer-actions"><button id="archive-audio-cast" class="icon-btn cast-btn" type="button" aria-label="Cast to a TV or another device"><svg class="i"><use href="#i-cast"/></svg><span>Cast</span></button><button id="archive-audio-close" class="icon-btn" type="button" aria-label="Close player"><svg class="i"><use href="#i-close"/></svg></button></span></div>
+    <h2 id="archive-audio-title"></h2>
+    <p id="archive-audio-sub" class="mplayer-sub"></p>
+    <audio id="archive-audio" controls preload="metadata" aria-label="English listening recording"></audio>
+    <div class="archive-audio-tools">
+      <button id="archive-audio-replay" class="chip" type="button">Replay last 10s</button>
+      <label>Speed <span class="select"><select id="archive-audio-speed"><option value="0.75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option></select></span></label>
+      <label class="archive-repeat"><input id="archive-audio-repeat" type="checkbox"> Repeat recording</label>
+    </div>
+    <p id="archive-audio-status" class="prefs-note" role="status" aria-live="polite"></p>
+    <button id="archive-audio-retry" class="text-btn" type="button" hidden>Try again</button>
+    <div class="archive-practice"><h3>Try this</h3><p id="archive-audio-practice"></p></div>
+    <div class="archive-audio-links"><a id="archive-audio-text" class="text-btn" target="_blank" rel="noreferrer">Read the source text</a><a id="archive-audio-source" class="text-btn" target="_blank" rel="noreferrer">Open on Archive.org</a><a id="archive-audio-credit" class="text-btn" target="_blank" rel="noreferrer">LibriVox recording credits</a></div>
   </div>
 </div>
 

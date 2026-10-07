@@ -1,3 +1,5 @@
+import { languageCodes } from './content.js';
+import { channelHealth, health } from './health.js';
 import { API_BASE, CACHE_TTL_MS, CACHE_KEY, HIDE_NSFW, HIDE_CLOSED, COUNTRY_ALIASES } from './config.js';
 import { fetchFreeTV, fetchShovo, fetchLG, fetchFast } from './sources.js';
 import { isPaidChannel } from './paid.js';
@@ -96,6 +98,7 @@ function groupStreams(streams) {
     arr.push({
       url: s.url,
       quality: s.quality || null,
+      feed: s.feed || null,
       // The browser cannot spoof these, so a stream that needs them will likely fail.
       restricted: Boolean(s.user_agent || s.referrer)
     });
@@ -115,15 +118,18 @@ function groupStreams(streams) {
  * onProgress(fraction, label) is called as each piece lands.
  */
 export async function buildDataset(onProgress = () => {}) {
-  const parts = ['channels', 'streams', 'logos', 'countries', 'categories'];
+  const parts = ['channels', 'streams', 'logos', 'countries', 'categories', 'feeds', 'languages'];
   let done = 0;
   const results = await Promise.all(parts.map(async (name) => {
-    const data = await getJSON(name);
+    const data = await getJSON(name).catch(error => { if (name === 'feeds' || name === 'languages') return []; throw error; });
     done += 1;
     onProgress(done / (parts.length + 1), 'Loaded ' + name);
     return data;
   }));
-  const [channels, streams, logos, countries, categories] = results;
+  const [channels, streams, logos, countries, categories, feeds, languages] = results;
+  const channelLanguages = {};
+  const feedsByChannel = new Map();
+  for (const feed of feeds) { if (!feedsByChannel.has(feed.channel)) feedsByChannel.set(feed.channel, []); feedsByChannel.get(feed.channel).push(feed); }
 
   onProgress(0.9, 'Merging ' + channels.length.toLocaleString() + ' channels');
 
@@ -138,6 +144,11 @@ export async function buildDataset(onProgress = () => {}) {
     if (!chStreams || !chStreams.length) continue;
     if (HIDE_NSFW && ch.is_nsfw) continue;
     if (HIDE_CLOSED && ch.closed) continue;
+    const channelFeeds = feedsByChannel.get(ch.id) || [];
+    const selected = channelFeeds.filter(f => chStreams.some(s => s.feed && s.feed === f.id));
+    const fallback = channelFeeds.filter(f => f.is_main);
+    const languageFeeds = selected.length ? selected : fallback.length ? fallback : channelFeeds;
+    channelLanguages[ch.id] = [...new Set(languageFeeds.flatMap(f => f.languages || []))];
     list.push({
       source: 'iptv-org',
       id: ch.id,
@@ -238,13 +249,15 @@ export async function buildDataset(onProgress = () => {}) {
   if (unknown.size) console.warn('Country codes not in the index:', [...unknown].join(', '));
 
   const dataset = {
-    version: 9,
+    version: 10,
     builtAt: Date.now(),
     channels: list,
     freetv,
     shovo,
     lg,
     fast,
+    channelLanguages,
+    languages: Object.fromEntries(languages.map(l=>[l.code,l.name])),
     countries: countryByCode,
     categories: categoryById
   };
@@ -256,7 +269,7 @@ export async function buildDataset(onProgress = () => {}) {
 export async function loadDataset({ force = false, onProgress = () => {} } = {}) {
   if (!force) {
     const cached = await idbGet(CACHE_KEY);
-    if (cached && cached.version === 9 && Date.now() - cached.builtAt < CACHE_TTL_MS) {
+    if (cached && cached.version === 10 && Date.now() - cached.builtAt < CACHE_TTL_MS) {
       onProgress(1, 'Loaded from cache');
       return { dataset: cached, fromCache: true };
     }
@@ -280,14 +293,10 @@ export function indexDataset(dataset, channels = dataset.channels) {
       byCountry.get(ch.country).push(ch);
     }
   }
-  // Language is not on the channel record; the index ties languages to countries,
-  // so we approximate a channel's language from where it broadcasts.
-  const languageNames = new Map();
+  const languageNames = new Map(Object.entries(dataset.languages || {}));
   const byLanguage = new Map();
   for (const ch of channels) {
-    const country = ch.country && dataset.countries[ch.country];
-    if (!country) continue;
-    for (const lang of country.languages || []) {
+    for (const lang of languageCodes(ch, dataset)) {
       if (!byLanguage.has(lang)) byLanguage.set(lang, []);
       byLanguage.get(lang).push(ch);
     }
@@ -298,6 +307,10 @@ export function indexDataset(dataset, channels = dataset.channels) {
 /** Channels that look good on a poster wall: artwork, a clean name, a working-ish stream. */
 export function rankForDisplay(channels) {
   return channels.slice().sort((a, b) => {
+    const recent = health().finished && Date.now()-health().finished*1000 < 48*3600000;
+    const score = ch => recent ? ({ok:2,unknown:1,dead:0})[channelHealth(ch)] : 1;
+    const availability = score(b)-score(a);
+    if (availability) return availability;
     const art = Number(Boolean(b.logo)) - Number(Boolean(a.logo));
     if (art) return art;
     const geo = Number(Boolean(a.geo)) - Number(Boolean(b.geo));
@@ -317,6 +330,10 @@ export function daySeededShuffle(items) {
     seed = (seed * 16807) % 2147483647;
     const j = seed % (i + 1);
     [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  if (health().finished && Date.now()-health().finished*1000 < 48*3600000) {
+    const score=c=>c.streams ? ({ok:2,unknown:1,dead:0})[channelHealth(c)] : 1;
+    arr.sort((a,b)=>score(b)-score(a));
   }
   return arr;
 }

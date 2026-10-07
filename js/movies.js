@@ -1,3 +1,5 @@
+import { KIDS_ARCHIVE_COLLECTIONS, KIDS_ARCHIVE_QUERY } from './kids-catalogue.js';
+import { durationLabel, durationSeconds, metadataLanguages, isKidsYouTube } from './content.js';
 import { bindCast } from './cast.js';
 import { contentType } from './cast-api.js';
 /**
@@ -17,7 +19,7 @@ const API = 'https://archive.org';
 const PLAYABLE = '(format:"h.264" OR format:"MPEG4" OR format:"512Kb MPEG4")';
 // Recent films in these collections are almost always someone's unlicensed upload, not public domain.
 const BASE = 'mediatype:movies AND ' + PLAYABLE + ' AND NOT year:[1995 TO 2100]';
-const FIELDS = ['identifier', 'title', 'year', 'downloads', 'creator'];
+const FIELDS = ['identifier', 'title', 'year', 'downloads', 'creator', 'runtime', 'language', 'description'];
 const ROW_SIZE = 40;
 const PAGE = 48;
 const PROGRESS_KEY = 'prismtv.movieProgress';
@@ -29,6 +31,8 @@ const sub = (terms) => F + ' AND subject:(' + terms + ')';
 
 // Every row on the Movies page, and every choice in Browse's genre menu.
 const GENRES = [
+  { id: 'shorts', title: 'Short films', q: 'collection:(short_films OR prelinger OR animationandcartoons)', browseOnly: true },
+  { id: 'family', title: 'Family film collection', q: '(collection:(classic_cartoons OR vintage_cartoons) OR (' + sub('family OR children') + '))', browseOnly: true },
   { id: 'all', title: 'All films', q: ALL_FILMS, browseOnly: true },
   { id: 'toprated', title: 'Top rated', q: F + ' AND num_reviews:[8 TO *]', sort: 'avg_rating desc' },
   { id: 'popular', title: 'Most watched', q: F },
@@ -55,6 +59,14 @@ const GENRES = [
 ];
 const GENRE = Object.fromEntries(GENRES.map((g) => [g.id, g]));
 const ROWS = GENRES.filter((g) => !g.browseOnly);
+
+const COLLECTIONS = [
+  {genre:'mystery',title:'Classic thrillers',note:'Mystery, suspense and film noir'},
+  {genre:'family',title:'Family film collection',note:'Vintage cartoons and family films'},
+  {genre:'docs',title:'Documentary discoveries',note:'Real stories from the archive'},
+  {genre:'shorts',title:'Short film discoveries',note:'Films with a listed runtime of 30 minutes or less'}
+];
+const MOVIE_LANGUAGES = [{id:'',name:'Any language'},{id:'telugu',name:'Telugu',q:'language:(tel OR te OR Telugu)'},{id:'hindi',name:'Hindi',q:'language:(hin OR hi OR Hindi)'},{id:'tamil',name:'Tamil',q:'language:(tam OR ta OR Tamil)'},{id:'english',name:'English',q:'language:(eng OR en OR English)'}];
 
 const SORTS = [
   ['downloads desc', 'Most watched'],
@@ -191,6 +203,7 @@ async function locPage(key, page, rows = PAGE) {
 const el = {};
 const byId = new Map();          // identifier -> search doc, for clicks on cards
 let started = false;
+let browseEpoch = 0;
 let browse = { key: '', page: 1, total: 0, seen: new Set() };
 let current = null;              // { id, title, files, part }
 let saveTimer = 0;
@@ -226,6 +239,15 @@ function pickFiles(files) {
     if (hit.length) return hit.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
   }
   return [];
+}
+
+function movieFacts(metadata, files = null) {
+  el.facts.replaceChildren();
+  const subtitleFiles=(files || []).filter(f=>/\.(srt|vtt|ass|ssa)(?:$|\?)/i.test(f.name || ''));
+  const fields=[['Year',first(metadata.year) || 'Not supplied'],['Runtime',durationLabel(first(metadata.runtime)) || 'Not supplied'],
+    ['Language',metadataLanguages(metadata.language) || 'Not supplied'],
+    ['Subtitles',files === null ? 'Checking source…' : subtitleFiles.length ? subtitleFiles.length+' subtitle file'+(subtitleFiles.length===1?'':'s')+' on the source page' : 'Not listed by the source']];
+  for(const [label,value] of fields) {const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=value;el.facts.append(dt,dd);}
 }
 
 function plainText(html) {
@@ -333,7 +355,10 @@ function card(doc) {
   const sub = document.createElement('span');
   sub.className = 'sub';
   sub.textContent = [first(doc.year), first(doc.creator)].filter(Boolean).join(' · ');
-  meta.append(name, sub);
+  const runtime=durationLabel(first(doc.runtime)),language=metadataLanguages(doc.language);
+  if(runtime || language) sub.textContent=[sub.textContent,runtime,language].filter(Boolean).join(' · ');
+  const synopsis=document.createElement('span');synopsis.className='movie-card-description';synopsis.textContent=plainText(first(doc.description)).slice(0,200);
+  meta.append(name, sub);if(synopsis.textContent)meta.append(synopsis);
   b.append(art, meta);
   return b;
 }
@@ -462,8 +487,10 @@ function escapeQuery(text) {
 
 function fillBrowseControls() {
   el.bGenre.innerHTML = GENRES.map((g) => '<option value="' + g.id + '">' + g.title + '</option>').join('');
+  el.bGenre.value = 'all';
   el.bDecade.innerHTML = '<option value="">Any year</option>' +
     DECADES.map((d) => '<option value="' + d + '">' + d + 's</option>').join('');
+  el.bLanguage.innerHTML = MOVIE_LANGUAGES.map(l=>'<option value="'+l.id+'">'+l.name+'</option>').join('');
   el.bSort.innerHTML = SORTS.map(([v, label]) => '<option value="' + v + '">' + label + '</option>').join('');
 }
 
@@ -474,17 +501,33 @@ function openBrowse(genreId = 'all') {
   el.bSort.value = g.sort || 'downloads desc';
   el.bDecade.value = '';
   el.search.value = '';
+  if(g.id==='shorts') { openShortFilms(); return; }
   runBrowse(false);
   el.section.scrollIntoView({ block: 'start' });
   window.scrollTo({ top: 0 });
+}
+
+function openShortFilms() {
+  const language=MOVIE_LANGUAGES.find(l=>l.id===el.bLanguage.value);
+  const text=escapeQuery(el.search.value.trim());
+  const decade=el.bDecade.value;
+  const sort=el.bSort.value || 'downloads desc';
+  let q=GENRE.shorts.q+(language?.q?' AND '+language.q:'');
+  if(text) q+=' AND ('+text.split(' ').map(w=>'title:('+w+'*)').join(' AND ')+')';
+  if(decade) q+=' AND year:['+decade+' TO '+(Number(decade)+9)+']';
+  openGrid({preserveSearch:true,emptyMessage:'No films with a listed runtime of 30 minutes or less were found in this selection. Try another language or collection.',title:'Short films · up to 30 minutes'+(language?.id?' · '+language.name:''),all:async()=>{
+    const result=await search(q,{rows:200,sort});
+    return result.docs.filter(d=>{const seconds=durationSeconds(first(d.runtime));return Number.isFinite(seconds)&&seconds>0&&seconds<=1800;});
+  }});
 }
 
 /* A See-all grid for sources other than archive.org search: either a full local list
    (`all`) or a paged remote one (`page(n)`). */
 let grid = null;
 async function openGrid(spec) {
+  browseEpoch += 1;
   grid = { ...spec, n: 0, total: 0, seen: new Set(), list: null };
-  el.search.value = '';
+  if(!spec.preserveSearch) el.search.value = '';
   el.rows.hidden = true;
   el.results.hidden = false;
   el.results.classList.add('is-grid');
@@ -513,15 +556,17 @@ async function gridMore() {
     if (grid !== g) return;
     unique(docs, g.seen).forEach((d) => el.grid.append(card(d)));
     const loaded = g.n * PAGE;
-    el.count.textContent = g.total.toLocaleString() + ' title' + (g.total === 1 ? '' : 's') + ' \u00b7 ' + g.title;
+    el.count.textContent = !g.total ? (g.emptyMessage || 'Nothing available in '+g.title+' yet.') : g.total.toLocaleString() + ' title' + (g.total === 1 ? '' : 's') + ' \u00b7 ' + g.title;
     el.more.hidden = loaded >= g.total;
     el.more.textContent = 'Show more (' + Math.max(0, g.total - loaded).toLocaleString() + ' left)';
   } catch (err) {
+    if (grid !== g) return;
     el.count.textContent = 'Could not load: ' + String(err.message || err);
   }
 }
 
 function closeBrowse() {
+  browseEpoch += 1;
   grid = null;
   el.results.classList.remove('is-grid');
   el.search.value = '';
@@ -531,13 +576,16 @@ function closeBrowse() {
 }
 
 async function runBrowse(more = false) {
+  const epoch = ++browseEpoch;
   grid = null;
   el.results.classList.remove('is-grid');
   const text = escapeQuery(el.search.value.trim());
   const g = GENRE[el.bGenre.value] || GENRE.all;
+  if(g.id==='shorts') { await openShortFilms(); return; }
   const decade = el.bDecade.value;
   const sort = el.bSort.value || 'downloads desc';
-  const key = [text, g.id, decade, sort].join('|');
+  const language=MOVIE_LANGUAGES.find(l=>l.id===el.bLanguage.value) || MOVIE_LANGUAGES[0];
+  const key = [text, g.id, decade, sort, language.id].join('|');
   if (!more || key !== browse.key) browse = { key, page: 1, total: 0, seen: new Set() };
   else browse.page += 1;
 
@@ -552,14 +600,16 @@ async function runBrowse(more = false) {
 
   let q = text && g.id === 'all' ? EVERYTHING : g.q;
   if (text) q += ' AND (' + text.split(' ').map((w) => 'title:(' + w + '*)').join(' AND ') + ')';
+  if (language.q) q += ' AND '+language.q;
   if (decade) q += ' AND year:[' + decade + ' TO ' + (Number(decade) + 9) + ']';
   try {
     const { docs, total } = await search(q, { rows: PAGE, page: browse.page, sort });
-    if (browse.key !== key) return;                 // filters changed while this was loading
+    if (browseEpoch !== epoch || browse.key !== key) return;                 // filters changed while this was loading
     browse.total = total;
     unique(docs, browse.seen).forEach((d) => el.grid.append(card(d)));
     const loaded = browse.page * PAGE;
     const bits = [g.id === 'all' && text ? 'Everything' : g.title];
+    if (language.id) bits.push(language.name);
     if (decade) bits.push(decade + 's');
     if (text) bits.push('“' + el.search.value.trim() + '”');
     el.count.textContent = total
@@ -568,6 +618,7 @@ async function runBrowse(more = false) {
     el.more.hidden = loaded >= total;
     el.more.textContent = 'Show more (' + Math.max(0, total - loaded).toLocaleString() + ' left)';
   } catch (err) {
+    if (browseEpoch !== epoch) return;
     el.count.textContent = 'Could not reach archive.org. ' + String(err.message || err);
   }
 }
@@ -626,7 +677,8 @@ function openExternal(item) {
   document.body.classList.add('player-open');
   el.title.textContent = item.title;
   el.sub.textContent = item.sub || '';
-  el.desc.textContent = item.desc || '';
+  el.desc.textContent = item.desc || 'No synopsis supplied by this source.';
+  movieFacts(item, []);
   el.link.href = item.link;
   el.linkLabel.textContent = item.linkLabel || 'Open source page';
   el.parts.hidden = true;
@@ -663,7 +715,8 @@ export async function openMovie(id) {
   document.body.classList.add('player-open');
   el.title.textContent = current.title;
   el.sub.textContent = [first(doc.year), first(doc.creator)].filter(Boolean).join(' · ');
-  el.desc.textContent = '';
+  el.desc.textContent = 'Loading film details…';
+  movieFacts(doc);
   el.link.href = API + '/details/' + encodeURIComponent(id);
   el.linkLabel.textContent = 'Open on archive.org';
   el.parts.hidden = true;
@@ -674,6 +727,7 @@ export async function openMovie(id) {
   let meta;
   try {
     const res = await fetch(API + '/metadata/' + encodeURIComponent(id));
+    if(!res.ok) throw new Error('Film metadata unavailable');
     meta = await res.json();
   } catch {
     setStatus('Could not reach archive.org.');
@@ -685,7 +739,8 @@ export async function openMovie(id) {
   current.year = first(m.year) || (first(m.date) || '').slice(0, 4) || current.year;
   el.title.textContent = current.title;
   el.sub.textContent = [current.year, first(m.creator), first(m.runtime)].filter(Boolean).join(' · ');
-  el.desc.textContent = plainText(first(m.description)).slice(0, 1800);
+  el.desc.textContent = plainText(first(m.description)).slice(0, 1800) || 'No synopsis supplied by this source.';
+  movieFacts({...m,year:current.year}, meta.files || []);
 
   current.files = pickFiles(meta.files || []);
   if (!current.files.length) {
@@ -744,6 +799,8 @@ export function initMovies() {
     bGenre: document.getElementById('mb-genre'),
     bDecade: document.getElementById('mb-decade'),
     bSort: document.getElementById('mb-sort'),
+    bLanguage: document.getElementById('mb-language'),
+    facts: document.getElementById('movie-facts'),
     bBack: document.getElementById('mb-back'),
     browseBtn: document.getElementById('movies-browse-btn'),
     root: document.getElementById('mplayer'),
@@ -773,6 +830,13 @@ export function initMovies() {
   });
   let t;
   fillBrowseControls();
+  initKidsCatalogue();
+  const collections=document.getElementById('movie-collections');
+  COLLECTIONS.forEach(c=> {
+    const button=document.createElement('button');button.type='button';button.className='collection-card';
+    const title=document.createElement('strong'),note=document.createElement('span');title.textContent=c.title;note.textContent=c.note;
+    button.append(title,note);button.addEventListener('click',()=>openBrowse(c.genre));collections.append(button);
+  });
   el.search.addEventListener('input', () => {
     clearTimeout(t);
     t = setTimeout(() => {
@@ -782,7 +846,7 @@ export function initMovies() {
     }, 350);
   });
   el.more.addEventListener('click', () => (grid ? gridMore() : runBrowse(true)));
-  [el.bGenre, el.bDecade, el.bSort].forEach((n) => n.addEventListener('change', () => runBrowse(false)));
+  [el.bGenre, el.bDecade, el.bSort, el.bLanguage].forEach((n) => n.addEventListener('change', () => runBrowse(false)));
   el.bBack.addEventListener('click', closeBrowse);
   el.browseBtn.addEventListener('click', () => openBrowse('all'));
 
@@ -817,5 +881,103 @@ export function showMovies() {
     renderRows();
   } else if (!el.rows.hidden) {
     renderContinueOnly();
+  }
+}
+
+let kidsMoviesStarted=false;
+/** Preview rows open independent, paged Kids grids. */
+export function showKidsMovies() {
+  if(kidsMoviesStarted) return;
+  kidsMoviesStarted=true;
+  const host=document.getElementById('kids-movies');
+  const youtubeHolder=skeletonRow('Kids shows on YouTube');host.append(youtubeHolder);
+  loadRowWithRetry(youtubeHolder,'Kids shows on YouTube',async()=>{
+    const channels=(await youtubeChannels()).filter(isKidsYouTube).map(ytDoc);
+    return channels.length ? row('Kids shows on YouTube',channels.slice(0,ROW_SIZE),()=>openKidsCollection('youtube')) : null;
+  });
+  for(const collection of KIDS_ARCHIVE_COLLECTIONS) {
+    const holder=skeletonRow(collection.title);host.append(holder);
+    loadRowWithRetry(holder,collection.title,async()=>{
+      const result=await search(collection.q,{rows:ROW_SIZE});
+      return result.docs.length ? row(collection.title,unique(result.docs),()=>openKidsCollection(collection.id)) : null;
+    });
+  }
+}
+
+const kidsEl={};
+let kidsGrid=null, kidsEpoch=0, kidsReturnFocus=null, kidsSearchTimer=null;
+const kidsSpec=id=>id==='youtube'?{id,title:'Kids shows on YouTube'}:id==='all'?{id,title:'All kids films on Archive.org',q:KIDS_ARCHIVE_QUERY}:KIDS_ARCHIVE_COLLECTIONS.find(collection=>collection.id===id);
+function initKidsCatalogue() {
+  for(const [key,id] of Object.entries({home:'kids-home',results:'kids-results',title:'kids-results-title',collection:'kids-collection',language:'kids-film-language',sort:'kids-film-sort',search:'kids-film-search',count:'kids-catalogue-count',grid:'kids-catalogue-grid',more:'kids-catalogue-more',retry:'kids-catalogue-retry',back:'kids-catalogue-back',all:'kids-browse-all'})) kidsEl[key]=document.getElementById(id);
+  [{id:'all',title:'All Archive.org kids films'},...KIDS_ARCHIVE_COLLECTIONS,{id:'youtube',title:'Kids shows on YouTube'}].forEach(collection=>kidsEl.collection.add(new Option(collection.title,collection.id)));
+  MOVIE_LANGUAGES.forEach(language=>kidsEl.language.add(new Option(language.name,language.id)));
+  kidsEl.all.addEventListener('click',()=>openKidsCollection('all'));
+  kidsEl.back.addEventListener('click',()=>{
+    clearTimeout(kidsSearchTimer);kidsEpoch+=1;kidsGrid=null;kidsEl.results.hidden=true;kidsEl.home.hidden=false;
+    if(kidsReturnFocus?.isConnected) kidsReturnFocus.focus({preventScroll:true});
+  });
+  for(const key of ['collection','language','sort']) kidsEl[key].addEventListener('change',()=>refreshKidsGrid());
+  kidsEl.search.addEventListener('input',()=>{
+    clearTimeout(kidsSearchTimer);kidsEpoch+=1;kidsEl.more.hidden=true;kidsEl.retry.hidden=true;
+    kidsEl.count.textContent='Searching this collection…';kidsEl.grid.setAttribute('aria-busy','true');
+    kidsSearchTimer=setTimeout(()=>{if(!kidsEl.results.hidden)refreshKidsGrid();},250);
+  });
+  kidsEl.more.addEventListener('click',()=>loadKidsPage());
+  kidsEl.retry.addEventListener('click',()=>loadKidsPage());
+}
+function openKidsCollection(id) {
+  clearTimeout(kidsSearchTimer);
+  kidsReturnFocus=document.activeElement;
+  kidsEl.collection.value=id;kidsEl.search.value='';kidsEl.language.value='';kidsEl.sort.value='downloads desc';
+  kidsEl.home.hidden=true;kidsEl.results.hidden=false;
+  refreshKidsGrid();kidsEl.title.focus({preventScroll:true});
+  kidsEl.results.scrollIntoView({block:'start'});
+}
+function refreshKidsGrid() {
+  clearTimeout(kidsSearchTimer);
+  const spec=kidsSpec(kidsEl.collection.value);
+  const youtube=spec.id==='youtube';
+  kidsEl.language.disabled=youtube;kidsEl.sort.disabled=youtube;
+  kidsEl.sort.options[0].textContent=youtube?'Channel order':'Most watched';
+  if(youtube) {kidsEl.language.value='';kidsEl.sort.value='downloads desc';}
+  kidsEl.title.textContent=spec.title;
+  kidsGrid={spec,page:0,seen:new Set(),busy:false,epoch:++kidsEpoch};
+  kidsEl.grid.replaceChildren();loadKidsPage();
+}
+async function loadKidsPage() {
+  const state=kidsGrid;if(!state || state.busy || state.epoch!==kidsEpoch) return;
+  state.busy=true;kidsEl.grid.setAttribute('aria-busy','true');kidsEl.more.hidden=true;kidsEl.retry.hidden=true;
+  const returnFocus=[kidsEl.more,kidsEl.retry].includes(document.activeElement);
+  kidsEl.count.textContent='Loading '+state.spec.title+'…';
+  const next=state.page+1;
+  try {
+    let docs,total;
+    const text=kidsEl.search.value.trim();
+    if(state.spec.id==='youtube') {
+      const channels=(await youtubeChannels()).filter(isKidsYouTube).filter(channel=>channel.n.toLocaleLowerCase().includes(text.toLocaleLowerCase())).map(ytDoc);
+      total=channels.length;docs=channels.slice((next-1)*PAGE,next*PAGE);
+    } else {
+      let q=state.spec.q;
+      const safeText=escapeQuery(text);
+      if(safeText) q+=' AND ('+safeText.split(' ').map(word=>'title:('+word+'*)').join(' AND ')+')';
+      const language=MOVIE_LANGUAGES.find(language=>language.id===kidsEl.language.value);
+      if(language?.q) q+=' AND '+language.q;
+      ({docs,total}=await search(q,{page:next,rows:PAGE,sort:kidsEl.sort.value}));
+    }
+    if(state!==kidsGrid || state.epoch!==kidsEpoch) return;
+    state.page=next;
+    unique(docs,state.seen).forEach(doc=>kidsEl.grid.append(card(doc)));
+    kidsEl.count.textContent=total?total.toLocaleString()+' title'+(total===1?'':'s')+' · '+state.spec.title:'No titles found. Try another search, language or collection.';
+    kidsEl.more.hidden=!docs.length || next*PAGE>=total;
+    kidsEl.more.textContent='Show more ('+Math.max(0,total-next*PAGE).toLocaleString()+' left)';
+    if(returnFocus && document.getElementById('kids').getClientRects().length && (document.activeElement===document.body || document.activeElement===kidsEl.more || document.activeElement===kidsEl.retry)) {const target=kidsEl.more.hidden?kidsEl.title:kidsEl.more;target.focus({preventScroll:true});}
+  } catch(error) {
+    if(state!==kidsGrid || state.epoch!==kidsEpoch) return;
+    kidsEl.count.textContent='Could not load '+state.spec.title+'. '+String(error.message || error);
+    kidsEl.retry.hidden=false;
+    if(returnFocus && document.getElementById('kids').getClientRects().length && (document.activeElement===document.body || document.activeElement===kidsEl.more || document.activeElement===kidsEl.retry))kidsEl.retry.focus({preventScroll:true});
+  } finally {
+    state.busy=false;
+    if(state===kidsGrid && state.epoch===kidsEpoch)kidsEl.grid.removeAttribute('aria-busy');
   }
 }

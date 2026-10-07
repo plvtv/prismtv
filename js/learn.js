@@ -1,3 +1,5 @@
+import {initLocalLearn} from './learn-local.js';
+import {initArchiveLearn, showArchiveLearn} from './learn-archive.js';
 import { bindCast } from './cast.js';
 /**
  * Learn English.
@@ -56,6 +58,40 @@ const COURSES = [
   { level: 'pronunciation', channel: "Rachel's English", title: "Best American Accent", list: 'PLrqHrGoMJdTTm-WglbX3BVV5rElWNWUkU', thumb: 'XY1QPRy6ra0' },
   { level: 'pronunciation', channel: "BBC Learning English", title: "English In A Minute", list: 'PLcetZ6gSk96_Fprtuj6gKN9upPjaDrARH', thumb: '8HhyqlDmnWA' }
 ];
+
+const PATH_KEY = 'prismtv.learnPath';
+const COMPLETED_KEY = 'prismtv.learnCompleted';
+const PATHS = [
+  {id:'beginner',title:'Beginner foundations',note:'Build a base, practise everyday words, then follow a conversation.',steps:["Let's Learn English (Level 1)",'100 Most Common Words','Easy English Conversations']},
+  {id:'conversation',title:'Everyday conversation',note:'Listen to real exchanges, learn useful expressions, then practise at work.',steps:['Real English Conversation','The English We Speak','English at Work']},
+  {id:'listening',title:'Listening practice',note:'Start with short topics, move to focused practice, then listen to the news.',steps:['6 Minute English','English Listening Practice','Learning English from the News']},
+  {id:'pronunciation',title:'Clear pronunciation',note:'Work through sounds, accent practice and connected speech.',steps:['How to Pronounce','Best American Accent','How to Speak English Fast']}
+];
+function readPath() {try{return localStorage.getItem(PATH_KEY) || 'beginner';}catch{return 'beginner';}}
+function completedCourses() {try{const value=JSON.parse(localStorage.getItem(COMPLETED_KEY) || '[]');return new Set(Array.isArray(value)?value.filter(x=>typeof x==='string'):[]);}catch{return new Set();}}
+function renderPaths() {
+  const host=document.getElementById('learn-paths');host.replaceChildren();
+  const heading=document.createElement('h2');heading.textContent='Choose a learning path';
+  const choices=document.createElement('div');choices.className='chips';choices.setAttribute('role','group');choices.setAttribute('aria-label','Learning path');
+  const selected=PATHS.find(p=>p.id===readPath()) || PATHS[0];
+  for(const path of PATHS) {
+    const button=document.createElement('button');button.type='button';button.className='chip'+(path===selected?' on':'');button.textContent=path.title;button.dataset.path=path.id;button.setAttribute('aria-pressed',String(path===selected));
+    button.addEventListener('click',()=>{try{localStorage.setItem(PATH_KEY,path.id);}catch{}renderPaths();host.querySelector('[data-path="'+path.id+'"]').focus();});choices.append(button);
+  }
+  const intro=document.createElement('p');intro.className='prefs-note';intro.textContent=selected.note;
+  const courses=selected.steps.map(title=>COURSES.find(c=>c.title===title)).filter(Boolean),completed=completedCourses();
+  const progress=document.createElement('progress');progress.max=courses.length;progress.setAttribute('aria-label',selected.title+' completed courses');
+  const count=document.createElement('p');count.className='prefs-note';count.setAttribute('role','status');
+  const update=()=>{const n=courses.filter(c=>completed.has(c.list)).length;progress.value=n;count.textContent=n+' of '+courses.length+' courses marked complete · saved on this device';};update();
+  const list=document.createElement('ol');list.className='path-steps';
+  for(const course of courses) {
+    const li=document.createElement('li'),open=document.createElement('button');open.type='button';open.className='path-course';
+    const name=document.createElement('strong'),provider=document.createElement('span');name.textContent=course.title;provider.textContent=course.channel;open.append(name,provider);open.addEventListener('click',()=>openLearnLesson(course));
+    const label=document.createElement('label');label.className='path-complete';const checkbox=document.createElement('input');checkbox.type='checkbox';checkbox.checked=completed.has(course.list);checkbox.setAttribute('aria-label','Mark '+course.title+' complete');
+    checkbox.addEventListener('change',()=>{if(checkbox.checked)completed.add(course.list);else completed.delete(course.list);try{localStorage.setItem(COMPLETED_KEY,JSON.stringify([...completed]));}catch{}update();});label.append(checkbox,document.createTextNode('Completed'));li.append(open,label);list.append(li);
+  }
+  host.append(heading,choices,intro,progress,count,list);
+}
 
 // Channels whose newest uploads feed the "New lessons" row.
 const FEEDS = [
@@ -246,6 +282,8 @@ function renderLevelChips() {
 
 function render() {
   renderLevelChips();
+  showArchiveLearn();
+  renderPaths();
   el.rows.innerHTML = '';
   const mine = level();
 
@@ -512,6 +550,8 @@ function closeLesson(fromHistory = false) {
 }
 
 export function initLearn({ getPractice, channelRow } = {}) {
+  initArchiveLearn();
+  initLocalLearn();
   if (getPractice) practice = getPractice;
   if (channelRow) renderChannelRow = channelRow;
   Object.assign(el, {

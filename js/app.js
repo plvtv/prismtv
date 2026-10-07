@@ -1,3 +1,6 @@
+import { FEATURED_LANGUAGES, languageName, languageCodes, isKidsChannel } from './content.js';
+import { initKids, showKids, kidsChannels } from './kids.js';
+import { guideNow } from './guide.js';
 import { loadQr } from './qr.js';
 import {
   ROW_CATEGORIES, SPOTLIGHT_COUNTRIES, HERO_COUNT, HERO_ROTATE_MS, PAGE_SIZE, MAX_ROW_ITEMS
@@ -7,7 +10,7 @@ import { SOURCE_KEY, COUNTRY_ALIASES } from './config.js';
 import { myList, watchHistory } from './store.js';
 import { createRow, createHero, renderGrid, channelSubtitle, toast, syncFavouriteButton } from './ui.js';
 import { initPlayer, openPlayer } from './player.js';
-import { initMovies, showMovies, setYouTubeOpener } from './movies.js';
+import { initMovies, showMovies, showKidsMovies, setYouTubeOpener } from './movies.js';
 import { initLearn, showLearn, learnChannel, openYouTube } from './learn.js';
 import { loadHealth, startScan, watchScan, channelHealth, streamUrls, knownCount, health } from './health.js';
 
@@ -36,6 +39,7 @@ const dom = {
   filtersWrap: document.querySelector('.filters'),
   movies: document.getElementById('movies'),
   learn: document.getElementById('learn'),
+  kids: document.getElementById('kids'),
   hideDead: document.getElementById('hide-dead'),
   healthNote: document.getElementById('health-note'),
   healthScan: document.getElementById('health-scan')
@@ -112,11 +116,13 @@ function renderHealthNote() {
 }
 
 function refreshView() {
+  const previous=currentFilters();
   rebuildIndex();
   buildFilters();
+  dom.fCategory.value=previous.category;dom.fCountry.value=previous.country;dom.fLanguage.value=previous.language;
   buildRegionPicker();
   pageLimit = PAGE_SIZE;
-  if (view === 'home') renderHome(); else if (view !== 'movies' && view !== 'learn') renderBrowse();
+  if (view === 'home') renderHome(); else if (view === 'kids') showKids(); else if (view !== 'movies' && view !== 'learn') renderBrowse();
   renderHealthNote();
 }
 
@@ -134,13 +140,13 @@ async function scanAll({ force = false } = {}) {
   watchScan(() => {
     renderHealthNote();
     // Re-render occasionally, not on every tick, so the page does not jump under the viewer.
-    if (hideDeadPref() && Date.now() - lastRefresh > 60000) { lastRefresh = Date.now(); refreshView(); }
+    if (Date.now() - lastRefresh > 60000) { lastRefresh = Date.now(); refreshView(); }
   }, () => {
     if (hideDeadPref()) {
       refreshView();
       toast('Check finished \u2014 ' + hiddenCount.toLocaleString() + ' channels with no working stream hidden.');
     } else {
-      renderHealthNote();
+      refreshView();
       toast('Check finished.');
     }
   });
@@ -187,7 +193,7 @@ function buildSourcePicker() {
     pageLimit = PAGE_SIZE;
     toast(index.channels.length.toLocaleString() + ' channels from ' +
       (dom.source.value === 'both' ? 'all indexes' : dom.source.value));
-    if (view === 'home') renderHome(); else if (view !== 'movies' && view !== 'learn') renderBrowse();
+    if (view === 'home') renderHome(); else if (view === 'kids') showKids(); else if (view !== 'movies' && view !== 'learn') renderBrowse();
   });
 }
 
@@ -282,7 +288,7 @@ function buildRegionPicker() {
     try { localStorage.setItem(REGION_KEY, dom.region.value); } catch { /* ignore */ }
     const code = viewerCountry();
     toast(code ? 'Top billing: ' + dataset.countries[code].name : 'Using your browser region');
-    if (view === 'home') renderHome(); else if (view !== 'movies' && view !== 'learn') renderBrowse();
+    if (view === 'home') renderHome(); else if (view === 'kids') showKids(); else if (view !== 'movies' && view !== 'learn') renderBrowse();
   });
 }
 
@@ -338,10 +344,35 @@ function renderHome() {
       () => openBrowseWith({ country: code })));
   }
 
+  const languages = document.createElement('section'); languages.className = 'language-discovery';
+  const title = document.createElement('h2'); title.textContent = 'Watch in your language';
+  const links = languageButtons(''); languages.append(title, links); frag.prepend(languages);
+  const scheduled = index.channels.filter(c => guideNow(c.id).current);
+  if (scheduled.length) frag.prepend(createRow('What’s on now', rankForDisplay(scheduled), dataset, 'From available programme guides'));
   dom.rows.append(frag);
 }
 
 /* ---------------- filters + browse/search ---------------- */
+function languageButtons(selected) {
+  const group=document.createElement('div');group.className='chips';
+  for (const lang of [{code:'',name:'All languages'},...FEATURED_LANGUAGES]) {
+    const count=lang.code?(index.byLanguage.get(lang.code)?.length || 0):index.channels.length;
+    const button=document.createElement('button');button.type='button';button.className='chip'+(selected===lang.code?' on':'');
+    button.dataset.language=lang.code;button.textContent=lang.name+(lang.code?' · '+count:'');
+    button.disabled=!!lang.code&&!count;button.setAttribute('aria-pressed',String(selected===lang.code));
+    if(button.disabled)button.title='No channels with confirmed '+lang.name+' metadata in this index.';
+    button.addEventListener('click',()=>openBrowseWith({language:lang.code}));group.append(button);
+  }
+  return group;
+}
+function renderLanguageButtons() {
+  const host=document.getElementById('browse-languages');
+  const focus=host.contains(document.activeElement)?document.activeElement.dataset.language:null;
+  host.replaceChildren(languageButtons(dom.fLanguage.value));
+  if(focus!==null)[...host.querySelectorAll('button')].find(b=>b.dataset.language===focus)?.focus();
+}
+document.addEventListener('prismtv:guide',()=> { if(index && view==='home') renderHome(); });
+
 function buildFilters() {
   const catOptions = ['<option value="">All categories</option>'];
   for (const [id, cat] of Object.entries(dataset.categories)) {
@@ -359,11 +390,11 @@ function buildFilters() {
     countries.map((c) => '<option value="' + c.code + '">' + c.meta.flag + ' ' + c.meta.name + ' (' + c.list.length + ')</option>').join('');
 
   const langs = [...index.byLanguage.entries()]
-    .filter(([, list]) => list.length >= 12)
-    .sort((a, b) => b[1].length - a[1].length)
-    .slice(0, 80);
+    .filter(([, list]) => list.length >= 1)
+    .sort((a, b) => b[1].length - a[1].length);
   dom.fLanguage.innerHTML = '<option value="">All languages</option>' +
-    langs.map(([code, list]) => '<option value="' + code + '">' + code.toUpperCase() + ' (' + list.length + ')</option>').join('');
+    langs.map(([code, list]) => '<option value="' + code + '">' + languageName(code, dataset.languages) + ' (' + list.length + ')</option>').join('');
+  renderLanguageButtons();
 }
 
 function currentFilters() {
@@ -390,6 +421,7 @@ function applyFilters() {
     const q = f.q;
     pool = pool.filter((c) => {
       if (c.name.toLowerCase().includes(q)) return true;
+      if (languageCodes(c, dataset).some(code => languageName(code, dataset.languages).toLowerCase().includes(q))) return true;
       const country = c.country && dataset.countries[c.country];
       if (country && country.name.toLowerCase().includes(q)) return true;
       return c.categories.some((cat) => cat.includes(q));
@@ -411,19 +443,22 @@ function browseHeading(f) {
   if (cat && country) return cat.name + ' \u00b7 ' + country.name;
   if (cat) return cat.name;
   if (country) return country.flag + ' ' + country.name;
+  if (f.language) return languageName(f.language, dataset.languages) + ' channels';
   return 'Browse';
 }
 
-function openBrowseWith({ category = '', country = '' } = {}) {
+function openBrowseWith({ category = '', country = '', language = '' } = {}) {
   dom.search.value = '';
   dom.fCategory.value = category;
   dom.fCountry.value = country;
-  dom.fLanguage.value = '';
+  dom.fLanguage.value = language;
   setView('browse');
 }
 
 function renderBrowse(titleOverride) {
   const f = currentFilters();
+  renderLanguageButtons();
+  document.getElementById('browse-languages').hidden = view === 'mylist';
   let results;
   if (view === 'mylist') {
     results = myList.ids().map((id) => index.byId.get(id) || learnChannel(id)).filter(Boolean);
@@ -436,7 +471,7 @@ function renderBrowse(titleOverride) {
     (view === 'mylist' ? 'My List' : f.q ? 'Results for “' + dom.search.value.trim() + '”' : browseHeading(f));
   dom.browseCount.textContent = results.length
     ? results.length.toLocaleString() + ' channel' + (results.length === 1 ? '' : 's') +
-      (view === 'mylist' ? ' saved on this device' : ' with a playable source')
+      (view === 'mylist' ? ' saved on this device' : ' with published sources')
     : (view === 'mylist' ? 'Nothing saved yet — hit “+ My List” on any channel.' : '');
   renderGrid(dom.browseGrid, results, dataset, pageLimit, view === 'mylist'
     ? 'Your list is ready for your favourites. Open a channel and choose “My List” to save it here.'
@@ -451,16 +486,19 @@ function setView(next, titleOverride) {
   const isHome = next === 'home';
   const isMovies = next === 'movies';
   const isLearn = next === 'learn';
+  const isKids = next === 'kids';
   dom.hero.hidden = !isHome;
   dom.rows.hidden = !isHome;
-  dom.browse.hidden = isHome || isMovies || isLearn;
+  dom.browse.hidden = isHome || isMovies || isLearn || isKids;
   dom.movies.hidden = !isMovies;
   dom.learn.hidden = !isLearn;
+  dom.kids.hidden = !isKids;
   if (isHome) renderHome();
   else if (isMovies) showMovies();
   else if (isLearn) showLearn();
+  else if (isKids) { showKids(); showKidsMovies(); }
   else renderBrowse(titleOverride);
-  const shown = isHome ? dom.rows : isMovies ? dom.movies : isLearn ? dom.learn : dom.browse;
+  const shown = isHome ? dom.rows : isMovies ? dom.movies : isLearn ? dom.learn : isKids ? dom.kids : dom.browse;
   shown.classList.remove('view-enter');
   void shown.offsetWidth;
   shown.classList.add('view-enter');
@@ -486,7 +524,7 @@ function relatedFor(channel) {
     let added = 0;
     for (const c of pool) {
       if (added >= limit) break;
-      if (seen.has(c.id) || !c.streams.length) continue;
+      if (seen.has(c.id) || !c.streams.length || (view === 'kids' && !isKidsChannel(c))) continue;
       seen.add(c.id);
       out.push({ channel: c, subtitle: channelSubtitle(c, dataset), group });
       added += 1;
@@ -654,6 +692,7 @@ initPlayer({
 boot();
 
 initMovies();
+initKids({getChannels: () => index?.channels || [], getDataset: () => dataset});
 setYouTubeOpener((item) => openYouTube(item, { learning: false }));
 
 /* ---------------- Learn English: live-TV practice rows ---------------- */
@@ -682,6 +721,7 @@ const randomBtn = document.getElementById('random-btn');
 function pick(list) { return list[Math.floor(Math.random() * list.length)]; }
 /** The channels Random draws from: what the current page is showing. */
 function randomPool() {
+  if (view === 'kids') return kidsChannels();
   if (view === 'browse' || view === 'search') return applyFilters();       // Browse filters + search
   if (view === 'mylist') return myList.ids().map((id) => index.byId.get(id) || learnChannel(id)).filter(Boolean);
   return index.channels;
@@ -697,6 +737,7 @@ function randomChannel() {
 }
 /** "Kids", "Kids · United Kingdom", "“bbc”", "My List" or '' for the toast. */
 function randomScope() {
+  if (view === 'kids') return 'Kids';
   if (view === 'mylist') return 'My List';
   if (view === 'search' && dom.search.value.trim()) return '\u201c' + dom.search.value.trim() + '\u201d';
   if (view !== 'browse') return '';
@@ -711,7 +752,7 @@ function spin(btn) {
 }
 const isOpen = (id) => !document.getElementById(id).hidden;
 function randomCard(selector, skip) {
-  const cards = [...document.querySelectorAll(selector)].filter((c) => !skip || (c.dataset.id || c.dataset.movie) !== skip);
+  const cards = [...document.querySelectorAll(selector)].filter((c) => c.getClientRects().length && (!skip || (c.dataset.id || c.dataset.movie) !== skip));
   if (!cards.length) return false;
   pick(cards).click();
   return true;
@@ -719,8 +760,9 @@ function randomCard(selector, skip) {
 function playRandom(from = randomBtn) {
   spin(from);
   // Inside a player: stay in that kind of player.
-  if (isOpen('mplayer') && randomCard('#movies .mcard[data-movie]')) return;
-  if (isOpen('lplayer') && randomCard(view === 'movies' ? '#movies .mcard-yt[data-movie]' : '#learn .lcard')) return;
+  if (isOpen('archive-audio-player') && randomCard('#learn .archive-lesson-card')) return;
+  if (isOpen('mplayer') && randomCard(view === 'kids' ? '#kids .mcard[data-movie]' : '#movies .mcard[data-movie]')) return;
+  if (isOpen('lplayer') && randomCard(view === 'kids' ? '#kids .mcard-yt[data-movie]' : view === 'movies' ? '#movies .mcard-yt[data-movie]' : '#learn .lcard')) return;
   if (isOpen('player')) {
     const now = document.getElementById('player-name').textContent;
     // From Learn English: another practice channel, captions on.
@@ -730,6 +772,11 @@ function playRandom(from = randomBtn) {
       if (c && c.name !== now) { toast('Random' + (randomScope() ? ' (' + randomScope() + ')' : '') + ': ' + c.name); play(c); return; }
     }
   }
+  if (view === 'kids') {
+    if (randomCard('#kids .card, #kids .mcard[data-movie]')) return;
+    toast('Kids content is still loading, or no channels match your filters.');
+    return;
+  }
   if (view === 'movies') {
     if (randomCard('#movies .mcard[data-movie]')) return;
     toast('Films are still loading \u2014 try again in a moment.');
@@ -737,7 +784,7 @@ function playRandom(from = randomBtn) {
   }
   if (view === 'learn') {
     // Learn English: a random lesson, never an unrelated live channel.
-    if (randomCard('#learn .lcard')) return;
+    if (randomCard('#learn .lcard, #learn .archive-lesson-card')) return;
     toast('Lessons are still loading \u2014 try again in a moment.');
     return;
   }

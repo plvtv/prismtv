@@ -1,3 +1,6 @@
+import { channelHealth, health } from './health.js';
+import { availabilityLabel } from './content.js';
+import { guideNow } from './guide.js';
 import { MAX_ROW_ITEMS } from './config.js';
 import { myList } from './store.js';
 
@@ -232,7 +235,11 @@ export function createCard(channel, dataset) {
   const sub = document.createElement('span');
   sub.className = 'sub';
   sub.textContent = cardSubline(channel, dataset);
-  meta.append(name, sub);
+  const status=document.createElement('span');status.className='content-availability';
+  const verdict=channelHealth(channel);status.dataset.state=verdict;status.textContent=availabilityLabel(verdict,health().finished);
+  const now=guideNow(channel.id).current;
+  const programme=document.createElement('span');programme.className='content-programme';if(now)programme.textContent='Now: '+now.title;
+  meta.append(name, sub, status);if(now)meta.append(programme);
 
   card.append(art, meta);
   wrapper.append(card, save);

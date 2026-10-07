@@ -8,3 +8,6 @@ data/mirror/
 data/site.json
 _site/
 data/health.json
+
+# Private learning links, excluded from Git and Pages
+data/local-learn.json

@@ -82,3 +82,27 @@ Additional browser checks passed with mocked platform/media APIs: Chromecast liv
 Added current TV/status feedback with receiver media/volume/session listeners, movie seeking and time display, volume/mute, specific errors and retry/source selection, resume to the matching local video, and SDK session recovery after refresh. Fullscreen stage controls keep Cast visible and preserve keyboard focus after closing its panel. Live broadcasts hide movie seeking; unrelated local videos cannot receive a restored movie's position.
 
 Six JavaScript protocol/state tests and six Python LAN pairing tests pass. The Playwright fixture verifies no-device and source failures, pause status, volume/mute, seeking near the movie end, refresh recovery, mismatched-video resume prevention, resume position, live seeking suppression, panel bounds at 320/768/1440px, fullscreen panel placement and focus return. Device APIs are mocked; actual Chromecast hardware and native iOS fullscreen remain unverified.
+
+### Content discovery follow-up
+
+Added confirmed feed-language shortcuts, four film collections, source-provided movie facts and synopsis, four ordered learning paths with manual completion saved locally, conditional XMLTV now/next listings, and recent source-response labels and ordering. Missing metadata and guide coverage remain explicit. Short-film discovery excludes unknown runtimes and films longer than 30 minutes from a sample of up to 200 search results.
+
+Controlled Chromium checks cover feed-specific language filtering, optional metadata API failure, guide matching and absent coverage, movie facts and missing fields, short-film runtime filtering, learning persistence and focus, and page overflow at 320/375/768/1024/1440px. Real provider availability, programme coverage, and third-party playback remain integration limitations.
+
+### Kids follow-up
+
+Added desktop and mobile Kids navigation, independently filtered/paged kids live TV, explicitly selected children’s YouTube channels, classic cartoons and children’s film rows with paging/retry, and Kids-scoped Random and live related channels. The existing movie and live players retain favourites, progress and Cast. Explicit kids/children channel categories are used; generic animation and family channels are not automatically classified as children’s content. Film collections reflect source categories and do not promise age ratings.
+
+Chromium fixture checks cover tab visibility and active navigation, language/country/search/reset, exclusion of general animation/adult-labelled channels, film source failure/retry and paging, playback, favourites without playback, related channels and Random scope, repeated navigation, and overflow at 320/375/768/1024/1440px. Provider data and actual receiver playback retain the integration limitations above.
+
+### Kids See All and Archive discovery
+
+Added Kids-only See All grids for every film/show row, combined Archive browsing, search/language/sort controls, incremental pagination, same-page retry without discarding loaded cards, and focus restoration. Live See All expands the current filtered channel pool. Random excludes hidden preview cards. Added character cartoons, storybook films, and arithmetic/counting/reading instruction; refined children's-film queries after live Archive searches revealed that broad children/juvenile tags include adult dramas. Existing playback/format/year constraints remain.
+
+Live Archive API checks verified collection results and sampled top titles. Fixture browser checks cover live expansion, separate Kids grids, YouTube search and controls, Archive search/language/sort, failed second-page retry with preserved cards, duplicate-free paging, back focus, stale-response rejection, empty search and visible-grid Random, and both home/grid overflow at 320/375/768/1024/1440px. Provider classifications and age ratings remain unverified; this is discovery rather than parental controls.
+
+### Archive English listening follow-up
+
+Added a curated 15-recording listening lab with skill/search/See All controls, an accessible audio dialog, source-text/credit links, speed, replay, loop, position persistence, retry and `audio/mpeg` casting. The shared focus trap now includes native audio controls and restores recreated recording cards. Archive's search API and a direct media HEAD returned 503; source metadata and exact links were verified using official LibriVox pages.
+
+Chromium fixtures cover failed playback/retry, decoded audio, correct clip selection, text links, accent records without transcript claims, speed/loop/replay, progress after reload, Cast-panel Escape before player Escape, focus return and responsive layouts. Actual Archive streaming and receiver playback remain integration limitations.

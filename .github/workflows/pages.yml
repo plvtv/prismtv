@@ -44,6 +44,7 @@ jobs:
         run: |
           mkdir -p _site
           cp -r index.html receive.html css js data _site/
+          rm -f _site/data/local-learn.json
           echo '{"public": true}' > _site/data/site.json
           touch _site/.nojekyll
 

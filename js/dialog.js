@@ -1,6 +1,6 @@
 // Shared keyboard and focus behaviour for live TV, films and lessons.
 let active = null;
-const selector = 'button, a[href], input, select, textarea, iframe, video[controls], [tabindex]';
+const selector = 'button, a[href], input, select, textarea, iframe, video[controls], audio[controls], [tabindex]';
 
 function focusable(host) {
   return [...host.querySelectorAll(selector)].filter((node) =>
@@ -18,7 +18,7 @@ function release(restore = true) {
     let target = previous.trigger;
     if (!target?.isConnected) {
       // Closing a film/lesson refreshes its row; find the replacement card.
-      for (const attr of ['data-id', 'data-movie', 'data-learn']) {
+      for (const attr of ['data-id', 'data-movie', 'data-learn', 'data-archive-lesson']) {
         if (target?.hasAttribute(attr)) {
           const value = target.getAttribute(attr);
           target = [...document.querySelectorAll('[' + attr + ']')].find((node) => node.getAttribute(attr) === value && node.getClientRects().length);

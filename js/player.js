@@ -1,3 +1,4 @@
+import { showGuide } from './guide.js';
 import { bindCast } from './cast.js';
 import { STREAM_TIMEOUT_MS, MAX_AUTO_ATTEMPTS } from './config.js';
 import { myList, watchHistory } from './store.js';
@@ -954,6 +955,7 @@ export function openPlayer(channel, meta = {}) {
   el.stageArt.onerror = () => { el.stageArt.hidden = true; };
   if (channel.logo) { el.stageArt.hidden = false; el.stageArt.src = channel.logo; }
   else { el.stageArt.hidden = true; el.stageArt.removeAttribute('src'); }
+  showGuide(document.getElementById('programme-guide'), channel);
   el.name.textContent = channel.name;
   el.sub.textContent = meta.subtitle || '';
   el.logo.onerror = () => { el.logo.hidden = true; };
